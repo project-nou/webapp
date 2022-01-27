@@ -7,6 +7,7 @@
           <v-col class="col-md-2 pb-0">
             <Menu/>
           </v-col>
+
           <v-col class="col-md-10 pb-0">
             <v-container class="container--fluid">
               <!-- Page Title -->
@@ -14,15 +15,14 @@
                 <p class="text-h5 orange_personalize--text"> MES GROUPES </p>
                 <v-divider class="white"></v-divider>
               </div>
+
               <v-row class="mt-10">
                 <!-- All Groups -->
                 <v-col
                   class="col-md-3"
                   v-for="group in groups" :key="group.name"
                 >
-                  <v-hover
-                    v-slot="{ hover }"
-                  >
+                  <v-hover v-slot="{ hover }">
                     <v-card
                       class="mx-auto mb-4 mt-4 group"
                       max-width="300"
@@ -31,31 +31,20 @@
                       :class="{ 'on-hover': hover }"
                     >
                       <!-- Dropdown Action -->
-                      <v-menu
-                        open-on-hover
-                        top
-                        offset-y
-                      >
+                      <v-menu open-on-hover top offset-y>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn
-                            class="group_action"
-                            small
-                            v-bind="attrs"
-                            v-on="on"
-                          >
+                          <v-btn class="group_action" small v-bind="attrs" v-on="on">
                             <span class="orange_personalize--text font-weight-bold">. . .</span>
                           </v-btn>
                         </template>
+
                         <v-list class="dropdown_action" width="250">
-                          <v-list-item
-                            v-for="(item, index) in items"
-                            :key="index"
-                            link
-                            class="link_action_group"
-                          >
-                            <v-img
-                              width="18px"
-                              :src="require(`@/assets/icons/${item.icon}`)"></v-img>
+                          <v-list-item v-for="(item, index) in items" :key="index"
+                                       link class="link_action_group">
+                            <v-img width="18px"
+                              :src="require(`@/assets/icons/${item.icon}`)">
+                            </v-img>
+
                             <v-list-item-title
                               class="dropdown_action_text">
                               {{ item.title }}
@@ -63,6 +52,7 @@
                           </v-list-item>
                         </v-list>
                       </v-menu>
+
                       <!-- Dropdown Action -->
                       <v-card-text class="text-left pa-0 group_name">
                         <p class="orange_personalize--text group_name"> {{ group.name }} </p>
@@ -71,17 +61,17 @@
                   </v-hover>
                 </v-col>
                 <!-- All Groups -->
+
                 <!-- Add Group -->
                 <v-col class="col-md-3">
-                  <v-hover
-                    v-slot="{ hover }"
-                  >
+                  <v-hover v-slot="{ hover }">
                     <v-card
                       class="mx-auto mb-4 mt-4 add_group"
                       max-width="300"
                       height="175"
                       :elevation="hover ? 16 : 2"
                       :class="{ 'on-hover': hover }"
+                      @click.stop="dialog = true"
                     >
                       <v-card-text class="text-center pa-0">
                         <p class="text-h4"> + </p>
@@ -90,12 +80,68 @@
                     </v-card>
                   </v-hover>
                 </v-col>
+
+                <!-- Form Add Group -->
+                <v-dialog v-model="dialog" max-width="390">
+                  <v-card class="form_add_group">
+                    <v-card-title class="text-h5 white--text">
+                      Ajouter un nouveau groupe ?
+                    </v-card-title>
+
+                    <v-card-text class="white--text font-weight-thin">
+                      Remplir le formulaire afin d'ajouter un nouveau groupe.
+                    </v-card-text>
+
+                    <v-container class="container--fluid">
+                      <v-form
+                        ref="form"
+                        v-model="valid"
+                        lazy-validation
+                      >
+                        <v-text-field
+                          v-model="name"
+                          :counter="20"
+                          :rules="nameRules"
+                          label="Nom du groupe"
+                          required
+                          color="white"
+                          clearable
+                          clear-icon="mdi-close-circle"
+                        ></v-text-field>
+
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+
+                          <v-btn
+                            color="green darken-1"
+                            text
+                            :disabled="!valid"
+                            @click="dialog = false; validate"
+                          >
+                            Créer le groupe
+                          </v-btn>
+
+                          <v-btn
+                            color="red darken-1"
+                            text
+                            @click="reset"
+                          >
+                            Fermer
+                          </v-btn>
+                        </v-card-actions>
+                      </v-form>
+                    </v-container>
+
+                  </v-card>
+                </v-dialog>
+                <!-- Form Add Group -->
                 <!-- Add Group -->
               </v-row>
             </v-container>
           </v-col>
         </v-row>
       </div>
+
     <!-- Logo project -->
     <v-img
       class="logo_project"
@@ -117,6 +163,13 @@ export default {
   },
   data() {
     return {
+      dialog: false,
+      valid: true,
+      name: '',
+      nameRules: [
+        (v) => !!v || 'Le nom du groupe est requis',
+        (v) => (v && v.length <= 20) || 'Le nom ne doit pas dépasser 20 characters',
+      ],
       groups: [
         { name: 'Ta reum' },
         { name: 'Double Fuck' },
@@ -128,6 +181,15 @@ export default {
         { title: 'Supprimer', icon: 'trash-bin.png' },
       ],
     };
+  },
+  methods: {
+    validate() {
+      this.$refs.form.validate();
+    },
+    reset() {
+      this.$refs.form.reset();
+      this.dialog = false;
+    },
   },
 };
 </script>
@@ -192,6 +254,10 @@ export default {
   }
   .link_action_group:hover{
     background-color: rgba( 229, 119, 80, 0.4);
+  }
+  .form_add_group{
+    background-color: #575c5d !important;
+    border: 1px solid #ccc;
   }
   .orange_personalize--text{
     color: #E57750;
