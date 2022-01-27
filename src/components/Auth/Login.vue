@@ -10,19 +10,21 @@
           src="@/assets/nou.png"
         ></v-img>
         <!-- To register -->
-        <p class="to_register_text white--text font-weight-thin mt-15">
-          Pas encore inscrit ? Créé toi un compte
-        </p>
+        <router-link to="/register" class="to_register_text font-weight-thin">
+          <a class="white--text">
+            Pas encore inscrit ? Créé toi un compte !
+          </a>
+        </router-link>
       </v-col>
 
       <!-- Login Form -->
       <v-col class="col-md-4 offset-md-2">
-          <v-img
-            lazy-src="@/assets/user.png"
-            width="50"
-            src="@/assets/user.png"
-            class="user_logo mt-15"
-          ></v-img>
+        <v-img
+          lazy-src="@/assets/user.png"
+          width="50"
+          src="@/assets/user.png"
+          class="user_logo mt-15"
+        ></v-img>
         <p class="text-h2 white--text font-weight-thin hello_text mt-10"> HELLO !</p>
 
         <v-form
@@ -113,7 +115,11 @@ export default {
     margin: auto;
   }
   .to_register_text{
+    width: 50%;
+    display: block;
+    margin: 50px auto;
     text-align: center;
+    text-decoration: none !important;
   }
   .user_logo,
   .hello_text,

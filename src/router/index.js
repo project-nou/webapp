@@ -12,6 +12,11 @@ const routes = [
     component: Auth,
   },
   {
+    path: '/register',
+    name: 'Register',
+    component: Auth,
+  },
+  {
     path: '/my_groups',
     name: 'MyGroups',
     component: MyGroups,
