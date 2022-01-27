@@ -1,10 +1,16 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import Auth from '@/views/Auth.vue';
 import MyGroups from '../views/MyGroups.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path: '/login',
+    name: 'Login',
+    component: Auth,
+  },
   {
     path: '/my_groups',
     name: 'MyGroups',
