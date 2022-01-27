@@ -4,8 +4,7 @@
       lazy-src="@/assets/ynovBanner.png"
       max-height="100"
       src="@/assets/ynovBanner.png"
-    ></v-img>
-  </div>
+    ></v-img></div>
 </template>
 
 <script>

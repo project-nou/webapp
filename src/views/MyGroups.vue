@@ -1,99 +1,101 @@
 <template>
   <div class="my_groups_view">
     <HeaderBanner/>
-    <v-container class="container--fluid">
       <!--  Content page -->
       <div class="my_groups_view_content">
         <v-row>
-          <v-col class="col-md-3">
-            <h1>My groups view</h1>
+          <v-col class="col-md-2 pb-0">
+            <Menu/>
           </v-col>
-          <v-col class="col-md-9">
-            <!-- Page Title -->
-            <div class="mt-10">
-              <p class="text-h5 orange_personalize--text"> MES GROUPES </p>
-              <v-divider class="white"></v-divider>
-            </div>
-            <v-row class="mt-10">
-              <!-- All Groups -->
-              <v-col
-                class="col-md-4"
-                v-for="group in groups" :key="group.name"
-              >
-                <v-hover
-                  v-slot="{ hover }"
+          <v-col class="col-md-10 pb-0">
+            <v-container class="container--fluid">
+              <!-- Page Title -->
+              <div class="mt-10">
+                <p class="text-h5 orange_personalize--text"> MES GROUPES </p>
+                <v-divider class="white"></v-divider>
+              </div>
+              <v-row class="mt-10">
+                <!-- All Groups -->
+                <v-col
+                  class="col-md-3"
+                  v-for="group in groups" :key="group.name"
                 >
-                  <v-card
-                    class="mx-auto mb-4 mt-4 group"
-                    max-width="300"
-                    height="175"
-                    :elevation="hover ? 16 : 2"
-                    :class="{ 'on-hover': hover }"
+                  <v-hover
+                    v-slot="{ hover }"
                   >
-                    <!-- Dropdown Action -->
-                    <v-menu
-                      open-on-hover
-                      top
-                      offset-y
+                    <v-card
+                      class="mx-auto mb-4 mt-4 group"
+                      max-width="300"
+                      height="175"
+                      :elevation="hover ? 16 : 2"
+                      :class="{ 'on-hover': hover }"
                     >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          class="group_action"
-                          small
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          <span class="orange_personalize--text font-weight-bold">. . .</span>
-                        </v-btn>
-                      </template>
-                      <v-list class="dropdown_action" width="250">
-                        <v-list-item
-                          v-for="(item, index) in items"
-                          :key="index"
-                          link
-                          class="link_action_group"
-                        >
-                          <v-img width="18px" :src="require(`@/assets/icons/${item.icon}`)"></v-img>
-                          <v-list-item-title
-                            class="dropdown_action_text">
-                            {{ item.title }}
-                          </v-list-item-title>
-                        </v-list-item>
-                      </v-list>
-                    </v-menu>
-                    <!-- Dropdown Action -->
-                    <v-card-text class="text-left pa-0 group_name">
-                      <p class="orange_personalize--text group_name"> {{ group.name }} </p>
-                    </v-card-text>
-                  </v-card>
-                </v-hover>
-              </v-col>
-              <!-- All Groups -->
-              <!-- Add Group -->
-              <v-col class="col-md-4">
-                <v-hover
-                  v-slot="{ hover }"
-                >
-                  <v-card
-                    class="mx-auto mb-4 mt-4 add_group"
-                    max-width="300"
-                    height="175"
-                    :elevation="hover ? 16 : 2"
-                    :class="{ 'on-hover': hover }"
+                      <!-- Dropdown Action -->
+                      <v-menu
+                        open-on-hover
+                        top
+                        offset-y
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            class="group_action"
+                            small
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            <span class="orange_personalize--text font-weight-bold">. . .</span>
+                          </v-btn>
+                        </template>
+                        <v-list class="dropdown_action" width="250">
+                          <v-list-item
+                            v-for="(item, index) in items"
+                            :key="index"
+                            link
+                            class="link_action_group"
+                          >
+                            <v-img
+                              width="18px"
+                              :src="require(`@/assets/icons/${item.icon}`)"></v-img>
+                            <v-list-item-title
+                              class="dropdown_action_text">
+                              {{ item.title }}
+                            </v-list-item-title>
+                          </v-list-item>
+                        </v-list>
+                      </v-menu>
+                      <!-- Dropdown Action -->
+                      <v-card-text class="text-left pa-0 group_name">
+                        <p class="orange_personalize--text group_name"> {{ group.name }} </p>
+                      </v-card-text>
+                    </v-card>
+                  </v-hover>
+                </v-col>
+                <!-- All Groups -->
+                <!-- Add Group -->
+                <v-col class="col-md-3">
+                  <v-hover
+                    v-slot="{ hover }"
                   >
-                    <v-card-text class="text-center pa-0">
-                      <p class="text-h4"> + </p>
-                      <p> Ajouter un groupe </p>
-                    </v-card-text>
-                  </v-card>
-                </v-hover>
-              </v-col>
-              <!-- Add Group -->
-            </v-row>
+                    <v-card
+                      class="mx-auto mb-4 mt-4 add_group"
+                      max-width="300"
+                      height="175"
+                      :elevation="hover ? 16 : 2"
+                      :class="{ 'on-hover': hover }"
+                    >
+                      <v-card-text class="text-center pa-0">
+                        <p class="text-h4"> + </p>
+                        <p> Ajouter un groupe </p>
+                      </v-card-text>
+                    </v-card>
+                  </v-hover>
+                </v-col>
+                <!-- Add Group -->
+              </v-row>
+            </v-container>
           </v-col>
         </v-row>
       </div>
-    </v-container>
     <!-- Logo project -->
     <v-img
       class="logo_project"
@@ -105,11 +107,13 @@
 
 <script>
 import HeaderBanner from '@/components/Banner/HeaderBanner.vue';
+import Menu from '@/components/Menu/Menu.vue';
 
 export default {
   name: 'MyGroups',
   components: {
     HeaderBanner,
+    Menu,
   },
   data() {
     return {
@@ -129,6 +133,9 @@ export default {
 </script>
 
 <style scoped>
+  .my_groups_view{
+    height: calc(100vh - 100px);
+  }
   .logo_project{
     width: 75px;
     position: fixed;
