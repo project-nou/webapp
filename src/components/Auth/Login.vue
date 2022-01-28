@@ -36,9 +36,9 @@
           <v-list id="email_field">
             <v-list-item>
               <v-img
-                lazy-src="@/assets/icons/id-card.png"
+                lazy-src="@/assets/icons/email.png"
                 width="40"
-                src="@/assets/icons/id-card.png"
+                src="@/assets/icons/email.png"
               ></v-img>
               <v-list-item-title class="ml-10">
                 <v-text-field
@@ -86,15 +86,24 @@
         </v-form>
       </v-col>
     </v-row>
+
+    <SnackbarFailed color="red" message="Email ou mot de passe incorrecte"/>
   </div>
 </template>
 
 <script>
+import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
+
 export default {
   name: 'Login',
+  components: {
+    SnackbarFailed,
+  },
   data() {
     return {
+      snackbar: true,
       valid: true,
+      password: undefined,
       email: '',
       emailRules: [
         (v) => !!v || 'L\' e-mail est requis',
@@ -103,8 +112,28 @@ export default {
     };
   },
   methods: {
+    // Valid the register form
     validate() {
-      this.$refs.form.validate();
+      if (this.$refs.form.validate()) {
+        if (this.isExist(/* this.email */)) {
+          this.$router.push({ path: '/my_groups' });
+        } else {
+          this.$root.$emit('SnackbarFailed');
+        }
+      }
+    },
+    // Test if user exist
+    isExist(/* email */) {
+      return true;
+      // this.axios.get(`/email=${email}`)
+      //   .then((response) => {
+      //     console.log(response.data);
+      //     return true;
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //     return false;
+      //   });
     },
   },
 };
