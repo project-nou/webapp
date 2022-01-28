@@ -19,6 +19,7 @@
             </v-btn>
             <!-- Add user -->
             <v-btn
+              v-if="isAdminOfGroup"
               @click.stop="dialog = true"
               class="authorized_user_content"
               fab x-small outlined color="white">
@@ -116,7 +117,9 @@
                             @cut="remove(toDo, item)"
                             :data="selection(item)"
                             :key="item.name"
-                          >{{item.name}}</drag>
+                          >
+                            {{item.name}}
+                          </drag>
                         </template>
                         <template v-slot:feedback="{data}">
                           <template v-if="selected.length > 0">
@@ -235,16 +238,18 @@ export default {
   data() {
     return {
       toDo: [
-        { name: 'Frozen Yogurt', calories: 159, fat: 6.0 },
-        { name: 'Ice cream sandwich', calories: 237, fat: 9.0 },
-        { name: 'Eclair', calories: 262, fat: 16.0 },
-        { name: 'More ice cream sandwich', calories: 237, fat: 9.0 },
+        { name: 'Fait la vaisselle wola j\'téclate' },
+        { name: 'Aziz lumière' },
+        { name: 'MagicarpéDiem' },
       ],
-      done: [],
+      done: [
+        { name: 'Guimares jtm' },
+      ],
       selected: [],
       selectedList: 0,
       idGroup: this.$route.params.id,
       authorizedUser: [],
+      isAdminOfGroup: true,
       valid: true,
       dialog: false,
       email: undefined,
