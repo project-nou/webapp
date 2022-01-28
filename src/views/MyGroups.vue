@@ -198,8 +198,8 @@ export default {
     validate() {
       if (this.$refs.form.validate()) {
         this.createGroup();
+        this.reset();
       }
-      this.reset();
     },
     reset() {
       this.$refs.form.reset();

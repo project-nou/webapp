@@ -113,7 +113,7 @@
       src="@/assets/nou.png"
     ></v-img>
 
-<!--    <SnackbarSuccess :message="snackbarMessage" :color="color"/>-->
+    <SnackbarSuccess :message="snackbarMessage" :color="color"/>
 <!--    <SnackbarFailed :message="snackbarMessage" :color="color"/>-->
   </div>
 </template>
@@ -121,7 +121,7 @@
 <script>
 import HeaderBanner from '@/components/Banner/HeaderBanner.vue';
 import Menu from '@/components/Menu/Menu.vue';
-// import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
+import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
 // import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
 
 export default {
@@ -129,7 +129,7 @@ export default {
   components: {
     HeaderBanner,
     Menu,
-    // SnackbarSuccess,
+    SnackbarSuccess,
     // SnackbarFailed,
   },
   data() {
@@ -144,8 +144,8 @@ export default {
         (v) => /.+@.+\..+/.test(v) || 'L\' e-mail doit être valide',
       ],
       // userEmail: 'luca.sardellit.1995@gmail.com',
-      // snackbarMessage: undefined,
-      // color: undefined,
+      snackbarMessage: undefined,
+      color: undefined,
     };
   },
   created() {
@@ -153,10 +153,12 @@ export default {
     this.getAuthorizedUserToGroup();
   },
   methods: {
-    // Valid the register form
+    // Valid the invit user form
     validate() {
-      this.$refs.form.validate();
-      this.reset();
+      if (this.$refs.form.validate()) {
+        this.inviteUser();
+        this.reset();
+      }
     },
     reset() {
       this.$refs.form.reset();
@@ -174,20 +176,28 @@ export default {
       this.authorizedUser.push({ username: 'Antoine Mousset', id: 3 });
       console.log(this.groups);
     },
+    inviteUser() {
+      console.log(this.email);
+      // this.axios.post(`/user=${this.email}`)
+      //   .then((response) => {
+      //     console.log(response.data);
+      this.snackbarMessageException('success', `L'invation à ${this.email} a bien été envoyé`);
+      //   });
+    },
     // Exception snackbar
-    // snackbarMessageException(type, message) {
-    //   this.snackbarMessage = message;
-    //   this.color = type;
-    //   switch (type) {
-    //     case 'success':
-    //       this.$root.$emit('SnackbarSuccess');
-    //       break;
-    //     case 'error':
-    //       this.$root.$emit('SnackbarFailed');
-    //       break;
-    //     default:
-    //   }
-    // },
+    snackbarMessageException(type, message) {
+      this.snackbarMessage = message;
+      this.color = type;
+      switch (type) {
+        case 'success':
+          this.$root.$emit('SnackbarSuccess');
+          break;
+        // case 'error':
+        //   this.$root.$emit('SnackbarFailed');
+        //   break;
+        default:
+      }
+    },
   },
 };
 </script>
