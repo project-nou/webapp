@@ -40,7 +40,8 @@
 
                         <v-list class="dropdown_action" width="250">
                           <v-list-item v-for="(item, index) in items" :key="index"
-                                       link class="link_action_group">
+                                       link class="link_action_group"
+                                       @click="actionGroup(item.name, group.id, group.name)">
                             <v-img width="18px"
                               :src="require(`@/assets/icons/${item.icon}`)">
                             </v-img>
@@ -171,6 +172,7 @@ export default {
   data() {
     return {
       userEmail: 'luca.sardellit.1995@gmail.com',
+      idGroup: undefined,
       dialog: false,
       valid: true,
       snackbarMessage: undefined,
@@ -182,9 +184,9 @@ export default {
       ],
       groups: [],
       items: [
-        { title: 'Ajouter un fichier', icon: 'plus.png' },
-        { title: 'Editer', icon: 'edit.png' },
-        { title: 'Supprimer', icon: 'trash-bin.png' },
+        { title: 'Ajouter un fichier', icon: 'plus.png', name: 'addFile' },
+        { title: 'Editer', icon: 'edit.png', name: 'edit' },
+        { title: 'Supprimer', icon: 'trash-bin.png', name: 'delete' },
       ],
     };
   },
@@ -207,9 +209,9 @@ export default {
       // this.axios.get(`/email=${this.userEmail}`)
       //   .then((response) => {
       // console.log(response.data);
-      this.groups.push({ name: 'Ta reum' });
-      this.groups.push({ name: 'Double Fuck' });
-      this.groups.push({ name: 'Enlécu' });
+      this.groups.push({ name: 'Ta reum', id: 1 });
+      this.groups.push({ name: 'Double Fuck', id: 2 });
+      this.groups.push({ name: 'Enlécu', id: 3 });
       console.log(this.groups);
       // });
     },
@@ -232,13 +234,43 @@ export default {
       //   });
       this.reset();
     },
+    actionGroup(action, id, groupName) {
+      console.log(action, id, groupName);
+      switch (action) {
+        case 'addFile':
+          console.log('add file');
+          break;
+        case 'edit':
+          console.log('edit');
+          break;
+        case 'delete':
+          this.deleteGroup(id, groupName);
+          console.log('delete');
+          break;
+        default:
+          console.log('default');
+      }
+    },
+    // Delete an group
+    deleteGroup(id, groupName) {
+      // this.axios.delete(`/id=${id}`)
+      //   .then(() => {
+      this.snackbarMessageException('success', `Le groupe ${groupName} a bien été supprimé.`);
+      // this.getAllGroups();
+      // });
+    },
+    // Exception snackbar
     snackbarMessageException(type, message) {
       this.snackbarMessage = message;
       this.color = type;
-      if (type === 'success') {
-        this.$root.$emit('SnackbarSuccess');
-      } else if (type === 'error') {
-        this.$root.$emit('SnackbarFailed');
+      switch (type) {
+        case 'success':
+          this.$root.$emit('SnackbarSuccess');
+          break;
+        case 'error':
+          this.$root.$emit('SnackbarFailed');
+          break;
+        default:
       }
     },
   },
