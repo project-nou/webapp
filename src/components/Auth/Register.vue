@@ -27,6 +27,7 @@
             v-model="valid"
             lazy-validation
             class="register_form"
+            @submit.prevent="register"
           >
             <!-- EMAIL -->
             <v-list id="email_field" class="pl-15 pr-15" height="80px">
@@ -64,9 +65,9 @@
                     filled
                     class="mt-8"
                     color="orange"
-                    v-model="name"
+                    v-model="username"
                     :counter="20"
-                    :rules="nameRules"
+                    :rules="usernameRules"
                     label="Utilisateur"
                     required
                     clearable
@@ -93,6 +94,7 @@
                     filled
                     class="mt-8"
                     color="orange"
+                    v-model="password"
                   ></v-text-field>
                 </v-list-item-title>
               </v-list-item>
@@ -136,8 +138,9 @@ export default {
   data() {
     return {
       valid: true,
-      name: '',
-      nameRules: [
+      password: undefined,
+      username: '',
+      usernameRules: [
         (v) => !!v || 'L\' utilisateur est requis',
         (v) => (v && v.length <= 20) || 'L\' utilisateur ne doit pas dépasser 20 characters',
       ],
@@ -149,8 +152,20 @@ export default {
     };
   },
   methods: {
+    // Valid the register form
     validate() {
-      this.$refs.form.validate();
+      if (this.$refs.form.validate()) {
+        const data = {
+          email: this.email,
+          username: this.username,
+          password: this.password,
+        };
+        console.log(data);
+        this.axios.post('', data)
+          .then((response) => {
+            console.log(response.data);
+          });
+      }
     },
   },
 };
