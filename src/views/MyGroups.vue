@@ -56,7 +56,7 @@
 
                       <!-- Dropdown Action -->
                       <v-card-text class="text-left pa-0 group_name">
-                        <p class="orange_personalize--text group_name"> {{ group.name }} </p>
+                        <p class="orange_personalize--text"> {{ group.name }} </p>
                       </v-card-text>
                     </v-card>
                   </v-hover>
@@ -74,7 +74,7 @@
                       :class="{ 'on-hover': hover }"
                       @click.stop="dialog = true"
                     >
-                      <v-card-text class="text-center pa-0">
+                      <v-card-text class="text-center pa-0 card_text">
                         <p class="text-h4"> + </p>
                         <p> Ajouter un groupe </p>
                       </v-card-text>
@@ -311,6 +311,10 @@ export default {
     left: 15px;
     position: absolute;
   }
+  .group:hover > .group_name p,
+  .group:hover > .group_action span{
+    color: white;
+  }
   .add_group{
     background-color:rgba(255, 255, 255, 0.03) !important;
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='white' stroke-width='2' stroke-dasharray='20' stroke-dashoffset='6' stroke-linecap='square'/%3e%3c/svg%3e");
@@ -321,6 +325,15 @@ export default {
   .add_group.v-card.on-hover{
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='orange' stroke-width='2' stroke-dasharray='20' stroke-dashoffset='6' stroke-linecap='square'/%3e%3c/svg%3e");
     cursor: pointer;
+  }
+  .add_group .card_text p:nth-child(0),
+  .add_group .card_text p:nth-child(1){
+    transition: 0.5s;
+  }
+  .add_group:hover > .card_text p:nth-child(0),
+  .add_group:hover > .card_text p:nth-child(1){
+    margin-top: -8px;
+    transition: 0.5s;
   }
   .add_group p{
     color: white;
