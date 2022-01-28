@@ -32,9 +32,9 @@
             <v-list id="email_field" class="pl-15 pr-15" height="80px">
               <v-list-item>
                 <v-img
-                  lazy-src="@/assets/icons/id-card.png"
+                  lazy-src="@/assets/icons/email.png"
                   width="40"
-                  src="@/assets/icons/id-card.png"
+                  src="@/assets/icons/email.png"
                 ></v-img>
                 <v-list-item-title class="ml-10">
                   <v-text-field
@@ -47,6 +47,30 @@
                     filled
                     class="mt-8"
                     color="orange"
+                  ></v-text-field>
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+            <!-- USERNAME -->
+            <v-list id="username_field" class="pl-15 pr-15" height="80px">
+              <v-list-item>
+                <v-img
+                  lazy-src="@/assets/icons/id-card.png"
+                  width="40"
+                  src="@/assets/icons/id-card.png"
+                ></v-img>
+                <v-list-item-title class="ml-10">
+                  <v-text-field
+                    filled
+                    class="mt-8"
+                    color="orange"
+                    v-model="name"
+                    :counter="20"
+                    :rules="nameRules"
+                    label="Utilisateur"
+                    required
+                    clearable
+                    clear-icon="mdi-close-circle"
                   ></v-text-field>
                 </v-list-item-title>
               </v-list-item>
@@ -112,6 +136,11 @@ export default {
   data() {
     return {
       valid: true,
+      name: '',
+      nameRules: [
+        (v) => !!v || 'L\' utilisateur est requis',
+        (v) => (v && v.length <= 20) || 'L\' utilisateur ne doit pas dépasser 20 characters',
+      ],
       email: '',
       emailRules: [
         (v) => !!v || 'L\' e-mail est requis',
@@ -145,7 +174,8 @@ export default {
     border-radius: 20px !important;
   }
   #email_field,
-  #password_field{
+  #password_field,
+  #username_field{
     background-color: transparent !important;
   }
   .to_login_text{
@@ -154,6 +184,9 @@ export default {
     margin: 10px auto;
     text-align: center;
     text-decoration: none !important;
+  }
+  .to_login_text:hover > a{
+    text-decoration: underline;
   }
   .valid_form_register{
     background-color: #E57750 !important;

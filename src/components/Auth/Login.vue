@@ -121,6 +121,9 @@ export default {
     text-align: center;
     text-decoration: none !important;
   }
+  .to_register_text:hover > a{
+    text-decoration: underline;
+  }
   .user_logo,
   .hello_text,
   .valid_form_login{
