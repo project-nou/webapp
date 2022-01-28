@@ -120,6 +120,9 @@ export default {
   .menu_action_text{
     color: white;
   }
+  .menu_action_text a{
+    text-decoration: none;
+  }
   .logo_content{
     width: 15%;
     position: absolute;
