@@ -7,6 +7,7 @@
     :color="color"
     text
     elevation="24"
+    class="mb-5"
   >
     {{ message }}
 

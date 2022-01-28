@@ -2,7 +2,7 @@
   <div class="menu">
     <!-- Hello User -->
     <div id="presentation">
-      <v-list id="presentation_content" class="mt-5">
+      <v-list id="presentation_content" class="pt-5">
         <v-list-item>
           <v-img
             lazy-src="@/assets/user.png"
@@ -63,9 +63,9 @@ export default {
     height: calc(100vh - 100px);
     background-color:rgba(255, 255, 255, 0.1) !important;
   }
-  #presentation{
-    display: flex;
-  }
+  /*#presentation{*/
+  /*  display: flex;*/
+  /*}*/
   #presentation_content{
     margin: auto;
     background-color: transparent;

@@ -99,9 +99,9 @@
                         lazy-validation
                       >
                         <v-text-field
-                          v-model="name"
+                          v-model="groupName"
                           :counter="20"
-                          :rules="nameRules"
+                          :rules="groupNameRules"
                           label="Nom du groupe"
                           required
                           color="white"
@@ -116,7 +116,7 @@
                             color="green darken-1"
                             text
                             :disabled="!valid"
-                            @click="dialog = false; validate"
+                            @click="validate"
                           >
                             Créer le groupe
                           </v-btn>
@@ -148,33 +148,39 @@
       lazy-src="@/assets/nou.png"
       src="@/assets/nou.png"
     ></v-img>
+
+    <SnackbarSuccess :message="snackbarMessage" :color="color"/>
+    <SnackbarFailed :message="snackbarMessage" :color="color"/>
   </div>
 </template>
 
 <script>
 import HeaderBanner from '@/components/Banner/HeaderBanner.vue';
 import Menu from '@/components/Menu/Menu.vue';
+import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
+import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
 
 export default {
   name: 'MyGroups',
   components: {
     HeaderBanner,
     Menu,
+    SnackbarSuccess,
+    SnackbarFailed,
   },
   data() {
     return {
+      userEmail: 'luca.sardellit.1995@gmail.com',
       dialog: false,
       valid: true,
-      name: '',
-      nameRules: [
+      snackbarMessage: undefined,
+      color: undefined,
+      groupName: undefined,
+      groupNameRules: [
         (v) => !!v || 'Le nom du groupe est requis',
         (v) => (v && v.length <= 20) || 'Le nom ne doit pas dépasser 20 characters',
       ],
-      groups: [
-        { name: 'Ta reum' },
-        { name: 'Double Fuck' },
-        { name: 'Enlécu' },
-      ],
+      groups: [],
       items: [
         { title: 'Ajouter un fichier', icon: 'plus.png' },
         { title: 'Editer', icon: 'edit.png' },
@@ -182,13 +188,58 @@ export default {
       ],
     };
   },
+  created() {
+    this.getAllGroups();
+  },
   methods: {
     validate() {
-      this.$refs.form.validate();
+      if (this.$refs.form.validate()) {
+        this.createGroup();
+      }
+      this.reset();
     },
     reset() {
       this.$refs.form.reset();
       this.dialog = false;
+    },
+    // Get all group by user
+    getAllGroups() {
+      // this.axios.get(`/email=${this.userEmail}`)
+      //   .then((response) => {
+      // console.log(response.data);
+      this.groups.push({ name: 'Ta reum' });
+      this.groups.push({ name: 'Double Fuck' });
+      this.groups.push({ name: 'Enlécu' });
+      console.log(this.groups);
+      // });
+    },
+    // Create group
+    createGroup() {
+      // const data = {
+      //   user: this.userEmail,
+      //   name: this.groupName,
+      // };
+      // this.axios.post('', data)
+      //   .then((response) => {
+      //     console.log(response.data);
+      this.snackbarMessageException('success', `Le groupe ${this.groupName} a bien été créé.`);
+      // this.getAllGroups();
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      // eslint-disable-next-line max-len
+      // this.snackbarMessageException('error', `Le groupe ${this.groupName} n'a pas pu être créé.`);
+      //   });
+      this.reset();
+    },
+    snackbarMessageException(type, message) {
+      this.snackbarMessage = message;
+      this.color = type;
+      if (type === 'success') {
+        this.$root.$emit('SnackbarSuccess');
+      } else if (type === 'error') {
+        this.$root.$emit('SnackbarFailed');
+      }
     },
   },
 };
