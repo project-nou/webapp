@@ -139,7 +139,7 @@ export default {
     return {
       valid: true,
       password: undefined,
-      username: '',
+      username: undefined,
       usernameRules: [
         (v) => !!v || 'L\' utilisateur est requis',
         (v) => (v && v.length <= 20) || 'L\' utilisateur ne doit pas dépasser 20 characters',

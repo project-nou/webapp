@@ -29,6 +29,7 @@
                       height="175"
                       :elevation="hover ? 16 : 2"
                       :class="{ 'on-hover': hover }"
+                      :to='/group/+group.id'
                     >
                       <!-- Dropdown Action -->
                       <v-menu open-on-hover top offset-y>

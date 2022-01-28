@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Auth from '@/views/Auth.vue';
+import Group from '@/views/Group.vue';
 import MyGroups from '../views/MyGroups.vue';
 
 Vue.use(VueRouter);
@@ -20,6 +21,11 @@ const routes = [
     path: '/my_groups',
     name: 'MyGroups',
     component: MyGroups,
+  },
+  {
+    path: '/group/:id',
+    name: 'Group',
+    component: Group,
   },
 ];
 
