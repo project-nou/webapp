@@ -24,11 +24,15 @@
         class="link_action_menu active"
       >
         <v-img
-          width="40px"
+          width="30px"
           :src="require(`@/assets/icons/${item.icon}`)"></v-img>
         <v-list-item-title
           class="menu_action_text text-h7 ml-7">
-          {{ item.title }}
+          <router-link :to="item.link">
+            <a class="white--text">
+              {{ item.title }}
+            </a>
+          </router-link>
         </v-list-item-title>
       </v-list-item>
 
@@ -64,7 +68,7 @@ export default {
       username: 'Luca SARDELLITTI',
       userEmail: 'luca.sardellit.1995@gmail.com',
       items: [
-        { title: 'Mes groupes', icon: 'folder.png' },
+        { title: 'Mes groupes', icon: 'folder.png', link: '/my_groups' },
       ],
     };
   },
