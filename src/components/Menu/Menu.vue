@@ -32,17 +32,13 @@
         </v-list-item-title>
       </v-list-item>
 
-      <v-list-item link class="logout_action link_action_menu">
+      <v-list-item link class="logout_action link_action_menu" @click="logout">
         <v-img
           lazy-src="@/assets/icons/logout.png"
           width="30"
           src="@/assets/icons/logout.png"></v-img>
         <v-list-item-title class="menu_action_text text-h7 ml-7">
-          <router-link to="/login" class="to_login_text">
-            <a class="white--text">
-              Déconnexion
-            </a>
-          </router-link>
+          Déconnexion
         </v-list-item-title>
       </v-list-item>
     </v-list>
@@ -66,10 +62,18 @@ export default {
   data() {
     return {
       username: 'Luca SARDELLITTI',
+      userEmail: 'luca.sardellit.1995@gmail.com',
       items: [
         { title: 'Mes groupes', icon: 'folder.png' },
       ],
     };
+  },
+  methods: {
+    // Logout user
+    logout() {
+      // TODO : clear le local storage ou le store et rediriger vers le login
+      this.$router.push({ path: '/login' });
+    },
   },
 };
 </script>
@@ -105,9 +109,6 @@ export default {
     bottom: 0;
     width: -moz-available;
 
-  }
-  .to_login_text{
-    text-decoration: none;
   }
   .link_action_menu:hover{
     background-color: rgba( 229, 119, 80, 0.4) !important;
