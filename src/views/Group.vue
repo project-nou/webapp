@@ -274,9 +274,19 @@ export default {
      * @llistNameist String - name of the list in the data section
      */
     onInsert(event, listName = 'done') {
-      console.log(event.data.id);
       this[listName].splice(event.index, 0, event.data);
       this.selected = [];
+
+      console.log(event.data.name);
+      // switch (listName) {
+      //   case 'toDo':
+      //     this.toDo.push(event.data.name, event.data.id);
+      //     break;
+      //   case 'done':
+      //     this.done.push(event.data.name, event.data.id);
+      //     break;
+      //   default:
+      // }
     },
     remove(array, value) {
       const index = array.indexOf(value);
