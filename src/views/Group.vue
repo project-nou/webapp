@@ -112,8 +112,6 @@
                         <template v-slot:item="{item}">
                           <drag
                             class="item"
-                            :class="{ 'selected' : selected.indexOf(item) > -1 }"
-                            @click="toggleSelected(toDo, item)"
                             @cut="remove(toDo, item)"
                             :data="selection(item)"
                             :key="item.name"
@@ -176,9 +174,7 @@
                         <template v-slot:item="{item}">
                           <drag
                             class="item"
-                            :class="{ 'selected' : selected.indexOf(item) > -1 }"
                             @cut="remove(done, item)"
-                            @click="toggleSelected(done, item)"
                             :data="selection(item)"
                             :key="item.name"
                           >{{item.name}}</drag>
@@ -238,12 +234,12 @@ export default {
   data() {
     return {
       toDo: [
-        { name: 'Fait la vaisselle wola j\'téclate' },
-        { name: 'Aziz lumière' },
-        { name: 'MagicarpéDiem' },
+        { name: 'Fait la vaisselle wola j\'téclate', id: 1 },
+        { name: 'Aziz lumière', id: 2 },
+        { name: 'MagicarpéDiem', id: 3 },
       ],
       done: [
-        { name: 'Guimares jtm' },
+        { name: 'Guimares jtm', id: 123 },
       ],
       selected: [],
       selectedList: 0,
@@ -268,70 +264,24 @@ export default {
   },
   methods: {
     selection(item) {
-      return this.selected.length > 0 ? this.selected : item;
+      return item;
     },
     /**
-     * Inserts one or multiple selected done into the target
+     * Inserts one selected done into the target
      * droplist
      *
      * @event {InsertEvent} - holds dragging data and drop index
      * @llistNameist String - name of the list in the data section
      */
     onInsert(event, listName = 'done') {
-      if (event.data.length > 0) {
-        event.data.forEach((e, idx) => {
-          // event.index is the starting point of the target droplist
-          // event.index + idx = appending the done one after the other
-          this[listName].splice(event.index + idx, 0, e);
-        });
-      } else {
-        // here we have just one item
-        // @see https://codesandbox.io/s/droplist-ozs8b
-        this[listName].splice(event.index, 0, event.data);
-      }
-
+      console.log(event.data.id);
+      this[listName].splice(event.index, 0, event.data);
       this.selected = [];
     },
     remove(array, value) {
-      // Following logic is taken from https://codesandbox.io/s/easy-dnd-demo-9mbij
-      // In addition if we have some done in the selection
-      // we apply the same logic just with a loop
-
-      if (this.selected.length > 0) {
-        this.selected.forEach((e) => {
-          const index = array.indexOf(e);
-          array.splice(index, 1);
-        });
-      } else {
-        const index = array.indexOf(value);
-        array.splice(index, 1);
-      }
-    },
-    /**
-     * Inserts an item into the selected list.
-     *
-     * If you select an item from another list the selection of
-     * the last list gets resetted.
-     *
-     * @see https://codesandbox.io/s/easy-dnd-demo-2-xnqbz
-     * @listName String - name of the list in the data section
-     * @item {Object} - the selected data in the list
-     */
-    toggleSelected(listName, item) {
-      if (listName !== this.selectedList) {
-        this.selected = [];
-        this.selectedList = listName;
-      }
-
-      // Basic toggeling logic
-      // If an item is in the list remove it
-      // otherwise add it to the list
-      const index = this.selected.indexOf(item);
-      if (index > -1) {
-        this.selected.splice(index, 1);
-      } else {
-        this.selected.push(item);
-      }
+      const index = array.indexOf(value);
+      array.splice(index, 1);
+      // }
     },
     // Valid the invit user form
     validate() {
@@ -354,7 +304,6 @@ export default {
       this.authorizedUser.push({ username: 'Luca Sardellitti', id: 1 });
       this.authorizedUser.push({ username: 'Florian Berrot', id: 2 });
       this.authorizedUser.push({ username: 'Antoine Mousset', id: 3 });
-      console.log(this.groups);
     },
     inviteUser() {
       console.log(this.email);
