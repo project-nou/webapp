@@ -133,6 +133,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'Register',
   data() {
@@ -160,9 +162,9 @@ export default {
           username: this.username,
           password: this.password,
         };
-        console.log(data);
-        this.axios.post('', data)
-          .then((response) => {
+        axios
+            .post('http://localhost:8000/sign-up', data)
+            .then((response) => {
             console.log(response.data);
           });
       }
