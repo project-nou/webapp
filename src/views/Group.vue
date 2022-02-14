@@ -349,27 +349,27 @@ export default {
      * @event {InsertEvent} - holds dragging data and drop index
      * @llistNameist String - name of the list in the data section
      */
-    onInsert(event, listName = 'done') {
+    onInsert(event, listName) {
       this[listName].splice(event.index, 0, event.data);
       this.selected = [];
-
-      console.log(event.data.name);
-      // switch (listName) {
-      //   case 'toDo':
-      //     this.toDo.push(event.data.name, event.data.id);
-      //     break;
-      //   case 'done':
-      //     this.done.push(event.data.name, event.data.id);
-      //     break;
-      //   default:
-      // }
+      switch (listName) {
+        case 'toDo':
+          axios.post("http://localhost:8000/note/status",{
+                "note_id": event.data.id
+              })
+          break;
+        case 'done':
+          axios.post('http://localhost:8000/note/status', {
+            'note_id': event.data.id
+          });
+          break;
+        default:
+      }
     },
     remove(array, value) {
       const index = array.indexOf(value);
       array.splice(index, 1);
-      // }
     },
-    // Valid the invit user form
     validate() {
       if (this.$refs.form.validate()) {
         this.inviteUser();
