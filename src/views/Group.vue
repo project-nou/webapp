@@ -98,101 +98,121 @@
             <v-row class="mt-10">
               <v-container fluid class="wrapper">
                 <v-row>
-                  <!-- To do task -->
-                  <v-col class="col-md-4">
-                    <h2 class="title_task font-weight-thin">A faire</h2>
-                    <div class="content_list">
-                      <drop-list
-                        :items="toDo"
-                        class="list"
-                        @insert="onInsert($event, 'toDo')"
-                        @reorder="$event.apply(toDo)"
-                        mode="cut"
-                      >
-                        <template v-slot:item="{item}">
-                          <drag
-                            class="item"
-                            @cut="remove(toDo, item)"
-                            :data="selection(item)"
-                            :key="item.name"
+                  <!-- Task -->
+                  <v-col class="col-md-7">
+                    <v-row>
+                      <h2 class="orange_personalize--text font-weight-thin">Tâches</h2>
+                    </v-row>
+                    <v-row>
+                      <!-- To do task -->
+                      <v-col class="col-md-5 offset-1">
+                        <h3 class="title_task font-weight-thin">A faire</h3>
+                        <div class="content_list">
+                          <drop-list
+                            :items="toDo"
+                            class="list"
+                            @insert="onInsert($event, 'toDo')"
+                            @reorder="$event.apply(toDo)"
+                            mode="cut"
                           >
-                            {{item.name}}
-                          </drag>
-                        </template>
-                        <template v-slot:feedback="{data}">
-                          <template v-if="selected.length > 0">
-                            <div
-                              v-for="f in data"
-                              class="item feedback" :key="f.name">{{f.name}}
-                            </div>
-                          </template>
-                          <template v-else>
-                            <div class="item feedback" :key="data.name">{{data.name}}</div>
-                          </template>
-                        </template>
-                      </drop-list>
+                            <template v-slot:item="{item}">
+                              <drag
+                                class="item"
+                                @cut="remove(toDo, item)"
+                                :data="selection(item)"
+                                :key="item.name"
+                              >
+                                {{item.name}}
+                              </drag>
+                            </template>
+                            <template v-slot:feedback="{data}">
+                              <template v-if="selected.length > 0">
+                                <div
+                                  v-for="f in data"
+                                  class="item feedback" :key="f.name">{{f.name}}
+                                </div>
+                              </template>
+                              <template v-else>
+                                <div class="item feedback" :key="data.name">{{data.name}}</div>
+                              </template>
+                            </template>
+                          </drop-list>
 
-                      <!-- Add Task -->
-                      <v-hover v-slot="{ hover }">
-                        <v-card
-                          max-width="185"
-                          max-height="200"
-                          class="mx-auto add_task"
-                          :elevation="hover ? 6 : 2"
-                          :class="{ 'on-hover': hover }"
-                          @click.stop="dialog = true"
+                          <!-- Add Task -->
+                          <v-hover v-slot="{ hover }">
+                            <v-card
+                              max-width="185"
+                              max-height="200"
+                              class="mx-auto add_task"
+                              :elevation="hover ? 6 : 2"
+                              :class="{ 'on-hover': hover }"
+                              @click.stop="dialog = true"
+                            >
+                              <v-card-text class="pa-0">
+                                <v-list class="add_task_text_content">
+                                  <v-list-item>
+                                    <v-img
+                                      width="14px"
+                                      src='@/assets/icons/plus.png'>
+                                    </v-img>
+                                    <v-list-item-title class="white--text ml-2 text_add_task">
+                                      Ajouter une tache
+                                    </v-list-item-title>
+                                  </v-list-item>
+                                </v-list>
+                              </v-card-text>
+                            </v-card>
+                          </v-hover>
+                        </div>
+                      </v-col>
+
+                      <!-- Done task -->
+                      <v-col class="col-md-5 offset-1">
+                      <h3 class="title_task font-weight-thin">Finis</h3>
+                      <div class="content_list">
+                        <drop-list
+                          :items="done"
+                          class="list"
+                          @insert="onInsert($event, 'done')"
+                          @reorder="$event.apply(done)"
+                          mode="cut"
                         >
-                          <v-card-text class="pa-0">
-                            <v-list class="add_task_text_content">
-                              <v-list-item>
-                                <v-img
-                                  width="14px"
-                                  src='@/assets/icons/plus.png'>
-                                </v-img>
-                                <v-list-item-title class="white--text ml-2 text_add_task">
-                                  Ajouter une tache
-                                </v-list-item-title>
-                              </v-list-item>
-                            </v-list>
-                          </v-card-text>
-                        </v-card>
-                      </v-hover>
-                    </div>
+                          <template v-slot:item="{item}">
+                            <drag
+                              class="item"
+                              @cut="remove(done, item)"
+                              :data="selection(item)"
+                              :key="item.name"
+                            >{{item.name}}</drag>
+                          </template>
+                          <template v-slot:feedback="{data}">
+                            <template v-if="selected.length > 0">
+                              <div
+                                v-for="f in data"
+                                class="item feedback" :key="f.name">
+                                {{f.name}}
+                              </div>
+                            </template>
+                            <template v-else>
+                              <div class="item feedback" :key="data.name">{{data.name}}</div>
+                            </template>
+                          </template>
+                        </drop-list>
+                      </div>
+                    </v-col>
+                    </v-row>
                   </v-col>
 
-                  <!-- Done task -->
+                  <!-- Divider -->
+                  <v-col class="col-md-1">
+                    <v-divider vertical class="white"></v-divider>
+                  </v-col>
+
+                  <!-- All files -->
                   <v-col class="col-md-4">
-                    <h2 class="title_task font-weight-thin">Finis</h2>
-                    <div class="content_list">
-                      <drop-list
-                        :items="done"
-                        class="list"
-                        @insert="onInsert($event, 'done')"
-                        @reorder="$event.apply(done)"
-                        mode="cut"
-                      >
-                        <template v-slot:item="{item}">
-                          <drag
-                            class="item"
-                            @cut="remove(done, item)"
-                            :data="selection(item)"
-                            :key="item.name"
-                          >{{item.name}}</drag>
-                        </template>
-                        <template v-slot:feedback="{data}">
-                          <template v-if="selected.length > 0">
-                            <div
-                              v-for="f in data"
-                              class="item feedback" :key="f.name">
-                              {{f.name}}
-                            </div>
-                          </template>
-                          <template v-else>
-                            <div class="item feedback" :key="data.name">{{data.name}}</div>
-                          </template>
-                        </template>
-                      </drop-list>
-                    </div>
+                    <v-row>
+                      <h2 class="orange_personalize--text font-weight-thin">Fichiers déposés</h2>
+                    </v-row>
                   </v-col>
                 </v-row>
               </v-container>
@@ -369,6 +389,9 @@ export default {
   .orange_personalize--text{
     color: #E57750;
   }
+  /*#task_content{*/
+  /*  display: flex;*/
+  /*}*/
   .title_task{
     color: white;
   }
