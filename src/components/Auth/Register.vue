@@ -165,7 +165,8 @@ export default {
         axios
             .post('http://localhost:8000/sign-up', data)
             .then((response) => {
-            console.log(response.data);
+              localStorage.token = response.data.token;
+              this.$router.push({ path: '/my_groups' });
           });
       }
     },
