@@ -129,14 +129,20 @@
         </div>
       </v-col>
     </v-row>
+
+    <SnackbarFailed color="red" message="Ce nom d'utilisateur est déjà utilisé."/>
   </div>
 </template>
 
 <script>
+import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
 import axios from 'axios';
 
 export default {
   name: 'Register',
+  components: {
+    SnackbarFailed,
+  },
   data() {
     return {
       valid: true,
@@ -167,7 +173,10 @@ export default {
             .then((response) => {
               localStorage.token = response.data.token;
               this.$router.push({ path: '/my_groups' });
-          });
+            })
+            .catch(() => {
+              this.$root.$emit('SnackbarFailed');
+            });
       }
     },
   },
