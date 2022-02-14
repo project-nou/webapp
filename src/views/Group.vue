@@ -249,8 +249,13 @@
                       <h2 class="orange_personalize--text font-weight-thin">Fichiers déposés</h2>
                     </v-row>
                     <v-row>
-                      <div class="col-md-2" v-for="files in filesGroup" :key="files.name">
-                        <p>{{ files.name }}</p>
+                      <div class="col-md-2" v-for="file in files" :key="file.note_id">
+                        <v-card>
+                          <v-img
+                            :src=file.url
+                          >
+                          </v-img>
+                        </v-card>
                       </div>
                     </v-row>
                   </v-col>
@@ -293,10 +298,9 @@ export default {
   data() {
     return {
       group:[],
-      toDo: [
-      ],
-      done: [
-      ],
+      toDo: [],
+      done: [],
+      files: [],
       filesGroup: [],
       selected: [],
       selectedList: 0,
@@ -322,7 +326,10 @@ export default {
   },
   beforeMount() {
     this.getOneGroup(this.idGroup);
-    this.getAllNotes();
+  },
+  mounted() {
+    this.getAllNotesText();
+    this.getAllNotesFile();
     this.getAuthorizedUserToGroup();
     this.getAllFiles();
   },
@@ -330,7 +337,7 @@ export default {
     selection(item) {
       return item;
     },
-    getAllNotes() {
+    getAllNotesText() {
       axios.get('http://localhost:8000/notes/' + this.$route.params.id + "/text")
           .then((response) => {
                 response.data.notes.forEach(el => {
@@ -339,6 +346,19 @@ export default {
                   } else {
                     this.done.push({content: el.content, id: el.note_id, author: el.author, is_done: el.is_done})
                   }
+                })
+          });
+    },
+
+    getAllNotesFile() {
+      axios.get('http://localhost:8000/notes/' + this.$route.params.id + "/file")
+          .then((response) => {
+                response.data.notes.forEach(el => {
+                  this.files.push({
+                    filename: el.content,
+                    id: el.note_id,
+                    author: el.author,
+                    url: "https://res.cloudinary.com/doekqrsf4/image/upload/v1644856207/" + this.group[0].name +"/"+ this.group[0].id + "/" + el.content})
                 })
           });
     },
