@@ -16,7 +16,7 @@
       </v-list>
     </div>
     <!-- Menu -->
-    <v-list class="action_menu mt-15" height="320">
+    <v-list class="action_menu mt-15" height="420">
       <v-list-item
         v-for="(item, index) in items"
         :key="index"
@@ -84,7 +84,8 @@ export default {
 
 <style scoped>
   .menu{
-    height: calc(100vh - 100px);
+    /*height: calc(100vh - 100px);*/
+    height: 100vh;
     background-color:rgba(255, 255, 255, 0.1) !important;
   }
   /*#presentation{*/

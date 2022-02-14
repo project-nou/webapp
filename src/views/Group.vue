@@ -1,6 +1,5 @@
 <template>
   <div class="group_view">
-    <HeaderBanner/>
     <!--  Content page -->
     <div class="group_view_content">
       <v-row>
@@ -152,7 +151,13 @@
                                 :data="selection(item)"
                                 :key="item.name"
                               >
-                                {{item.name}}
+                                <div class="field">
+                                  <span class="field-value" v-show="!showField(item.id)"
+                                @click="focusField(item.id)">{{ item.name }}</span>
+                                  <input :model="item.name" v-show="showField(item.id)"
+                                         type="text" class="field-value form-control"
+                                         @focus="focusField(item.id)">
+                                </div>
                               </drag>
                             </template>
                             <template v-slot:feedback="{data}">
@@ -271,7 +276,6 @@
 
 <script>
 import { Drag, DropList } from 'vue-easy-dnd';
-import HeaderBanner from '@/components/Banner/HeaderBanner.vue';
 import Menu from '@/components/Menu/Menu.vue';
 import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
 // import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
@@ -281,7 +285,6 @@ export default {
   components: {
     Drag,
     DropList,
-    HeaderBanner,
     Menu,
     SnackbarSuccess,
     // SnackbarFailed,
@@ -303,6 +306,10 @@ export default {
       authorizedUser: [],
       isAdminOfGroup: true,
       username: 'Luca Sardellitti',
+      user: {
+        name: '',
+      },
+      editField: '',
       valid: true,
       dialog: false,
       email: undefined,
@@ -413,6 +420,14 @@ export default {
         //   break;
         default:
       }
+    },
+    // Edit task
+    focusField(id) {
+      this.editField = id;
+    },
+    // Show / hide
+    showField(id) {
+      return (this.toDo[id] === id || this.editField === id);
     },
   },
 };

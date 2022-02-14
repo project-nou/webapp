@@ -1,6 +1,5 @@
 <template>
   <div class="my_groups_view">
-    <HeaderBanner/>
       <!--  Content page -->
       <div class="my_groups_view_content">
         <v-row>
@@ -157,7 +156,6 @@
 </template>
 
 <script>
-import HeaderBanner from '@/components/Banner/HeaderBanner.vue';
 import Menu from '@/components/Menu/Menu.vue';
 import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
 import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
@@ -165,7 +163,6 @@ import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
 export default {
   name: 'MyGroups',
   components: {
-    HeaderBanner,
     Menu,
     SnackbarSuccess,
     SnackbarFailed,
