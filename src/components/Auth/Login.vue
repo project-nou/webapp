@@ -36,15 +36,14 @@
           <v-list id="email_field">
             <v-list-item>
               <v-img
-                lazy-src="@/assets/icons/email.png"
+                lazy-src="@/assets/icons/id-card.png"
                 width="40"
-                src="@/assets/icons/email.png"
+                src="@/assets/icons/id-card.png"
               ></v-img>
               <v-list-item-title class="ml-10">
                 <v-text-field
-                  v-model="email"
-                  :rules="emailRules"
-                  label="E-mail"
+                  v-model="username"
+                  label="Username"
                   required
                   color="orange"
                   clearable
@@ -63,6 +62,7 @@
               ></v-img>
               <v-list-item-title  class="ml-10">
                 <v-text-field
+                  v-model="password"
                   type="password"
                   label="Mot de passe"
                   required
@@ -87,12 +87,13 @@
       </v-col>
     </v-row>
 
-    <SnackbarFailed color="red" message="Email ou mot de passe incorrecte"/>
+    <SnackbarFailed color="red" message="Username ou mot de passe incorrecte"/>
   </div>
 </template>
 
 <script>
 import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
+import axios from 'axios';
 
 export default {
   name: 'Login',
@@ -103,38 +104,50 @@ export default {
     return {
       snackbar: true,
       valid: true,
-      password: undefined,
-      email: '',
-      emailRules: [
-        (v) => !!v || 'L\' e-mail est requis',
-        (v) => /.+@.+\..+/.test(v) || 'L\' e-mail doit être valide',
-      ],
+      password: '',
+      username: '',
     };
   },
   methods: {
     // Valid the register form
     validate() {
       if (this.$refs.form.validate()) {
-        if (this.isExist(/* this.email */)) {
-          this.$router.push({ path: '/my_groups' });
-        } else {
-          this.$root.$emit('SnackbarFailed');
-        }
+        const data = {
+          username: this.username,
+          password: this.password,
+        };
+        axios.post('http://localhost:8000/sign-in', data)
+          .then((response) => {
+            console.log(response.data);
+            localStorage.token = response.data.token;
+            // this.$router.push({ path: '/my_groups' });
+          })
+          .catch(() => {
+            this.$root.$emit('SnackbarFailed');
+          });
+        // if (this.isExist(this.username, this.password)) {
+        //   console.log('ici');
+        //   this.$router.push({ path: '/my_groups' });
+        // } else {
+        //   this.$root.$emit('SnackbarFailed');
+        // }
       }
     },
     // Test if user exist
-    isExist(/* email */) {
-      return true;
-      // this.axios.get(`/email=${email}`)
-      //   .then((response) => {
-      //     console.log(response.data);
-      //     return true;
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //     return false;
-      //   });
-    },
+    // isExist(username, password) {
+    //   const data = {
+    //     username: username,
+    //     password: password,
+    //   };
+    //   axios.post('http://localhost:8000/sign-in', data)
+    //     .then((response) => {
+    //       localStorage.token = response.data.token;
+    //       return true;
+    //     })
+    //     .catch(() => {
+    //       return false;
+    //     });
+    // },
   },
 };
 </script>
