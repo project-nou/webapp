@@ -96,7 +96,7 @@
               <v-menu open-on-hover top offset-y>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn x-small fab outlined
-                         class="pa-4 settings_btn group_action"
+                         class="pa-4 mb-2 settings_btn group_action"
                          v-bind="attrs" v-on="on">
                     <v-img
                       lazy-src="@/assets/icons/settings.png"
@@ -243,6 +243,11 @@
                     <v-row>
                       <h2 class="orange_personalize--text font-weight-thin">Fichiers déposés</h2>
                     </v-row>
+                    <v-row>
+                      <div class="col-md-2" v-for="files in filesGroup" :key="files.name">
+                        <p>{{ files.name }}</p>
+                      </div>
+                    </v-row>
                   </v-col>
                 </v-row>
               </v-container>
@@ -291,6 +296,7 @@ export default {
       done: [
         { name: 'Guimares jtm', id: 123 },
       ],
+      filesGroup: [],
       selected: [],
       selectedList: 0,
       idGroup: this.$route.params.id,
@@ -312,6 +318,7 @@ export default {
   created() {
     this.getOneGroup(this.idGroup);
     this.getAuthorizedUserToGroup();
+    this.getAllFiles();
   },
   methods: {
     selection(item) {
@@ -383,6 +390,15 @@ export default {
       this.snackbarMessageException('success', 'Vous avez quitté le groupe avec succès');
       this.$router.push({ path: '/my_groups' });
       //   });
+    },
+    // Get all files
+    getAllFiles() {
+      // this.axios.get(`/idGroup=${this.idGroup}`)
+      //   .then((response) => {
+      // console.log(response.data);
+      this.filesGroup.push({ name: 'test.txt' });
+      this.filesGroup.push({ name: 'test.pdf' });
+      // });
     },
     // Exception snackbar
     snackbarMessageException(type, message) {
