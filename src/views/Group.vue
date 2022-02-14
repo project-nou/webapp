@@ -87,13 +87,43 @@
           </v-dialog>
 
           <v-container class="container--fluid">
-            <!-- Page Title -->
-            <div class="mt-10">
-              <p class="text-h5 orange_personalize--text">
+            <!-- Groupe Title -->
+            <div class="mt-10 group_information">
+              <p class="text-h5 orange_personalize--text mr-10">
                 NOM DU GROUPE : {{ this.$route.params.id }}
               </p>
-              <v-divider class="white"></v-divider>
+              <!-- Dropdown Action -->
+              <v-menu open-on-hover top offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn x-small fab outlined
+                         class="pa-4 settings_btn group_action"
+                         v-bind="attrs" v-on="on">
+                    <v-img
+                      lazy-src="@/assets/icons/settings.png"
+                      width="20"
+                      src="@/assets/icons/settings.png"
+                    ></v-img>
+                  </v-btn>
+                </template>
+
+                <v-list class="dropdown_action" width="250">
+                  <v-list-item
+                    link class="link_action_group"
+                    @click="leaveGroup(username, 1)">
+                    <v-img width="18px"
+                           src="@/assets/icons/leave.png">
+                    </v-img>
+
+                    <v-list-item-title
+                      class="dropdown_action_text">
+                      Quitter le groupe
+                    </v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
             </div>
+            <v-divider class="white"></v-divider>
+
             <!-- CONTENT -->
             <v-row class="mt-10">
               <v-container fluid class="wrapper">
@@ -266,6 +296,7 @@ export default {
       idGroup: this.$route.params.id,
       authorizedUser: [],
       isAdminOfGroup: true,
+      username: 'Luca Sardellitti',
       valid: true,
       dialog: false,
       email: undefined,
@@ -343,6 +374,16 @@ export default {
       this.snackbarMessageException('success', `L'invation à ${this.email} a bien été envoyé`);
       //   });
     },
+    // Leave group
+    leaveGroup(user, idGroup) {
+      console.log(user, idGroup);
+      // this.axios.delete(`/user=${user}&idGroup=${idGroup}`)
+      //   .then((response) => {
+      //     console.log(response.data);
+      this.snackbarMessageException('success', 'Vous avez quitté le groupe avec succès');
+      this.$router.push({ path: '/my_groups' });
+      //   });
+    },
     // Exception snackbar
     snackbarMessageException(type, message) {
       this.snackbarMessage = message;
@@ -389,9 +430,15 @@ export default {
   .orange_personalize--text{
     color: #E57750;
   }
-  /*#task_content{*/
-  /*  display: flex;*/
-  /*}*/
+  .group_information{
+    display: block ruby;
+  }
+  .settings_btn{
+    border: none;
+  }
+  .settings_btn:hover{
+    background-color: rgba( 229, 119, 80 , 0.3);
+  }
   .title_task{
     color: white;
   }
@@ -417,6 +464,18 @@ export default {
   }
   .text_add_task{
     font-size: 12px;
+  }
+  .dropdown_action{
+    background-color: #2F3437 !important;
+    border: 1px solid #fff !important;
+    border-radius: 12px !important;
+  }
+  .dropdown_action_text{
+    color: white;
+    margin-left: 10px;
+  }
+  .link_action_group:hover{
+    background-color: rgba( 229, 119, 80, 0.4);
   }
 </style>
 
