@@ -89,7 +89,7 @@
             <!-- Groupe Title -->
             <div class="mt-10 group_information">
               <p class="text-h5 orange_personalize--text mr-10">
-                NOM DU GROUPE : {{ this.$route.params.id }}
+                NOM DU GROUPE : {{ this.group[0].name }}
               </p>
               <!-- Dropdown Action -->
               <v-menu open-on-hover top offset-y>
@@ -149,12 +149,12 @@
                                 class="item"
                                 @cut="remove(toDo, item)"
                                 :data="selection(item)"
-                                :key="item.name"
+                                :key="item.content"
                               >
                                 <div class="field">
                                   <span class="field-value" v-show="!showField(item.id)"
-                                @click="focusField(item.id)">{{ item.name }}</span>
-                                  <input :model="item.name" v-show="showField(item.id)"
+                                @click="focusField(item.id)">{{ item.content }}</span>
+                                  <input :model="item.content" v-show="showField(item.id)"
                                          type="text" class="field-value form-control"
                                          @focus="focusField(item.id)">
                                 </div>
@@ -164,11 +164,11 @@
                               <template v-if="selected.length > 0">
                                 <div
                                   v-for="f in data"
-                                  class="item feedback" :key="f.name">{{f.name}}
+                                  class="item feedback" :key="f.content">{{f.content}}
                                 </div>
                               </template>
                               <template v-else>
-                                <div class="item feedback" :key="data.name">{{data.name}}</div>
+                                <div class="item feedback" :key="data.content">{{data.content}}</div>
                               </template>
                             </template>
                           </drop-list>
@@ -217,19 +217,19 @@
                               class="item"
                               @cut="remove(done, item)"
                               :data="selection(item)"
-                              :key="item.name"
-                            >{{item.name}}</drag>
+                              :key="item.content"
+                            >{{item.content}}</drag>
                           </template>
                           <template v-slot:feedback="{data}">
                             <template v-if="selected.length > 0">
                               <div
                                 v-for="f in data"
-                                class="item feedback" :key="f.name">
-                                {{f.name}}
+                                class="item feedback" :key="f.content">
+                                {{f.content}}
                               </div>
                             </template>
                             <template v-else>
-                              <div class="item feedback" :key="data.name">{{data.name}}</div>
+                              <div class="item feedback" :key="data.content">{{data.content}}</div>
                             </template>
                           </template>
                         </drop-list>
@@ -278,6 +278,7 @@
 import { Drag, DropList } from 'vue-easy-dnd';
 import Menu from '@/components/Menu/Menu.vue';
 import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
+import axios from 'axios';
 // import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
 
 export default {
@@ -291,13 +292,10 @@ export default {
   },
   data() {
     return {
+      group:[],
       toDo: [
-        { name: 'Fait la vaisselle wola j\'téclate', id: 1 },
-        { name: 'Aziz lumière', id: 2 },
-        { name: 'MagicarpéDiem', id: 3 },
       ],
       done: [
-        { name: 'Guimares jtm', id: 123 },
       ],
       filesGroup: [],
       selected: [],
@@ -322,14 +320,27 @@ export default {
       color: undefined,
     };
   },
-  created() {
+  beforeMount() {
     this.getOneGroup(this.idGroup);
+    this.getAllNotes();
     this.getAuthorizedUserToGroup();
     this.getAllFiles();
   },
   methods: {
     selection(item) {
       return item;
+    },
+    getAllNotes() {
+      axios.get('http://localhost:8000/notes/' + this.$route.params.id + "/text")
+          .then((response) => {
+                response.data.notes.forEach(el => {
+                  if (!el.is_done) {
+                    this.toDo.push({content: el.content, id: el.note_id, author: el.author, is_done: el.is_done})
+                  } else {
+                    this.done.push({content: el.content, id: el.note_id, author: el.author, is_done: el.is_done})
+                  }
+                })
+          });
     },
     /**
      * Inserts one selected done into the target
@@ -369,11 +380,11 @@ export default {
       this.$refs.form.reset();
       this.dialog = false;
     },
-    getOneGroup(/* id */) {
-      // this.axios.get(`/id=${id}`)
-      //   .then((response) => {
-      //     console.log(response);
-      //   });
+    getOneGroup() {
+      axios.get('http://localhost:8000/group/' + this.$route.params.id)
+        .then((response) => {
+          this.group.push({ name: response.data.name, id: response.data.group_id, admin: response.data.admin });;
+        });
     },
     getAuthorizedUserToGroup() {
       this.authorizedUser.push({ username: 'Luca Sardellitti', id: 1 });

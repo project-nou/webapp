@@ -65,7 +65,7 @@ export default {
   name: 'Menu',
   data() {
     return {
-      username: 'Luca SARDELLITTI',
+      username: 'aaaaa',
       userEmail: 'luca.sardellit.1995@gmail.com',
       items: [
         { title: 'Mes groupes', icon: 'folder.png', link: '/my_groups' },
