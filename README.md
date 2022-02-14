@@ -35,5 +35,14 @@ yarn build
 yarn lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Annexe :page_facing_up:
+
+### Mockup
+```
+https://www.figma.com/file/0kpqMrK5q8jxomh7rE4ifP/NOU?node-id=0%3A1
+```
+
+### Drag & drop
+```
+https://codesandbox.io/s/w2426?file=/src/App.vue:5378-6028
+```
