@@ -427,7 +427,7 @@
                               <v-btn
                                   color="transparent"
                                   icon
-                                  @click="downloadFile(file.url)"
+                                  @click="downloadFile(file.url, file.filename)"
                               >
                                 <v-icon
                                     color="success">
@@ -438,35 +438,29 @@
                           </v-card>
                         </div>
                         <div v-else class="div-pdf">
-                          <v-card class="mt-6 mr-4">
+                          <v-card class="mt-6 mr-4" color="transparent">
                             <v-img
                                 src="@/assets/icons/pdf-file.png"
                                 class="white--text align-end"
                                 gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                                height="150px"
-                                width="200px"
+                                height="125px"
+                                width="97px"
                             >
-                            </v-img>
-                            <v-row>
-                              <v-col class="col-3">
                               <v-btn
                                   class="mt-2"
                                   color="transparent"
                                   icon
-                                  @click="downloadFile(file.url)"
+                                  @click="downloadFile(file.url, file.filename)"
                               >
                                 <v-icon
                                     color="success">
                                   mdi-download
                                 </v-icon>
                               </v-btn>
-                              </v-col>
-                              <v-col class="col-9">
-                              <v-card-text>
-                                {{ file.filename }}
-                              </v-card-text>
-                              </v-col>
-                            </v-row>
+                            </v-img>
+                            <v-card-text>
+                              <small class="white--text">{{file.filename.split('.')[0]}}</small>
+                            </v-card-text>
                           </v-card>
                         </div>
                       </div>
@@ -753,7 +747,7 @@ export default {
             this.snackbarMessageException('error', 'L\'invation à ' + email + ' n\'a pas été envoyée');
           });
     },
-    downloadFile(url) {
+    downloadFile(url, filename) {
       axios({
         url: url,
         method: 'GET',
@@ -763,7 +757,7 @@ export default {
             let fileURL = window.URL.createObjectURL(new Blob([response.data]));
             let fURL = document.createElement('a');
             fURL.href = fileURL;
-            fURL.setAttribute('download', 'file.pdf');
+            fURL.setAttribute('download', filename);
             document.body.appendChild(fURL);
             fURL.click();
           });
