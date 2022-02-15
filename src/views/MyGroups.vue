@@ -189,7 +189,7 @@ export default {
       ],
     };
   },
-  created() {
+  beforeMount() {
     this.getUser()
     this.getAllGroups();
   },
@@ -224,19 +224,18 @@ export default {
         name: this.groupName,
         username: this.username,
       };
-      console.log(data);
       axios.post('http://127.0.0.1:8000/group', data)
-        .then(() => {
-          this.snackbarMessageException('success', `Le groupe ${this.groupName} a bien été créé.`);
-          this.getAllGroups();
+        .then((response) => {
+          this.snackbarMessageException('success', `Le groupe ${response.data.groupname} a bien été créé.`);
+          this.groups.push({ name: response.data.groupname, id: response.data.group_id })
         })
-        .catch(() => {
-          this.snackbarMessageException('error', `Le groupe ${this.groupName} n'a pas pu être créé.`);
+        .catch((error) => {
+          console.log(error)
+          this.snackbarMessageException('error', `Le groupe n'a pas pu être créé.`);
         });
       this.reset();
     },
-    actionGroup(action, id, groupName) {
-      console.log(action, id, groupName);
+    actionGroup(action, groupId, groupName) {
       switch (action) {
         case 'addFile':
           console.log('add file');
@@ -245,20 +244,32 @@ export default {
           console.log('edit');
           break;
         case 'delete':
-          this.deleteGroup(id, groupName);
-          console.log('delete');
+          this.deleteGroup(groupId, groupName);
           break;
         default:
           console.log('default');
       }
     },
     // Delete an group
-    deleteGroup(id, groupName) {
-      // this.axios.delete(`/id=${id}`)
-      //   .then(() => {
-      this.snackbarMessageException('success', `Le groupe ${groupName} a bien été supprimé.`);
-      // this.getAllGroups();
-      // });
+    deleteGroup(groupId, groupName) {
+      // Counter equal array index value
+      let count = 0;
+      this.groups.map(el => {
+        if (el.id === groupId) {
+          axios.delete(`http://127.0.0.1:8000/group/${groupId}/${this.username}`)
+            .then(() => {
+              this.snackbarMessageException('success', `Le groupe ${groupName} a bien été supprimé.`);
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+          // Remove value in array
+          this.groups.splice(count, 1);
+        }
+        count ++;
+      })
+
+
     },
     // Exception snackbar
     snackbarMessageException(type, message) {
