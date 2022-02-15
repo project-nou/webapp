@@ -143,11 +143,60 @@
             </v-card>
           </v-dialog>
 
+<!--          Form update content-->
+          <v-dialog v-model="dialog_update" max-width="390">
+            <v-card class="form_add_user_to_group">
+              <v-card-title class="text-h5 white--text">
+                Modifier le contenu de la tâche
+              </v-card-title>
+
+              <v-container class="container--fluid">
+                <v-form
+                    ref="form_update"
+                    v-model="valid_update"
+                    lazy-validation
+                >
+                  <v-list id="task_content">
+                    <v-list-item>
+                      <v-list-item-title class="ml-10">
+                        <v-textarea
+                            v-model="content_update"
+                            label="Contenu de la tâche"
+                            required
+                            color="orange"
+                            clearable
+                            clear-icon="mdi-close-circle"
+                        ></v-textarea>
+                      </v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+
+                  <v-card-actions class="mt-10">
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="green darken-1"
+                        text
+                        :disabled="!valid_update"
+                        @click="update_task(idToUpdate, content_update, is_done_note)"
+                    >
+                      Modifier
+                    </v-btn>
+
+                    <v-btn color="red darken-1" text @click="reset_update">
+                      Fermer
+                    </v-btn>
+                  </v-card-actions>
+                </v-form>
+              </v-container>
+
+            </v-card>
+          </v-dialog>
+
           <v-container class="container--fluid">
             <!-- Groupe Title -->
             <div class="mt-10 group_information">
               <p class="text-h5 orange_personalize--text mr-10">
-                NOM DU GROUPE : {{ this.group[0].name }}
+                {{ this.group[0].name }}
               </p>
               <!-- Dropdown Action -->
               <v-menu open-on-hover top offset-y>
@@ -223,18 +272,19 @@
                                     mdi-close
                                   </v-icon>
                                 </v-btn>
+                                <!-- Add Task -->
                                 <v-hover v-slot="{ hover }">
                                   <v-btn
-                                      absolute
+                                      class="ml-14"
+                                      :class="{ 'on-hover': hover }"
                                       top
+                                      absolute
                                       x-small
                                       color="transparent"
-                                      class="ml-10"
-                                      :class="{ 'on-hover': hover}"
-                                      :elevation="hover ? 6 : 2"
                                       elevation="0"
+                                      @click="setFieldToUpdate(item.id, item.content, item.is_done)"
                                       @click.stop="dialog_update = true"
-                                      @click="update_task(item.id, item.is_done)">
+                                  >
                                     <v-icon
                                         color="primary">
                                       mdi-pencil
@@ -314,6 +364,24 @@
                               color="error">
                                 mdi-close
                               </v-icon>
+                              <v-hover v-slot="{ hover }">
+                                <v-btn
+                                    :class="{ 'on-hover': hover }"
+                                    right
+                                    class="mr-1"
+                                    absolute
+                                    x-small
+                                    color="transparent"
+                                    elevation="0"
+                                    @click="setFieldToUpdate(item.id, item.content, item.is_done)"
+                                    @click.stop="dialog_update = true"
+                                >
+                                  <v-icon
+                                      color="primary">
+                                    mdi-pencil
+                                  </v-icon>
+                                </v-btn>
+                              </v-hover>
                             </v-btn>
                             </drag>
                           </template>
@@ -406,24 +474,27 @@ export default {
       selected: [],
       selectedList: 0,
       content_task: "",
+      content_update: "",
       idGroup: this.$route.params.id,
       authorizedUser: [],
       isAdminOfGroup: true,
-      username: 'Luca Sardellitti',
       user: {
         name: '',
       },
-      editField: '',
       valid: true,
       valid_task: true,
+      valid_update: true,
       dialog: false,
       dialog_task: false,
+      dialog_update: false,
+      idToUpdate: null,
+      contentToUpdate: null,
+      is_done_note: null,
       email: undefined,
       emailRules: [
         (v) => !!v || 'L\' e-mail est requis',
         (v) => /.+@.+\..+/.test(v) || 'L\' e-mail doit être valide',
       ],
-      // userEmail: 'luca.sardellit.1995@gmail.com',
       snackbarMessage: undefined,
       color: undefined,
     };
@@ -514,16 +585,38 @@ export default {
             this.snackbarMessageException('success', 'Tâche supprimée');
           })
     },
-    update_task(id, content) {
+    update_task(id, content, is_done) {
       let data = {
         'note_id' : id,
         'content_note' : content
       }
-      // axios
-      //     .patch("http://127.0.0.1:8000/note", data)
-      //     .then(() => {
-      //       this.snackbarMessageException('success', 'Tâche supprimée');
-      //     })
+      if (!is_done) {
+        let count = 0;
+        this.toDo.map(el => {
+          if (el.id === id) this.toDo[count].content = content
+          count++;
+        })
+      } else {
+        let count = 0;
+        this.done.map(el => {
+          if (el.id === id) this.done[count].content = content
+          count++;
+        })
+      }
+      axios
+          .patch("http://127.0.0.1:8000/note", data)
+          .then(() => {
+            this.reset_update()
+            this.idToUpdate = null
+            this.content_update = null
+            this.is_done_note = null
+            this.snackbarMessageException('success', 'Tâche modifié');
+          })
+    },
+    setFieldToUpdate(id, content, is_done) {
+      this.idToUpdate = id
+      this.content_update = content
+      this.is_done_note = is_done
     },
     validate() {
       if (this.$refs.form.validate()) {
@@ -560,6 +653,10 @@ export default {
     reset_task() {
       this.$refs.form_task.reset();
       this.dialog_task = false;
+    },
+    reset_update() {
+      this.$refs.form_update.reset();
+      this.dialog_update = false;
     },
     getOneGroup() {
       axios.get('http://localhost:8000/group/' + this.$route.params.id)
