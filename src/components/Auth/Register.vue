@@ -111,6 +111,7 @@
               class="valid_form_register pl-10 pr-10 mt-7 mb-7"
               :disabled="!valid"
               @click="validate"
+              :loading="loading"
             >
               Je crée mon compte
             </v-btn>
@@ -129,19 +130,27 @@
         </div>
       </v-col>
     </v-row>
+
+    <SnackbarFailed color="red" message="Ce nom d'utilisateur est déjà utilisé."/>
   </div>
 </template>
 
 <script>
+import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
 import axios from 'axios';
+import jwt_decode from "jwt-decode";
 
 export default {
   name: 'Register',
+  components: {
+    SnackbarFailed,
+  },
   data() {
     return {
       valid: true,
       password: undefined,
       username: undefined,
+      loading: false,
       usernameRules: [
         (v) => !!v || 'L\' utilisateur est requis',
         (v) => (v && v.length <= 20) || 'L\' utilisateur ne doit pas dépasser 20 characters',
@@ -156,6 +165,7 @@ export default {
   methods: {
     // Valid the register form
     validate() {
+      this.loading = true;
       if (this.$refs.form.validate()) {
         const data = {
           email: this.email,
@@ -165,8 +175,18 @@ export default {
         axios
             .post('http://localhost:8000/sign-up', data)
             .then((response) => {
-            console.log(response.data);
-          });
+              // Decode token
+              const decodedToken = jwt_decode(response.data.token);
+              // Stock in local storage username and token
+              localStorage.token = response.data.token;
+              localStorage.username = decodedToken[0];
+              // Change route
+              this.$router.push({ path: '/my_groups' });
+            })
+            .catch(() => {
+              this.$root.$emit('SnackbarFailed');
+              this.loading = false;
+            });
       }
     },
   },

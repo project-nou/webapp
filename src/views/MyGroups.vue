@@ -159,6 +159,7 @@
 import Menu from '@/components/Menu/Menu.vue';
 import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
 import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
+import axios from 'axios';
 
 export default {
   name: 'MyGroups',
@@ -188,7 +189,7 @@ export default {
       ],
     };
   },
-  created() {
+  beforeMount() {
     this.getAllGroups();
   },
   methods: {
@@ -204,13 +205,13 @@ export default {
     },
     // Get all group by user
     getAllGroups() {
-      // this.axios.get(`/email=${this.userEmail}`)
-      //   .then((response) => {
-      // console.log(response.data);
-      this.groups.push({ name: 'Ta reum', id: 1 });
-      this.groups.push({ name: 'Double Fuck', id: 2 });
-      this.groups.push({ name: 'Enlécu', id: 3 });
-      console.log(this.groups);
+      axios
+          .get("http://localhost:8000/groups/luc")
+          .then((response) => {
+            response.data.groups.forEach(el => {
+              this.groups.push({ name: el.group_name, id: el.group_id });
+            })
+          })
       // });
     },
     // Create group
