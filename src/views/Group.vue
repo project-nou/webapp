@@ -85,11 +85,69 @@
             </v-card>
           </v-dialog>
 
+          <!-- Form Add content task -->
+          <v-dialog v-model="dialog_task" max-width="390">
+            <v-card class="form_add_user_to_group">
+              <v-card-title class="text-h5 white--text">
+                Ajouter une tâche
+              </v-card-title>
+
+              <v-card-text class="white--text font-weight-thin">
+                Ajouter une tâche à faire pour les membres du groupe
+              </v-card-text>
+
+              <v-container class="container--fluid">
+                <v-form
+                    ref="form_task"
+                    v-model="valid_task"
+                    lazy-validation
+                >
+                  <v-list id="task_content">
+                    <v-list-item>
+                      <v-img
+                          lazy-src="@/assets/icons/plus.png"
+                          width="40"
+                          src="@/assets/icons/plus.png"
+                      ></v-img>
+                      <v-list-item-title class="ml-10">
+                        <v-textarea
+                            v-model="content_task"
+                            label="Contenu de la tâche"
+                            required
+                            color="orange"
+                            clearable
+                            clear-icon="mdi-close-circle"
+                        ></v-textarea>
+                      </v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+
+                  <v-card-actions class="mt-10">
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="green darken-1"
+                        text
+                        :disabled="!valid_task"
+                        @click="validate_task"
+                    >
+                      Ajouter
+                    </v-btn>
+
+                    <v-btn color="red darken-1" text @click="reset_task">
+                      Fermer
+                    </v-btn>
+                  </v-card-actions>
+                </v-form>
+              </v-container>
+
+            </v-card>
+          </v-dialog>
+
           <v-container class="container--fluid">
             <!-- Groupe Title -->
             <div class="mt-10 group_information">
               <p class="text-h5 orange_personalize--text mr-10">
-                NOM DU GROUPE : {{ this.$route.params.id }}
+                NOM DU GROUPE : {{ this.group[0].name }}
               </p>
               <!-- Dropdown Action -->
               <v-menu open-on-hover top offset-y>
@@ -146,29 +204,43 @@
                           >
                             <template v-slot:item="{item}">
                               <drag
-                                class="item"
+                                class="item pt-10"
                                 @cut="remove(toDo, item)"
                                 :data="selection(item)"
-                                :key="item.name"
+                                :key="item.content"
                               >
-                                <div class="field">
-                                  <span class="field-value" v-show="!showField(item.id)"
-                                @click="focusField(item.id)">{{ item.name }}</span>
-                                  <input :model="item.name" v-show="showField(item.id)"
-                                         type="text" class="field-value form-control"
-                                         @focus="focusField(item.id)">
-                                </div>
+                                <p>{{item.content}}</p>
+<!--                                <div class="field">-->
+<!--                                  <span class="field-value" v-show="!showField(item.id)"-->
+<!--                                @click="focusField(item.id)">{{ item.content }}</span>-->
+<!--                                  <input :model="item.content" v-show="showField(item.id)"-->
+<!--                                         type="text" class="field-value form-control"-->
+<!--                                         @focus="focusField(item.id)">-->
+<!--                                </div>-->
+                                <v-btn
+                                    absolute
+                                    top
+                                    right
+                                    x-small
+                                    color="transparent"
+                                    elevation="0"
+                                @click="remove_task(item.id)">
+                                  <v-icon
+                                      color="error">
+                                    mdi-close
+                                  </v-icon>
+                                </v-btn>
                               </drag>
                             </template>
                             <template v-slot:feedback="{data}">
                               <template v-if="selected.length > 0">
                                 <div
                                   v-for="f in data"
-                                  class="item feedback" :key="f.name">{{f.name}}
+                                  class="item feedback" :key="f.content">{{f.content}}
                                 </div>
                               </template>
                               <template v-else>
-                                <div class="item feedback" :key="data.name">{{data.name}}</div>
+                                <div class="item feedback" :key="data.content">{{data.content}}</div>
                               </template>
                             </template>
                           </drop-list>
@@ -181,7 +253,7 @@
                               class="mx-auto add_task"
                               :elevation="hover ? 6 : 2"
                               :class="{ 'on-hover': hover }"
-                              @click.stop="dialog = true"
+                              @click.stop="dialog_task = true"
                             >
                               <v-card-text class="pa-0">
                                 <v-list class="add_task_text_content">
@@ -214,22 +286,36 @@
                         >
                           <template v-slot:item="{item}">
                             <drag
-                              class="item"
+                              class="item pt-10"
                               @cut="remove(done, item)"
                               :data="selection(item)"
-                              :key="item.name"
-                            >{{item.name}}</drag>
+                              :key="item.content"
+                            >{{item.content}}
+                            <v-btn
+                                absolute
+                                top
+                                right
+                                x-small
+                                color="transparent"
+                                elevation="0"
+                                @click="remove_task(item.id)">
+                              <v-icon
+                              color="error">
+                                mdi-close
+                              </v-icon>
+                            </v-btn>
+                            </drag>
                           </template>
                           <template v-slot:feedback="{data}">
                             <template v-if="selected.length > 0">
                               <div
                                 v-for="f in data"
-                                class="item feedback" :key="f.name">
-                                {{f.name}}
+                                class="item feedback" :key="f.content">
+                                {{f.content}}
                               </div>
                             </template>
                             <template v-else>
-                              <div class="item feedback" :key="data.name">{{data.name}}</div>
+                              <div class="item feedback" :key="data.content">{{data.content}}</div>
                             </template>
                           </template>
                         </drop-list>
@@ -249,8 +335,17 @@
                       <h2 class="orange_personalize--text font-weight-thin">Fichiers déposés</h2>
                     </v-row>
                     <v-row>
-                      <div class="col-md-2" v-for="files in filesGroup" :key="files.name">
-                        <p>{{ files.name }}</p>
+                      <div v-for="file in files" :key="file.note_id">
+                        <v-card class="mt-6 mr-4">
+                          <v-img
+                              :src="file.url"
+                              class="white--text align-end"
+                              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                              height="150px"
+                              width="150px"
+                          >
+                          </v-img>
+                        </v-card>
                       </div>
                     </v-row>
                   </v-col>
@@ -270,7 +365,7 @@
     ></v-img>
 
     <SnackbarSuccess :message="snackbarMessage" :color="color"/>
-<!--    <SnackbarFailed :message="snackbarMessage" :color="color"/>-->
+    <SnackbarFailed :message="snackbarMessage" :color="color"/>
   </div>
 </template>
 
@@ -278,7 +373,8 @@
 import { Drag, DropList } from 'vue-easy-dnd';
 import Menu from '@/components/Menu/Menu.vue';
 import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
-// import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
+import axios from 'axios';
+import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
 
 export default {
   name: 'Group',
@@ -287,21 +383,18 @@ export default {
     DropList,
     Menu,
     SnackbarSuccess,
-    // SnackbarFailed,
+    SnackbarFailed,
   },
   data() {
     return {
-      toDo: [
-        { name: 'Fait la vaisselle wola j\'téclate', id: 1 },
-        { name: 'Aziz lumière', id: 2 },
-        { name: 'MagicarpéDiem', id: 3 },
-      ],
-      done: [
-        { name: 'Guimares jtm', id: 123 },
-      ],
+      group:[],
+      toDo: [],
+      done: [],
+      files: [],
       filesGroup: [],
       selected: [],
       selectedList: 0,
+      content_task: "",
       idGroup: this.$route.params.id,
       authorizedUser: [],
       isAdminOfGroup: true,
@@ -311,7 +404,9 @@ export default {
       },
       editField: '',
       valid: true,
+      valid_task: true,
       dialog: false,
+      dialog_task: false,
       email: undefined,
       emailRules: [
         (v) => !!v || 'L\' e-mail est requis',
@@ -322,14 +417,43 @@ export default {
       color: undefined,
     };
   },
-  created() {
+  beforeMount() {
     this.getOneGroup(this.idGroup);
+  },
+  mounted() {
+    this.getAllNotesText();
+    this.getAllNotesFile();
     this.getAuthorizedUserToGroup();
     this.getAllFiles();
   },
   methods: {
     selection(item) {
       return item;
+    },
+    getAllNotesText() {
+      axios.get('http://localhost:8000/notes/' + this.$route.params.id + "/text")
+          .then((response) => {
+                response.data.notes.forEach(el => {
+                  if (!el.is_done) {
+                    this.toDo.push({content: el.content, id: el.note_id, author: el.author, is_done: el.is_done})
+                  } else {
+                    this.done.push({content: el.content, id: el.note_id, author: el.author, is_done: el.is_done})
+                  }
+                })
+          });
+    },
+
+    getAllNotesFile() {
+      axios.get('http://localhost:8000/notes/' + this.$route.params.id + "/file")
+          .then((response) => {
+                response.data.notes.forEach(el => {
+                  this.files.push({
+                    filename: el.content,
+                    id: el.note_id,
+                    author: el.author,
+                    url: "https://res.cloudinary.com/doekqrsf4/image/upload/v1644856207/" + this.group[0].name +"/"+ this.group[0].id + "/" + el.content})
+                })
+          });
     },
     /**
      * Inserts one selected done into the target
@@ -338,42 +462,79 @@ export default {
      * @event {InsertEvent} - holds dragging data and drop index
      * @llistNameist String - name of the list in the data section
      */
-    onInsert(event, listName = 'done') {
+    onInsert(event, listName) {
       this[listName].splice(event.index, 0, event.data);
       this.selected = [];
-
-      console.log(event.data.name);
-      // switch (listName) {
-      //   case 'toDo':
-      //     this.toDo.push(event.data.name, event.data.id);
-      //     break;
-      //   case 'done':
-      //     this.done.push(event.data.name, event.data.id);
-      //     break;
-      //   default:
-      // }
+      switch (listName) {
+        case 'toDo':
+          axios.post("http://localhost:8000/note/status",{
+                "note_id": event.data.id
+              })
+          break;
+        case 'done':
+          axios.post('http://localhost:8000/note/status', {
+            'note_id': event.data.id
+          });
+          break;
+        default:
+      }
     },
     remove(array, value) {
       const index = array.indexOf(value);
       array.splice(index, 1);
-      // }
     },
-    // Valid the invit user form
+    remove_task(id){
+      let data = {
+        'note_id': id,
+        'group_id': this.group[0].id
+      }
+      axios
+          .delete("http://127.0.0.1:8000/note", data)
+          .then((response) => {
+            console.log(response);
+          })
+    },
     validate() {
       if (this.$refs.form.validate()) {
         this.inviteUser();
         this.reset();
       }
     },
+    validate_task() {
+      if (!this.content_task) {
+        this.snackbarMessageException('error', 'Contenu vide');
+      } else {
+        this.addContentTask(this.content_task)
+        this.reset_task();
+      }
+    },
+    addContentTask(content) {
+      let formdata = new FormData();
+      formdata.append('group', this.group[0].name)
+      formdata.append('author', 'luc') // TODO : get username in token
+      formdata.append('format', 'text')
+      formdata.append('content', content)
+      formdata.append('group_id', this.group[0].id)
+      axios
+        .post("http://127.0.0.1:8000/note", formdata)
+        .then((response) => {
+          this.snackbarMessageException('success', 'Tache créé');
+          this.toDo.push({content: response.data.content, id: response.data.note_id, author: response.data.author, is_done: response.data.is_done})
+        })
+    },
     reset() {
       this.$refs.form.reset();
       this.dialog = false;
     },
-    getOneGroup(/* id */) {
-      // this.axios.get(`/id=${id}`)
-      //   .then((response) => {
-      //     console.log(response);
-      //   });
+    reset_task() {
+      this.$refs.form_task.reset();
+      this.dialog_task = false;
+    },
+    getOneGroup() {
+      axios.get('http://localhost:8000/group/' + this.$route.params.id)
+        .then((response) => {
+          this.group.push({ name: response.data.name, id: response.data.group_id, admin: response.data.admin });;
+        });
     },
     getAuthorizedUserToGroup() {
       this.authorizedUser.push({ username: 'Luca Sardellitti', id: 1 });
@@ -415,9 +576,9 @@ export default {
         case 'success':
           this.$root.$emit('SnackbarSuccess');
           break;
-        // case 'error':
-        //   this.$root.$emit('SnackbarFailed');
-        //   break;
+        case 'error':
+          this.$root.$emit('SnackbarFailed');
+          break;
         default:
       }
     },
@@ -455,7 +616,7 @@ export default {
     background-color: #575c5d !important;
     border: 1px solid #ccc;
   }
-  #email_field{
+  #email_field, #task_content{
     background-color: transparent;
   }
   .orange_personalize--text{
@@ -526,6 +687,7 @@ export default {
       align-items: center;
       justify-content: center;
       text-align: center;
+      position: relative;
 
       &.selected {
         border: 2px solid white;
