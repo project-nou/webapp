@@ -541,14 +541,18 @@ export default {
       this.authorizedUser.push({ username: 'Florian Berrot', id: 2 });
       this.authorizedUser.push({ username: 'Antoine Mousset', id: 3 });
     },
+
     inviteUser() {
-      console.log(this.email);
-      // this.axios.post(`/user=${this.email}`)
-      //   .then((response) => {
-      //     console.log(response.data);
-      this.snackbarMessageException('success', `L'invation à ${this.email} a bien été envoyé`);
-      //   });
+      const email = this.email;
+      axios.get('https://localhost:8000/users/' + email + '/groupes/' + this.idGroup + '/sendInvit')
+        .then((response) => {
+          this.snackbarMessageException('success', 'L\'invation à ' + email + ' a bien été envoyée');
+        })
+          .catch((error) => {
+            this.snackbarMessageException('error', 'L\'invation à ' + email + ' n\'a pas été envoyée');
+          });
     },
+
     // Leave group
     leaveGroup(user, idGroup) {
       console.log(user, idGroup);
