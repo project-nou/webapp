@@ -204,18 +204,32 @@
                           >
                             <template v-slot:item="{item}">
                               <drag
-                                class="item"
+                                class="item pt-10"
                                 @cut="remove(toDo, item)"
                                 :data="selection(item)"
                                 :key="item.content"
                               >
-                                <div class="field">
-                                  <span class="field-value" v-show="!showField(item.id)"
-                                @click="focusField(item.id)">{{ item.content }}</span>
-                                  <input :model="item.content" v-show="showField(item.id)"
-                                         type="text" class="field-value form-control"
-                                         @focus="focusField(item.id)">
-                                </div>
+                                <p>{{item.content}}</p>
+<!--                                <div class="field">-->
+<!--                                  <span class="field-value" v-show="!showField(item.id)"-->
+<!--                                @click="focusField(item.id)">{{ item.content }}</span>-->
+<!--                                  <input :model="item.content" v-show="showField(item.id)"-->
+<!--                                         type="text" class="field-value form-control"-->
+<!--                                         @focus="focusField(item.id)">-->
+<!--                                </div>-->
+                                <v-btn
+                                    absolute
+                                    top
+                                    right
+                                    x-small
+                                    color="transparent"
+                                    elevation="0"
+                                @click="remove_task(item.id)">
+                                  <v-icon
+                                      color="error">
+                                    mdi-close
+                                  </v-icon>
+                                </v-btn>
                               </drag>
                             </template>
                             <template v-slot:feedback="{data}">
@@ -272,11 +286,25 @@
                         >
                           <template v-slot:item="{item}">
                             <drag
-                              class="item"
+                              class="item pt-10"
                               @cut="remove(done, item)"
                               :data="selection(item)"
                               :key="item.content"
-                            >{{item.content}}</drag>
+                            >{{item.content}}
+                            <v-btn
+                                absolute
+                                top
+                                right
+                                x-small
+                                color="transparent"
+                                elevation="0"
+                                @click="remove_task(item.id)">
+                              <v-icon
+                              color="error">
+                                mdi-close
+                              </v-icon>
+                            </v-btn>
+                            </drag>
                           </template>
                           <template v-slot:feedback="{data}">
                             <template v-if="selected.length > 0">
@@ -454,6 +482,17 @@ export default {
     remove(array, value) {
       const index = array.indexOf(value);
       array.splice(index, 1);
+    },
+    remove_task(id){
+      let data = {
+        'note_id': id,
+        'group_id': this.group[0].id
+      }
+      axios
+          .delete("http://127.0.0.1:8000/note", data)
+          .then((response) => {
+            console.log(response);
+          })
     },
     validate() {
       if (this.$refs.form.validate()) {
@@ -648,6 +687,7 @@ export default {
       align-items: center;
       justify-content: center;
       text-align: center;
+      position: relative;
 
       &.selected {
         border: 2px solid white;
