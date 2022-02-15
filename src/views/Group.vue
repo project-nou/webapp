@@ -672,11 +672,11 @@ export default {
 
     inviteUser() {
       const email = this.email;
-      axios.get('https://localhost:8000/users/' + email + '/groupes/' + this.idGroup + '/sendInvit')
-        .then((response) => {
+      axios.get('http://localhost:8000/users/' + email + '/groupes/' + this.idGroup + '/sendInvit')
+        .then(() => {
           this.snackbarMessageException('success', 'L\'invation à ' + email + ' a bien été envoyée');
         })
-          .catch((error) => {
+          .catch(() => {
             this.snackbarMessageException('error', 'L\'invation à ' + email + ' n\'a pas été envoyée');
           });
     },
