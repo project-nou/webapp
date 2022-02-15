@@ -270,7 +270,7 @@
     ></v-img>
 
     <SnackbarSuccess :message="snackbarMessage" :color="color"/>
-<!--    <SnackbarFailed :message="snackbarMessage" :color="color"/>-->
+    <!--    <SnackbarFailed :message="snackbarMessage" :color="color"/>-->
   </div>
 </template>
 
@@ -278,6 +278,7 @@
 import { Drag, DropList } from 'vue-easy-dnd';
 import Menu from '@/components/Menu/Menu.vue';
 import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
+import axios from "axios";
 // import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
 
 export default {
@@ -322,6 +323,7 @@ export default {
       color: undefined,
     };
   },
+
   created() {
     this.getOneGroup(this.idGroup);
     this.getAuthorizedUserToGroup();
@@ -380,14 +382,14 @@ export default {
       this.authorizedUser.push({ username: 'Florian Berrot', id: 2 });
       this.authorizedUser.push({ username: 'Antoine Mousset', id: 3 });
     },
+
     inviteUser() {
-      console.log(this.email);
-      // this.axios.post(`/user=${this.email}`)
-      //   .then((response) => {
-      //     console.log(response.data);
-      this.snackbarMessageException('success', `L'invation à ${this.email} a bien été envoyé`);
-      //   });
+      axios.get('https://localhost:8000/users/' + this.email + '/groupes/' + this.idGroup + '/sendInvit')
+        .then((response) => {
+          this.snackbarMessageException('success', 'L\'invation à' +  this.email + 'a bien été envoyé');
+        });
     },
+
     // Leave group
     leaveGroup(user, idGroup) {
       console.log(user, idGroup);
@@ -434,80 +436,80 @@ export default {
 </script>
 
 <style scoped>
-  .group_view{
-    height: calc(100vh - 100px);
-  }
-  .logo_project{
-    width: 75px;
-    position: fixed;
-    bottom: 40px;
-    right: 40px;
-  }
-  .authorized_user{
-    position: absolute;
-    right: 25px;
-  }
-  .authorized_user_content{
-    background-color: #575c5d;
-   margin-left: -10px;
-  }
-  .form_add_user_to_group{
-    background-color: #575c5d !important;
-    border: 1px solid #ccc;
-  }
-  #email_field{
-    background-color: transparent;
-  }
-  .orange_personalize--text{
-    color: #E57750;
-  }
-  .group_information{
-    display: block ruby;
-  }
-  .settings_btn{
-    border: none;
-  }
-  .settings_btn:hover{
-    background-color: rgba( 229, 119, 80 , 0.3);
-  }
-  .title_task{
-    color: white;
-  }
-  /*.drop-in {*/
-  /*  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);*/
-  /*}*/
-  .add_task{
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    margin-bottom: 20px;
-  }
-  .add_task_text_content{
-    width: 80%;
-    margin: auto;
-    background-color: transparent;
-  }
-  .content_list {
-    border-right: 1px solid #E57750;
-    width: 250px;
-    min-height: 10vh;
-    max-height: 55vh;
-    overflow-y: auto;
-  }
-  .text_add_task{
-    font-size: 12px;
-  }
-  .dropdown_action{
-    background-color: #2F3437 !important;
-    border: 1px solid #fff !important;
-    border-radius: 12px !important;
-  }
-  .dropdown_action_text{
-    color: white;
-    margin-left: 10px;
-  }
-  .link_action_group:hover{
-    background-color: rgba( 229, 119, 80, 0.4);
-  }
+.group_view{
+  height: calc(100vh - 100px);
+}
+.logo_project{
+  width: 75px;
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+}
+.authorized_user{
+  position: absolute;
+  right: 25px;
+}
+.authorized_user_content{
+  background-color: #575c5d;
+  margin-left: -10px;
+}
+.form_add_user_to_group{
+  background-color: #575c5d !important;
+  border: 1px solid #ccc;
+}
+#email_field{
+  background-color: transparent;
+}
+.orange_personalize--text{
+  color: #E57750;
+}
+.group_information{
+  display: block ruby;
+}
+.settings_btn{
+  border: none;
+}
+.settings_btn:hover{
+  background-color: rgba( 229, 119, 80 , 0.3);
+}
+.title_task{
+  color: white;
+}
+/*.drop-in {*/
+/*  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);*/
+/*}*/
+.add_task{
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+.add_task_text_content{
+  width: 80%;
+  margin: auto;
+  background-color: transparent;
+}
+.content_list {
+  border-right: 1px solid #E57750;
+  width: 250px;
+  min-height: 10vh;
+  max-height: 55vh;
+  overflow-y: auto;
+}
+.text_add_task{
+  font-size: 12px;
+}
+.dropdown_action{
+  background-color: #2F3437 !important;
+  border: 1px solid #fff !important;
+  border-radius: 12px !important;
+}
+.dropdown_action_text{
+  color: white;
+  margin-left: 10px;
+}
+.link_action_group:hover{
+  background-color: rgba( 229, 119, 80, 0.4);
+}
 </style>
 
 <style scoped lang="scss">
