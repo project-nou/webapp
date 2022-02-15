@@ -224,7 +224,7 @@
                                     x-small
                                     color="transparent"
                                     elevation="0"
-                                @click="remove_task(item.id)">
+                                @click="remove_task(item.id, item.is_done)">
                                   <v-icon
                                       color="error">
                                     mdi-close
@@ -298,7 +298,7 @@
                                 x-small
                                 color="transparent"
                                 elevation="0"
-                                @click="remove_task(item.id)">
+                                @click="remove_task(item.id, item.is_done)">
                               <v-icon
                               color="error">
                                 mdi-close
@@ -483,15 +483,24 @@ export default {
       const index = array.indexOf(value);
       array.splice(index, 1);
     },
-    remove_task(id){
-      let data = {
-        'note_id': id,
-        'group_id': this.group[0].id
+    remove_task(id, is_done){
+      if (!is_done) {
+        let count = 0;
+        this.toDo.map(el => {
+          if (el.id === id) this.toDo.splice(count, 1)
+          count++;
+        })
+      } else {
+        let count = 0;
+        this.done.map(el => {
+          if (el.id === id) this.done.splice(count, 1)
+          count++;
+        })
       }
       axios
-          .delete("http://127.0.0.1:8000/note", data)
-          .then((response) => {
-            console.log(response);
+          .delete("http://127.0.0.1:8000/note/" + this.group[0].id + "/" + id)
+          .then(() => {
+            this.snackbarMessageException('success', 'Tâche supprimée');
           })
     },
     validate() {
