@@ -415,27 +415,60 @@
                     </v-row>
                     <v-row>
                       <div v-for="file in files" :key="file.note_id">
-                        <v-card class="mt-6 mr-4">
-                          <v-img
-                              :src="file.url"
-                              class="white--text align-end"
-                              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                              height="150px"
-                              width="150px"
-                          >
-                            <v-btn
-                                :href="file.url"
-                                target="_blank"
-                                color="transparent"
-                                icon
+                        <div v-if="file.url.split('.').pop() !== 'pdf'">
+                          <v-card class="mt-6 mr-4">
+                            <v-img
+                                :src="file.url"
+                                class="white--text align-end"
+                                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                                height="150px"
+                                width="150px"
                             >
-                              <v-icon
-                              color="success">
-                                mdi-download
-                              </v-icon>
-                            </v-btn>
-                          </v-img>
-                        </v-card>
+                              <v-btn
+                                  color="transparent"
+                                  icon
+                                  @click="downloadFile(file.url)"
+                              >
+                                <v-icon
+                                    color="success">
+                                  mdi-download
+                                </v-icon>
+                              </v-btn>
+                            </v-img>
+                          </v-card>
+                        </div>
+                        <div v-else class="div-pdf">
+                          <v-card class="mt-6 mr-4">
+                            <v-img
+                                src="@/assets/icons/pdf-file.png"
+                                class="white--text align-end"
+                                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                                height="150px"
+                                width="200px"
+                            >
+                            </v-img>
+                            <v-row>
+                              <v-col class="col-3">
+                              <v-btn
+                                  class="mt-2"
+                                  color="transparent"
+                                  icon
+                                  @click="downloadFile(file.url)"
+                              >
+                                <v-icon
+                                    color="success">
+                                  mdi-download
+                                </v-icon>
+                              </v-btn>
+                              </v-col>
+                              <v-col class="col-9">
+                              <v-card-text>
+                                {{ file.filename }}
+                              </v-card-text>
+                              </v-col>
+                            </v-row>
+                          </v-card>
+                        </div>
                       </div>
                     </v-row>
                   </v-col>
@@ -720,6 +753,21 @@ export default {
             this.snackbarMessageException('error', 'L\'invation à ' + email + ' n\'a pas été envoyée');
           });
     },
+    downloadFile(url) {
+      axios({
+        url: url,
+        method: 'GET',
+        responseType: 'blob',
+      })
+          .then((response) => {
+            let fileURL = window.URL.createObjectURL(new Blob([response.data]));
+            let fURL = document.createElement('a');
+            fURL.href = fileURL;
+            fURL.setAttribute('download', 'file.pdf');
+            document.body.appendChild(fURL);
+            fURL.click();
+          });
+    },
     // Leave group
     leaveGroup(user, idGroup) {
       console.log(user, idGroup);
@@ -849,6 +897,10 @@ export default {
 .link_action_group:hover {
   background-color: rgba(229, 119, 80, 0.4);
 }
+
+.div-pdf {
+  margin-top: 30px;
+  }
 </style>
 
 <style scoped lang="scss">
