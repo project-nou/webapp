@@ -209,14 +209,7 @@
                                 :data="selection(item)"
                                 :key="item.content"
                               >
-                                <p>{{item.content}}</p>
-<!--                                <div class="field">-->
-<!--                                  <span class="field-value" v-show="!showField(item.id)"-->
-<!--                                @click="focusField(item.id)">{{ item.content }}</span>-->
-<!--                                  <input :model="item.content" v-show="showField(item.id)"-->
-<!--                                         type="text" class="field-value form-control"-->
-<!--                                         @focus="focusField(item.id)">-->
-<!--                                </div>-->
+                                {{item.content}}
                                 <v-btn
                                     absolute
                                     top
@@ -230,6 +223,24 @@
                                     mdi-close
                                   </v-icon>
                                 </v-btn>
+                                <v-hover v-slot="{ hover }">
+                                  <v-btn
+                                      absolute
+                                      top
+                                      x-small
+                                      color="transparent"
+                                      class="ml-10"
+                                      :class="{ 'on-hover': hover}"
+                                      :elevation="hover ? 6 : 2"
+                                      elevation="0"
+                                      @click.stop="dialog_update = true"
+                                      @click="update_task(item.id, item.is_done)">
+                                    <v-icon
+                                        color="primary">
+                                      mdi-pencil
+                                    </v-icon>
+                                  </v-btn>
+                                </v-hover>
                               </drag>
                             </template>
                             <template v-slot:feedback="{data}">
@@ -503,6 +514,17 @@ export default {
             this.snackbarMessageException('success', 'Tâche supprimée');
           })
     },
+    update_task(id, content) {
+      let data = {
+        'note_id' : id,
+        'content_note' : content
+      }
+      // axios
+      //     .patch("http://127.0.0.1:8000/note", data)
+      //     .then(() => {
+      //       this.snackbarMessageException('success', 'Tâche supprimée');
+      //     })
+    },
     validate() {
       if (this.$refs.form.validate()) {
         this.inviteUser();
@@ -590,14 +612,6 @@ export default {
           break;
         default:
       }
-    },
-    // Edit task
-    focusField(id) {
-      this.editField = id;
-    },
-    // Show / hide
-    showField(id) {
-      return (this.toDo[id] === id || this.editField === id);
     },
   },
 };
