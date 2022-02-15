@@ -170,7 +170,7 @@ export default {
   },
   data() {
     return {
-      userEmail: 'luca.sardellit.1995@gmail.com',
+      username: undefined,
       idGroup: undefined,
       dialog: false,
       valid: true,
@@ -189,7 +189,8 @@ export default {
       ],
     };
   },
-  beforeMount() {
+  created() {
+    this.getUser()
     this.getAllGroups();
   },
   methods: {
@@ -203,34 +204,35 @@ export default {
       this.$refs.form.reset();
       this.dialog = false;
     },
+    // Get user
+    getUser() {
+      this.username = localStorage.getItem('username');
+    },
     // Get all group by user
     getAllGroups() {
       axios
-          .get("http://localhost:8000/groups/luc")
-          .then((response) => {
-            response.data.groups.forEach(el => {
-              this.groups.push({ name: el.group_name, id: el.group_id });
-            })
+        .get("http://localhost:8000/groups/"+localStorage.getItem('username'))
+        .then((response) => {
+          response.data.groups.forEach(el => {
+            this.groups.push({ name: el.group_name, id: el.group_id });
           })
-      // });
+        })
     },
     // Create group
     createGroup() {
-      // const data = {
-      //   user: this.userEmail,
-      //   name: this.groupName,
-      // };
-      // this.axios.post('', data)
-      //   .then((response) => {
-      //     console.log(response.data);
-      this.snackbarMessageException('success', `Le groupe ${this.groupName} a bien été créé.`);
-      // this.getAllGroups();
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      // eslint-disable-next-line max-len
-      // this.snackbarMessageException('error', `Le groupe ${this.groupName} n'a pas pu être créé.`);
-      //   });
+      const data = {
+        name: this.groupName,
+        username: this.username,
+      };
+      console.log(data);
+      axios.post('http://127.0.0.1:8000/group', data)
+        .then(() => {
+          this.snackbarMessageException('success', `Le groupe ${this.groupName} a bien été créé.`);
+          this.getAllGroups();
+        })
+        .catch(() => {
+          this.snackbarMessageException('error', `Le groupe ${this.groupName} n'a pas pu être créé.`);
+        });
       this.reset();
     },
     actionGroup(action, id, groupName) {

@@ -72,7 +72,7 @@ export default {
       ],
     };
   },
-  created() {
+  beforeMount() {
     this.getUser();
   },
   methods: {
