@@ -249,10 +249,14 @@
                       <h2 class="orange_personalize--text font-weight-thin">Fichiers déposés</h2>
                     </v-row>
                     <v-row>
-                      <div class="col-md-2" v-for="file in files" :key="file.note_id">
-                        <v-card>
+                      <div v-for="file in files" :key="file.note_id">
+                        <v-card class="mt-6 mr-4">
                           <v-img
-                            :src=file.url
+                              :src="file.url"
+                              class="white--text align-end"
+                              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                              height="150px"
+                              width="150px"
                           >
                           </v-img>
                         </v-card>
