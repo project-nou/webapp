@@ -85,6 +85,64 @@
             </v-card>
           </v-dialog>
 
+          <!-- Form Add content task -->
+          <v-dialog v-model="dialog_task" max-width="390">
+            <v-card class="form_add_user_to_group">
+              <v-card-title class="text-h5 white--text">
+                Ajouter une tâche
+              </v-card-title>
+
+              <v-card-text class="white--text font-weight-thin">
+                Ajouter une tâche à faire pour les membres du groupe
+              </v-card-text>
+
+              <v-container class="container--fluid">
+                <v-form
+                    ref="form_task"
+                    v-model="valid_task"
+                    lazy-validation
+                >
+                  <v-list id="task_content">
+                    <v-list-item>
+                      <v-img
+                          lazy-src="@/assets/icons/plus.png"
+                          width="40"
+                          src="@/assets/icons/plus.png"
+                      ></v-img>
+                      <v-list-item-title class="ml-10">
+                        <v-textarea
+                            v-model="content_task"
+                            label="Contenu de la tâche"
+                            required
+                            color="orange"
+                            clearable
+                            clear-icon="mdi-close-circle"
+                        ></v-textarea>
+                      </v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+
+                  <v-card-actions class="mt-10">
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="green darken-1"
+                        text
+                        :disabled="!valid_task"
+                        @click="validate_task"
+                    >
+                      Ajouter
+                    </v-btn>
+
+                    <v-btn color="red darken-1" text @click="reset_task">
+                      Fermer
+                    </v-btn>
+                  </v-card-actions>
+                </v-form>
+              </v-container>
+
+            </v-card>
+          </v-dialog>
+
           <v-container class="container--fluid">
             <!-- Groupe Title -->
             <div class="mt-10 group_information">
@@ -181,7 +239,7 @@
                               class="mx-auto add_task"
                               :elevation="hover ? 6 : 2"
                               :class="{ 'on-hover': hover }"
-                              @click.stop="dialog = true"
+                              @click.stop="dialog_task = true"
                             >
                               <v-card-text class="pa-0">
                                 <v-list class="add_task_text_content">
@@ -279,7 +337,7 @@
     ></v-img>
 
     <SnackbarSuccess :message="snackbarMessage" :color="color"/>
-<!--    <SnackbarFailed :message="snackbarMessage" :color="color"/>-->
+    <SnackbarFailed :message="snackbarMessage" :color="color"/>
   </div>
 </template>
 
@@ -288,7 +346,7 @@ import { Drag, DropList } from 'vue-easy-dnd';
 import Menu from '@/components/Menu/Menu.vue';
 import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
 import axios from 'axios';
-// import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
+import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
 
 export default {
   name: 'Group',
@@ -297,7 +355,7 @@ export default {
     DropList,
     Menu,
     SnackbarSuccess,
-    // SnackbarFailed,
+    SnackbarFailed,
   },
   data() {
     return {
@@ -308,6 +366,7 @@ export default {
       filesGroup: [],
       selected: [],
       selectedList: 0,
+      content_task: "",
       idGroup: this.$route.params.id,
       authorizedUser: [],
       isAdminOfGroup: true,
@@ -317,7 +376,9 @@ export default {
       },
       editField: '',
       valid: true,
+      valid_task: true,
       dialog: false,
+      dialog_task: false,
       email: undefined,
       emailRules: [
         (v) => !!v || 'L\' e-mail est requis',
@@ -400,9 +461,35 @@ export default {
         this.reset();
       }
     },
+    validate_task() {
+      if (!this.content_task) {
+        this.snackbarMessageException('error', 'Contenu vide');
+      } else {
+        this.addContentTask(this.content_task)
+        this.reset_task();
+      }
+    },
+    addContentTask(content) {
+      let formdata = new FormData();
+      formdata.append('group', this.group[0].name)
+      formdata.append('author', 'luc') // TODO : get username in token
+      formdata.append('format', 'text')
+      formdata.append('content', content)
+      formdata.append('group_id', this.group[0].id)
+      axios
+        .post("http://127.0.0.1:8000/note", formdata)
+        .then((response) => {
+          this.snackbarMessageException('success', 'Tache créé');
+          this.toDo.push({content: response.data.content, id: response.data.note_id, author: response.data.author, is_done: response.data.is_done})
+        })
+    },
     reset() {
       this.$refs.form.reset();
       this.dialog = false;
+    },
+    reset_task() {
+      this.$refs.form_task.reset();
+      this.dialog_task = false;
     },
     getOneGroup() {
       axios.get('http://localhost:8000/group/' + this.$route.params.id)
@@ -450,9 +537,9 @@ export default {
         case 'success':
           this.$root.$emit('SnackbarSuccess');
           break;
-        // case 'error':
-        //   this.$root.$emit('SnackbarFailed');
-        //   break;
+        case 'error':
+          this.$root.$emit('SnackbarFailed');
+          break;
         default:
       }
     },
@@ -490,7 +577,7 @@ export default {
     background-color: #575c5d !important;
     border: 1px solid #ccc;
   }
-  #email_field{
+  #email_field, #task_content{
     background-color: transparent;
   }
   .orange_personalize--text{
