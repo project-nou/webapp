@@ -80,6 +80,7 @@
             class="valid_form_login pl-10 pr-10 mt-15"
             :disabled="!valid"
             @click="validate"
+            :loading="loading"
           >
             Se connecter
           </v-btn>
@@ -105,13 +106,15 @@ export default {
     return {
       snackbar: true,
       valid: true,
-      password: '',
-      username: '',
+      password: undefined,
+      username: undefined,
+      loading: false,
     };
   },
   methods: {
     // Valid the register form
     validate() {
+      this.loading = true;
       if (this.$refs.form.validate()) {
         const data = {
           username: this.username,
@@ -130,6 +133,7 @@ export default {
           })
           .catch(() => {
             this.$root.$emit('SnackbarFailed');
+            this.loading = false;
           });
       }
     },

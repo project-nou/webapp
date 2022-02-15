@@ -111,6 +111,7 @@
               class="valid_form_register pl-10 pr-10 mt-7 mb-7"
               :disabled="!valid"
               @click="validate"
+              :loading="loading"
             >
               Je crée mon compte
             </v-btn>
@@ -149,6 +150,7 @@ export default {
       valid: true,
       password: undefined,
       username: undefined,
+      loading: false,
       usernameRules: [
         (v) => !!v || 'L\' utilisateur est requis',
         (v) => (v && v.length <= 20) || 'L\' utilisateur ne doit pas dépasser 20 characters',
@@ -163,6 +165,7 @@ export default {
   methods: {
     // Valid the register form
     validate() {
+      this.loading = true;
       if (this.$refs.form.validate()) {
         const data = {
           email: this.email,
@@ -182,6 +185,7 @@ export default {
             })
             .catch(() => {
               this.$root.$emit('SnackbarFailed');
+              this.loading = false;
             });
       }
     },
