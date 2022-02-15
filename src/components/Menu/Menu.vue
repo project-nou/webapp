@@ -65,17 +65,25 @@ export default {
   name: 'Menu',
   data() {
     return {
-      username: 'aaaaa',
-      userEmail: 'luca.sardellit.1995@gmail.com',
+      username: undefined,
+      // userEmail: 'luca.sardellit.1995@gmail.com',
       items: [
         { title: 'Mes groupes', icon: 'folder.png', link: '/my_groups' },
       ],
     };
   },
+  created() {
+    this.getUser();
+  },
   methods: {
+    // Get user
+    getUser() {
+      this.username = localStorage.getItem('username');
+    },
     // Logout user
     logout() {
-      // TODO : clear le local storage ou le store et rediriger vers le login
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
       this.$router.push({ path: '/login' });
     },
   },
