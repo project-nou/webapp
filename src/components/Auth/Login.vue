@@ -94,6 +94,7 @@
 <script>
 import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
 import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 
 export default {
   name: 'Login',
@@ -118,36 +119,20 @@ export default {
         };
         axios.post('http://localhost:8000/sign-in', data)
           .then((response) => {
-            console.log(response.data);
+            // Decode token
+            const decodedToken = jwt_decode(response.data.token);
+            // Stock in local storage username and token
             localStorage.token = response.data.token;
-            // this.$router.push({ path: '/my_groups' });
+            localStorage.username = decodedToken[0];
+            // Change route
+            this.$router.push({ path: '/my_groups' });
+            this.$router.push({ path: '/my_groups' });
           })
           .catch(() => {
             this.$root.$emit('SnackbarFailed');
           });
-        // if (this.isExist(this.username, this.password)) {
-        //   console.log('ici');
-        //   this.$router.push({ path: '/my_groups' });
-        // } else {
-        //   this.$root.$emit('SnackbarFailed');
-        // }
       }
     },
-    // Test if user exist
-    // isExist(username, password) {
-    //   const data = {
-    //     username: username,
-    //     password: password,
-    //   };
-    //   axios.post('http://localhost:8000/sign-in', data)
-    //     .then((response) => {
-    //       localStorage.token = response.data.token;
-    //       return true;
-    //     })
-    //     .catch(() => {
-    //       return false;
-    //     });
-    // },
   },
 };
 </script>

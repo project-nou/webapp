@@ -137,6 +137,7 @@
 <script>
 import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
 import axios from 'axios';
+import jwt_decode from "jwt-decode";
 
 export default {
   name: 'Register',
@@ -171,7 +172,12 @@ export default {
         axios
             .post('http://localhost:8000/sign-up', data)
             .then((response) => {
+              // Decode token
+              const decodedToken = jwt_decode(response.data.token);
+              // Stock in local storage username and token
               localStorage.token = response.data.token;
+              localStorage.username = decodedToken[0];
+              // Change route
               this.$router.push({ path: '/my_groups' });
             })
             .catch(() => {
