@@ -17,22 +17,20 @@
     </div>
     <!-- Menu -->
     <v-list class="action_menu mt-15" height="420">
+
       <v-list-item
         v-for="(item, index) in items"
         :key="index"
         link
         class="link_action_menu active"
+        :to="item.link"
       >
         <v-img
           width="30px"
-          :src="require(`@/assets/icons/${item.icon}`)"></v-img>
-        <v-list-item-title
-          class="menu_action_text text-h7 ml-7">
-          <router-link :to="item.link">
-            <a class="white--text">
+          :src="require(`@/assets/icons/${item.icon}`)">
+        </v-img>
+        <v-list-item-title class="menu_action_text text-h7 ml-7">
               {{ item.title }}
-            </a>
-          </router-link>
         </v-list-item-title>
       </v-list-item>
 
@@ -72,7 +70,7 @@ export default {
       ],
     };
   },
-  created() {
+  beforeMount() {
     this.getUser();
   },
   methods: {
