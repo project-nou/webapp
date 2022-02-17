@@ -13,12 +13,24 @@
             <v-btn
               class="authorized_user_content"
               fab x-small outlined color="orange"
-              v-for="user in authorizedUser" :key="user.username">
+              >
+              {{ adminUsername.charAt(0) }}
+              <v-img
+                lazy-src="@/assets/icons/crown-outline.png"
+                width="5"
+                src="@/assets/icons/crown-outline.png"
+              ></v-img>
+            </v-btn>
+
+            <v-btn
+              class="authorized_user_content"
+              fab x-small outlined color="blue"
+              v-for="user in authorizedUser" :key="user.username"
+              >
               {{ user.username.charAt(0) }}
             </v-btn>
             <!-- Add user -->
             <v-btn
-              v-if="isAdminOfGroup"
               @click.stop="dialog = true"
               class="authorized_user_content"
               fab x-small outlined color="white">
@@ -395,9 +407,10 @@ export default {
       selected: [],
       selectedList: 0,
       content_task: "",
+      adminUsername: "",
       idGroup: this.$route.params.id,
       authorizedUser: [],
-      isAdminOfGroup: true,
+      isAdminOfGroup: false,
       username: 'Luca Sardellitti',
       user: {
         name: '',
@@ -538,15 +551,22 @@ export default {
         });
     },
 
-    getUsersFromGroup() {
+    getUsersFromGroup: function () {
       axios.get('https://localhost:8000/group/' + this.idGroup + '/users')
         .then((response) => {
           const participants = response.data.groups[0].participants;
+          const admin = response.data.groups[0].admin;
           for (var i = 0; i < participants.length; i++) {
-            this.authorizedUser.push({ username: participants[i].username, id: participants[i].id });
+            if (participants[i].id == admin.id) {
+              this.adminUsername = admin.username;
             }
+            else  {
+              this.authorizedUser.push({username: participants[i].username, id: participants[i].id});
+            }
+          }
         });
     },
+
 
     inviteUser() {
       const email = this.email;
