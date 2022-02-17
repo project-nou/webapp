@@ -1,27 +1,26 @@
 <template>
   <div class="register_view">
     <v-row class="pa-0">
-      <v-col class="col-md-3">
-        <div class="logo_to_bottom">
-          <v-img
-            lazy-src="@/assets/informatique.png"
-            width="150"
-            src="@/assets/informatique.png"
-            class="ynov_logo"
-          ></v-img>
-        </div>
+      <v-col class="col-md-5">
+        <v-img
+            lazy-src="@/assets/nou2.png"
+            width="250"
+            src="@/assets/nou2.png"
+            class="user_logo"
+        >
+        </v-img>
+        <h1 class="text-center white--text text-uppercase">Inscription !</h1>
       </v-col>
 
       <!-- Content -->
-      <v-col class="col-md-6">
-        <v-card class="ma-10 card_register">
+      <v-col class="col-md-6 mt-16">
+        <v-card class="card_register">
           <v-img
             lazy-src="@/assets/user.png"
             width="50"
             src="@/assets/user.png"
             class="user_logo mt-10"
           ></v-img>
-
           <v-form
             ref="form"
             v-model="valid"
@@ -45,7 +44,6 @@
                     required
                     clearable
                     clear-icon="mdi-close-circle"
-                    filled
                     class="mt-8"
                     color="orange"
                   ></v-text-field>
@@ -62,7 +60,6 @@
                 ></v-img>
                 <v-list-item-title class="ml-10">
                   <v-text-field
-                    filled
                     class="mt-8"
                     color="orange"
                     v-model="username"
@@ -91,7 +88,6 @@
                     required
                     clearable
                     clear-icon="mdi-close-circle"
-                    filled
                     class="mt-8"
                     color="orange"
                     v-model="password"
@@ -117,17 +113,6 @@
             </v-btn>
           </v-form>
         </v-card>
-      </v-col>
-
-      <v-col class="col-md-3">
-        <div class="logo_to_bottom">
-          <v-img
-            lazy-src="@/assets/nou.png"
-            width="150"
-            src="@/assets/nou.png"
-            class="project_logo"
-          ></v-img>
-        </div>
       </v-col>
     </v-row>
 
@@ -198,7 +183,7 @@ export default {
   .ynov_logo,
   .project_logo{
     width: 50%;
-    margin: auto;
+    margin: 200px auto auto auto;
   }
   .logo_to_bottom{
     width: 25%;
@@ -206,9 +191,10 @@ export default {
     bottom: 25px;
   }
   .card_register{
-    background-color: rgba(255, 255, 255, 0.2) !important;
-    border: 1px solid white;
+    background-color: transparent !important;
+    padding: 10px;
     border-radius: 20px !important;
+    box-shadow: none;
   }
   #email_field,
   #password_field,
@@ -231,5 +217,8 @@ export default {
     border-radius: 20px;
     display: block;
     margin: auto;
+  }
+  .register_view {
+    height: 100vh;
   }
 </style>
