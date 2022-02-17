@@ -1,7 +1,15 @@
 <template>
   <div class="register_view">
     <v-row class="pa-0">
-      <v-col class="col-md-3">
+      <v-col class="col-md-5">
+        <v-img
+            lazy-src="@/assets/nou2.png"
+            width="250"
+            src="@/assets/nou2.png"
+            class="user_logo mt-16"
+        >
+        </v-img>
+        <h1 class="text-center white--text text-uppercase">Inscription !</h1>
       </v-col>
 
       <!-- Content -->
@@ -186,8 +194,8 @@ export default {
     bottom: 25px;
   }
   .card_register{
-    background-color: #505050 !important;
-    border: 2px solid black;
+    background-color: transparent !important;
+    padding: 10px;
     border-radius: 20px !important;
   }
   #email_field,
@@ -213,8 +221,6 @@ export default {
     margin: auto;
   }
   .register_view {
-    background: url('./nou2.png') repeat;
     height: 100vh;
-    background-size: 100px;
   }
 </style>
