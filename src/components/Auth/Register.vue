@@ -2,18 +2,10 @@
   <div class="register_view">
     <v-row class="pa-0">
       <v-col class="col-md-3">
-        <div class="logo_to_bottom">
-          <v-img
-            lazy-src="@/assets/informatique.png"
-            width="150"
-            src="@/assets/informatique.png"
-            class="ynov_logo"
-          ></v-img>
-        </div>
       </v-col>
 
       <!-- Content -->
-      <v-col class="col-md-6">
+      <v-col class="col-md-6 mt-16">
         <v-card class="ma-10 card_register">
           <v-img
             lazy-src="@/assets/user.png"
@@ -21,7 +13,6 @@
             src="@/assets/user.png"
             class="user_logo mt-10"
           ></v-img>
-
           <v-form
             ref="form"
             v-model="valid"
@@ -118,17 +109,6 @@
           </v-form>
         </v-card>
       </v-col>
-
-      <v-col class="col-md-3">
-        <div class="logo_to_bottom">
-          <v-img
-            lazy-src="@/assets/nou.png"
-            width="150"
-            src="@/assets/nou.png"
-            class="project_logo"
-          ></v-img>
-        </div>
-      </v-col>
     </v-row>
 
     <SnackbarFailed color="red" message="Ce nom d'utilisateur est déjà utilisé."/>
@@ -206,8 +186,8 @@ export default {
     bottom: 25px;
   }
   .card_register{
-    background-color: rgba(255, 255, 255, 0.2) !important;
-    border: 1px solid white;
+    background-color: #505050 !important;
+    border: 2px solid black;
     border-radius: 20px !important;
   }
   #email_field,
@@ -231,5 +211,10 @@ export default {
     border-radius: 20px;
     display: block;
     margin: auto;
+  }
+  .register_view {
+    background: url('./nou2.png') repeat;
+    height: 100vh;
+    background-size: 100px;
   }
 </style>

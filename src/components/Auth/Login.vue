@@ -1,5 +1,5 @@
 <template>
-  <div class="login_view">
+  <div class="login_view mt-16">
     <v-row>
       <v-col class="col-md-5">
         <!-- Logo project -->

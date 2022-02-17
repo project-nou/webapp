@@ -455,13 +455,6 @@
       </v-row>
     </div>
 
-    <!-- Logo project -->
-    <v-img
-        class="logo_project"
-        lazy-src="@/assets/nou.png"
-        src="@/assets/nou.png"
-    ></v-img>
-
     <SnackbarSuccess :message="snackbarMessage" :color="color"/>
     <SnackbarFailed :message="snackbarMessage" :color="color"/>
   </div>
