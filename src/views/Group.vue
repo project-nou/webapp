@@ -10,17 +10,24 @@
         <v-col class="col-md-10 pb-0">
           <div class="authorized_user text-right pt-5 pr-5">
             <!-- Auhtorized user -->
-            <v-btn
+              <v-btn
               class="authorized_user_content"
               fab x-small outlined color="orange"
               >
+                <div
+                  class="crown"
+                >
+                  <v-img
+                    lazy-src="@/assets/icons/crown-outline.png"
+                    width="15"
+                    src="@/assets/icons/crown-outline.png"
+                  ></v-img>
+                </div>
               {{ adminUsername.charAt(0) }}
-              <v-img
-                lazy-src="@/assets/icons/crown-outline.png"
-                width="5"
-                src="@/assets/icons/crown-outline.png"
-              ></v-img>
             </v-btn>
+
+
+
 
             <v-btn
               class="authorized_user_content"
@@ -793,6 +800,10 @@ export default {
 .authorized_user_content {
   background-color: #575c5d;
   margin-left: -10px;
+}
+
+.crown {
+  margin-left: -18px;
 }
 
 .form_add_user_to_group {
