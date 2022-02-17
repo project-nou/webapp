@@ -15,7 +15,7 @@
                 <v-divider class="white"></v-divider>
               </div>
 
-              <v-row class="mt-10">
+              <v-row class="mt-10" id="my_groups_content">
                 <!-- All Groups -->
                 <v-col
                   class="col-md-3"
@@ -383,6 +383,11 @@ export default {
     position: fixed;
     bottom: 40px;
     right: 40px;
+  }
+  #my_groups_content {
+    max-height: 80vh !important;
+    overflow: auto;
+    overflow-x: hidden;
   }
   .group{
     background-color:rgba(255, 255, 255, 0.1) !important;
