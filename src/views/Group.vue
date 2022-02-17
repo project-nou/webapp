@@ -648,7 +648,7 @@ export default {
       group: [],
       toDo: [],
       done: [],
-      files: [],
+      // files: [],
       filesImage: [],
       filesPdf: [],
       filesGroup: [],
@@ -762,10 +762,18 @@ export default {
           axios.post('http://localhost:8000/note/status', {
             'note_id': event.data.id
           });
+          // Update is done value
+          this.toDo.map(el => {
+            if (el.id === event.data.id) el.is_done = false;
+          });
           break;
         case 'done':
           axios.post('http://localhost:8000/note/status', {
             'note_id': event.data.id
+          });
+          // Update is done value
+          this.done.map(el => {
+            if (el.id === event.data.id) el.is_done = true;
           });
           break;
         default:
@@ -1008,9 +1016,9 @@ export default {
         }
         this.snackbarMessageException('success', `Le fichier a bien été ajouté.`);
       })
-      .catch((error) => {
-        console.log(error);
-      })
+      // .catch((error) => {
+      //   console.log(error);
+      // })
       this.file = '';
     },
     // Delete file send by user
@@ -1027,12 +1035,11 @@ export default {
         if (el.id === noteId) {
           axios.delete(`http://127.0.0.1:8000/note/${this.idGroup}/${noteId}`)
             .then((response) => {
-              console.log(response);
               this.snackbarMessageException('success', `Le fichier a bien été supprimé.`);
             })
-            .catch((error) => {
-              console.log(error);
-            })
+            // .catch((error) => {
+            //   console.log(error);
+            // })
           // Remove value in array
           arrayToMap.splice(count, 1);
         }
