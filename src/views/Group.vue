@@ -254,7 +254,7 @@
                       </v-col>
 
                       <!-- Done task -->
-                      <v-col class="col-md-5 offset-1">
+                      <v-col class="col-md-5">
                         <h3 class="title_task font-weight-thin">Finis</h3>
                         <div class="content_list">
                           <drop-list
@@ -430,90 +430,161 @@
                   </v-col>
 
                   <!-- Divider -->
-                  <v-col class="col-md-1">
-                    <v-divider vertical class="white"></v-divider>
-                  </v-col>
+<!--                  <v-col class="col-md-1">-->
+                  <v-divider vertical class="white"></v-divider>
+<!--                  </v-col>-->
 
                   <!-- All files -->
-                  <v-col class="col-md-4">
+                  <v-col class="col-md-4 ml-10">
                     <v-row>
                       <h2 class="orange_personalize--text font-weight-thin">Fichiers déposés</h2>
                     </v-row>
-                    <!-- List file group -->
-                    <v-row>
-                      <div v-for="file in files" :key="file.note_id">
-                        <div v-if="file.url.split('.').pop() !== 'pdf'">
-                          <v-card class="mt-6 mr-4">
-                            <v-img
-                                :src="file.url"
-                                class="white--text align-end"
-                                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                                height="150px"
-                                width="150px"
-                            >
-                              <v-btn
-                                  color="transparent"
-                                  icon
-                                  @click="downloadFile(file.url, file.filename)"
-                              >
-                                <v-icon
-                                    color="success">
+                    <!-- PDF FILE -->
+                    <v-row class="mt-6">
+                      <div class="file_content">
+                        <div v-for="file in filesPdf" :key="file.note_id" class="mr-4 one_file_content">
+                          <p class="title_file">{{ file.filename }}</p>
+                          <v-img
+                            src="@/assets/icons/pdf-file.png"
+                            class="img_file"
+                            height="60"
+                            width="40"/>
+                          <!-- Action -->
+                          <div class="file_action">
+                            <v-btn
+                              class="btn_action_download"
+                              color="transparent"
+                              icon
+                              @click="downloadFile(file.url, file.filename)">
+                                <v-icon color="white" small>
                                   mdi-download
                                 </v-icon>
-                              </v-btn>
-                              <v-btn
-                                color="transparent"
-                                icon
-                                @click="deleteFile(file.id)"
-                              >
-                                <v-icon
-                                  color="success">
-                                  mdi-close
-                                </v-icon>
-                              </v-btn>
-                            </v-img>
-                          </v-card>
-                        </div>
-                        <div v-else class="div-pdf">
-                          <v-card class="mt-6 mr-4" color="transparent">
-                            <v-img
-                                src="@/assets/icons/pdf-file.png"
-                                class="white--text align-end"
-                                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                                height="125px"
-                                width="97px"
-                            >
-                              <v-btn
-                                  class="mt-2"
-                                  color="transparent"
-                                  icon
-                                  @click="downloadFile(file.url, file.filename)"
-                              >
-                                <v-icon
-                                    color="success">
-                                  mdi-download
-                                </v-icon>
-                              </v-btn>
-                              <v-btn
-                                color="transparent"
-                                icon
-                                @click="deleteFile(file.id)"
-                              >
-                                <v-icon
-                                  color="success">
-                                  mdi-close
-                                </v-icon>
-                              </v-btn>
-                            </v-img>
-                            <v-card-text>
-                              <small class="white--text">{{file.filename.split('.')[0]}}</small>
-                            </v-card-text>
-                          </v-card>
+                            </v-btn>
+                            <v-btn
+                              class="btn_action_delete"
+                              color="transparent"
+                              icon
+                              @click="deleteFile(file.id, 'pdf')">
+                              <v-icon
+                                color="white" small>
+                                mdi-delete-outline
+                              </v-icon>
+                            </v-btn>
+                          </div>
                         </div>
                       </div>
                     </v-row>
+                    <!-- IMAGE FILE -->
+                    <v-row class="mt-6">
+                      <div class="file_content">
+                        <div v-for="file in filesImage" :key="file.note_id" class="mr-4 one_file_content">
+                          <p class="title_file">{{ file.filename }}</p>
+                          <v-img
+                            lazy-src="@/assets/icons/picture.png"
+                            :src="file.url"
+                            class="img_file"
+                            height="60"
+                            width="60"/>
+                          <!-- Action -->
+                          <div class="file_action">
+                            <v-btn
+                              class="btn_action_download"
+                              color="transparent"
+                              icon
+                              @click="downloadFile(file.url, file.filename)">
+                              <v-icon color="white" small>
+                                mdi-download
+                              </v-icon>
+                            </v-btn>
+                            <v-btn
+                              class="btn_action_delete"
+                              color="transparent"
+                              icon
+                              @click="deleteFile(file.id, 'img')">
+                              <v-icon
+                                color="white" small>
+                                mdi-delete-outline
+                              </v-icon>
+                            </v-btn>
+                          </div>
+                        </div>
+                      </div>
+                    </v-row>
+                    <!-- List file group -->
+<!--                    <v-row>-->
+<!--                      <div v-for="file in files" :key="file.note_id">-->
+<!--                        <div v-if="file.url.split('.').pop() !== 'pdf'">-->
+<!--                          <v-card class="mt-6 mr-4">-->
+<!--                            <v-img-->
+<!--                                :src="file.url"-->
+<!--                                class="white&#45;&#45;text align-end"-->
+<!--                                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"-->
+<!--                                height="150px"-->
+<!--                                width="150px"-->
+<!--                            >-->
+<!--                              <v-btn-->
+<!--                                  color="transparent"-->
+<!--                                  icon-->
+<!--                                  @click="downloadFile(file.url, file.filename)"-->
+<!--                              >-->
+<!--                                <v-icon-->
+<!--                                    color="success">-->
+<!--                                  mdi-download-->
+<!--                                </v-icon>-->
+<!--                              </v-btn>-->
+<!--                              <v-btn-->
+<!--                                color="transparent"-->
+<!--                                icon-->
+<!--                                @click="deleteFile(file.id)"-->
+<!--                              >-->
+<!--                                <v-icon-->
+<!--                                  color="success">-->
+<!--                                  mdi-close-->
+<!--                                </v-icon>-->
+<!--                              </v-btn>-->
+<!--                            </v-img>-->
+<!--                          </v-card>-->
+<!--                        </div>-->
+<!--                        <div v-else class="div-pdf">-->
+<!--                          <v-card class="mt-6 mr-4" color="transparent">-->
+<!--                            <v-img-->
+<!--                                src="@/assets/icons/pdf-file.png"-->
+<!--                                class="white&#45;&#45;text align-end"-->
+<!--                                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"-->
+<!--                                height="125px"-->
+<!--                                width="97px"-->
+<!--                            >-->
+<!--                              <v-btn-->
+<!--                                  class="mt-2"-->
+<!--                                  color="transparent"-->
+<!--                                  icon-->
+<!--                                  @click="downloadFile(file.url, file.filename)"-->
+<!--                              >-->
+<!--                                <v-icon-->
+<!--                                    color="success">-->
+<!--                                  mdi-download-->
+<!--                                </v-icon>-->
+<!--                              </v-btn>-->
+<!--                              <v-btn-->
+<!--                                color="transparent"-->
+<!--                                icon-->
+<!--                                @click="deleteFile(file.id)"-->
+<!--                              >-->
+<!--                                <v-icon-->
+<!--                                  color="success">-->
+<!--                                  mdi-close-->
+<!--                                </v-icon>-->
+<!--                              </v-btn>-->
+<!--                            </v-img>-->
+<!--                            <v-card-text>-->
+<!--                              <small class="white&#45;&#45;text">{{file.filename.split('.')[0]}}</small>-->
+<!--                            </v-card-text>-->
+<!--                          </v-card>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </v-row>-->
                     <!-- Drag and drop file -->
-                    <v-row>
+                    <v-row class="mt-8">
                       <div v-if="!file" id="content_drag_and_drop">
                         <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
                           <div class="dropZone-info" @drag="onChange">
@@ -535,10 +606,10 @@
                         </div>
                       </div>
 
-                      <div class="uploadedFile-info font-weight-thin">
-                        <div>Nom du fichier: {{ file.name }}</div>
-                        <div>Taille(bytes): {{ file.size }}</div>
-                        <div>Extension：{{ extension }}</div>
+                      <div class="uploadedFile-info font-weight-thin ml-2">
+                        <div class="mb-4">Nom du fichier: {{ file.name }}</div>
+                        <div class="mb-4">Taille(bytes): {{ file.size }}</div>
+                        <div class="mb-4">Extension：{{ extension }}</div>
                       </div>
                     </v-row>
                   </v-col>
@@ -578,6 +649,8 @@ export default {
       toDo: [],
       done: [],
       files: [],
+      filesImage: [],
+      filesPdf: [],
       filesGroup: [],
       selected: [],
       selectedList: 0,
@@ -617,7 +690,6 @@ export default {
     this.getUser();
     this.getAllNotesText();
     this.getAllNotesFile();
-    this.getAllFiles();
   },
   computed: {
     extension() {
@@ -659,12 +731,19 @@ export default {
       axios.get('http://localhost:8000/notes/' + this.$route.params.id + '/file')
           .then((response) => {
             response.data.notes.forEach(el => {
-              this.files.push({
+              let extensionFiles = el.content.split('.').pop();
+              let fileInformation = {
                 filename: el.content,
                 id: el.note_id,
                 author: el.author,
                 url: 'https://res.cloudinary.com/doekqrsf4/image/upload/v1644856207/' + this.group[0].name + '/' + this.group[0].id + '/' + el.content
-              });
+              }
+              // Push to different array (unshift -> add value to the first position in array)
+              if (extensionFiles !== 'pdf') {
+                this.filesImage.unshift(fileInformation);
+              } else {
+                this.filesPdf.unshift(fileInformation);
+              }
             });
           });
     },
@@ -869,14 +948,6 @@ export default {
             this.snackbarMessageException('error', 'Une erreur est survenue');
           });
     },
-    getAllFiles() {
-      // this.axios.get(`/idGroup=${this.idGroup}`)
-      //   .then((response) => {
-      // console.log(response.data);
-      this.filesGroup.push({ name: 'test.txt' });
-      this.filesGroup.push({ name: 'test.pdf' });
-      // });
-    },
     // Get event drag
     onChange(e) {
       let files = e.target.files || e.dataTransfer.files;
@@ -896,13 +967,13 @@ export default {
       let typeFileSend = file.type.split('/')[1]
       // Verify if type exist in our array
       if (!authorizedTypeFile.includes(typeFileSend)) {
-        this.snackbarMessageException('error', 'STP envoie un fichier text, pdf, jpg ou png bro');
+        this.snackbarMessageException('error', 'Fichier non pris en charge (pdf, jpg ou png)');
         this.dragging = false;
         return;
       }
       // Verify size file
       if (file.size > 5000000) {
-        this.snackbarMessageException('error', 'STP verifie la taille de ton fichier bro, il depasse 5 MB.');
+        this.snackbarMessageException('error', 'Fichié trop volumineux (max 5 MB).');
         this.dragging = false;
         return;
       }
@@ -922,12 +993,19 @@ export default {
 
       axios.post('http://127.0.0.1:8000/note', formdata)
       .then((response) => {
-        this.files.push({
+        let extensionFiles = response.data.content.split('.').pop();
+        let fileInformation = {
           filename: response.data.content,
           id: response.data.note_id,
           author: response.data.author,
           url: 'https://res.cloudinary.com/doekqrsf4/image/upload/v1644856207/' + this.groupeName + '/' + this.idGroup + '/' + response.data.content
-        })
+        };
+        // Push to different array (unshift -> add value to the first position in array)
+        if (extensionFiles !== 'pdf') {
+          this.filesImage.unshift(fileInformation);
+        } else {
+          this.filesPdf.unshift(fileInformation);
+        }
         this.snackbarMessageException('success', `Le fichier a bien été ajouté.`);
       })
       .catch((error) => {
@@ -940,26 +1018,44 @@ export default {
       this.file = '';
     },
     // Delete file to Cloud
-    deleteFile(noteId) {
-      console.log(this.files);
-
-      // Counter equal array index value
-      let count = 0;
-      this.files.map(el => {
-        if (el.id === noteId) {
-          axios.delete(`http://127.0.0.1:8000/note/${this.idGroup}/${noteId}`)
-            .then((response) => {
-              console.log(response);
-              this.snackbarMessageException('success', `Le fichier a bien été supprimé.`);
-            })
-            .catch((error) => {
-              console.log(error);
-            })
-          // Remove value in array
-          this.files.splice(count, 1);
-        }
-        count ++;
-      })
+    deleteFile(noteId, typeFile) {
+      if (typeFile !== 'pdf') {
+        // Counter equal array index value
+        let count = 0;
+        this.filesImage.map(el => {
+          if (el.id === noteId) {
+            axios.delete(`http://127.0.0.1:8000/note/${this.idGroup}/${noteId}`)
+              .then((response) => {
+                console.log(response);
+                this.snackbarMessageException('success', `Le fichier a bien été supprimé.`);
+              })
+              .catch((error) => {
+                console.log(error);
+              })
+            // Remove value in array
+            this.filesImage.splice(count, 1);
+          }
+          count ++;
+        })
+      } else {
+        // Counter equal array index value
+        let count = 0;
+        this.filesPdf.map(el => {
+          if (el.id === noteId) {
+            axios.delete(`http://127.0.0.1:8000/note/${this.idGroup}/${noteId}`)
+              .then((response) => {
+                console.log(response);
+                this.snackbarMessageException('success', `Le fichier a bien été supprimé.`);
+              })
+              .catch((error) => {
+                console.log(error);
+              })
+            // Remove value in array
+            this.filesPdf.splice(count, 1);
+          }
+          count ++;
+        })
+      }
     },
     // Exception snackbar
     snackbarMessageException(type, message) {
@@ -1090,16 +1186,55 @@ export default {
   .div-pdf {
     margin-top: 30px;
     }
+
+  /* List File */
+  .file_content{
+    width: 100vw;
+    display: flex;
+    overflow: auto;
+  }
+  .one_file_content{
+    width: 100px;
+  }
+  .one_file_content .title_file {
+    text-align: center;
+    width: 60px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #A8A8A8;
+    font-size: 11px;
+  }
+  .one_file_content .img_file {
+    margin: auto;
+  }
+  .file_action {
+    display: flex;
+  }
+  .btn_action_download {
+    margin: auto;
+    margin-left: 0;
+    display: block;
+  }
+  .btn_action_delete {
+    margin: auto;
+    margin-right: 0;
+    display: block;
+  }
+  /* List File */
   /* Drag and drop file */
   #content_drag_and_drop {
-    width: 100%;
+    /*width: 100%;*/
+    width: 65%;
   }
   .dropZone {
-    width: 80%;
-    height: 200px;
+    /*width: 80%;*/
+    /*height: 200px;*/
+    width: 100%;
+    height: 170px;
     position: relative;
     border: 2px dashed #eee;
-    margin: auto;
+    /*margin: auto;*/
   }
 
   .dropZone:hover {
@@ -1156,11 +1291,13 @@ export default {
   }
 
   .dropZone-uploaded {
-    width: 80%;
-    height: 200px;
+    width: 65%;
+    height: 170px;
+    /*width: 80%;*/
+    /*height: 200px;*/
     position: relative;
     border: 2px dashed #eee;
-    margin: auto;
+    /*margin: auto;*/
   }
 
   .dropZone-uploaded-info {
@@ -1176,7 +1313,8 @@ export default {
   }
 
   .uploadedFile-info {
-    width: 80%;
+    /*width: 80%;*/
+    width: 30%;
     margin: auto;
     color: #A8A8A8;
     font-size: 13px;
