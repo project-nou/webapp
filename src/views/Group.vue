@@ -845,15 +845,13 @@ export default {
       let typeFileSend = file.type.split('/')[1]
       // Verify if type exist in our array
       if (!authorizedTypeFile.includes(typeFileSend)) {
-        alert('STP envoie un fichier text, pdf, jpg ou png bro');
-        // TODO : display an dialogue error or snackbar error
+        this.snackbarMessageException('error', 'STP envoie un fichier text, pdf, jpg ou png bro');
         this.dragging = false;
         return;
       }
       // Verify size file
       if (file.size > 5000000) {
-        alert('STP verifie la taille de ton fichier bro, il depasse 5 MB.')
-        // TODO : display an dialogue error or snackbar error
+        this.snackbarMessageException('error', 'STP verifie la taille de ton fichier bro, il depasse 5 MB.');
         this.dragging = false;
         return;
       }
