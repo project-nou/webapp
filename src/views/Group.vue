@@ -435,6 +435,16 @@
                                   mdi-download
                                 </v-icon>
                               </v-btn>
+                              <v-btn
+                                color="transparent"
+                                icon
+                                @click="deleteFile(file.id)"
+                              >
+                                <v-icon
+                                  color="success">
+                                  mdi-close
+                                </v-icon>
+                              </v-btn>
                             </v-img>
                           </v-card>
                         </div>
@@ -456,6 +466,16 @@
                                 <v-icon
                                     color="success">
                                   mdi-download
+                                </v-icon>
+                              </v-btn>
+                              <v-btn
+                                color="transparent"
+                                icon
+                                @click="deleteFile(file.id)"
+                              >
+                                <v-icon
+                                  color="success">
+                                  mdi-close
                                 </v-icon>
                               </v-btn>
                             </v-img>
@@ -877,6 +897,7 @@ export default {
           author: response.data.author,
           url: 'https://res.cloudinary.com/doekqrsf4/image/upload/v1644856207/' + this.groupeName + '/' + this.idGroup + '/' + response.data.content
         })
+        this.snackbarMessageException('success', `Le fichier a bien été ajouté.`);
       })
       .catch((error) => {
         console.log(error);
@@ -886,6 +907,36 @@ export default {
     // Delete file send by user
     removeFile() {
       this.file = '';
+    },
+    // Delete file to Cloud
+    deleteFile(noteId) {
+      console.log(this.files);
+
+      // Counter equal array index value
+      let count = 0;
+      this.files.map(el => {
+        if (el.id === noteId) {
+          axios.delete(`http://127.0.0.1:8000/note/${this.idGroup}/${noteId}`)
+            .then((response) => {
+              console.log(response);
+              this.snackbarMessageException('success', `Le fichier a bien été supprimé.`);
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+          // Remove value in array
+          this.files.splice(count, 1);
+        }
+        count ++;
+      })
+      //
+      // axios.delete(`http://127.0.0.1:8000/note/${this.idGroup}/${noteId}`)
+      // .then((response) => {
+      //   console.log(response);
+      // })
+      // .catch((error) => {
+      //   console.log(error);
+      // })
     },
     // Exception snackbar
     snackbarMessageException(type, message) {
