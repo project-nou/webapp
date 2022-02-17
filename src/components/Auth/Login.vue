@@ -18,7 +18,7 @@
       </v-col>
 
       <!-- Login Form -->
-      <v-col class="col-md-4 offset-md-2">
+      <v-col class="col-md-6">
         <v-img
           lazy-src="@/assets/user.png"
           width="50"
@@ -26,7 +26,6 @@
           class="user_logo mt-15"
         ></v-img>
         <p class="text-h2 white--text font-weight-thin hello_text mt-10"> HELLO !</p>
-
         <v-form
           ref="form"
           v-model="valid"

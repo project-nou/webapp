@@ -6,7 +6,7 @@
             lazy-src="@/assets/nou2.png"
             width="250"
             src="@/assets/nou2.png"
-            class="user_logo mt-16"
+            class="user_logo"
         >
         </v-img>
         <h1 class="text-center white--text text-uppercase">Inscription !</h1>
@@ -14,7 +14,7 @@
 
       <!-- Content -->
       <v-col class="col-md-6 mt-16">
-        <v-card class="ma-10 card_register">
+        <v-card class="card_register">
           <v-img
             lazy-src="@/assets/user.png"
             width="50"
@@ -44,7 +44,6 @@
                     required
                     clearable
                     clear-icon="mdi-close-circle"
-                    filled
                     class="mt-8"
                     color="orange"
                   ></v-text-field>
@@ -61,7 +60,6 @@
                 ></v-img>
                 <v-list-item-title class="ml-10">
                   <v-text-field
-                    filled
                     class="mt-8"
                     color="orange"
                     v-model="username"
@@ -90,7 +88,6 @@
                     required
                     clearable
                     clear-icon="mdi-close-circle"
-                    filled
                     class="mt-8"
                     color="orange"
                     v-model="password"
@@ -186,7 +183,7 @@ export default {
   .ynov_logo,
   .project_logo{
     width: 50%;
-    margin: auto;
+    margin: 200px auto auto auto;
   }
   .logo_to_bottom{
     width: 25%;
@@ -197,6 +194,7 @@ export default {
     background-color: transparent !important;
     padding: 10px;
     border-radius: 20px !important;
+    box-shadow: none;
   }
   #email_field,
   #password_field,
