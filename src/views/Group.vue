@@ -515,12 +515,11 @@ export default {
   },
   beforeMount() {
     this.getOneGroup(this.idGroup);
+    this.getUsersFromGroup();
   },
   mounted() {
-    this.getUsersFromGroup();
     this.getAllNotesText();
     this.getAllNotesFile();
-    this.getAuthorizedUserToGroup();
     this.getAllFiles();
   },
   methods: {
@@ -700,22 +699,33 @@ export default {
             ;
           });
     },
-    getUsersFromGroup: function () {
-      axios.get('https://localhost:8000/group/' + this.idGroup + '/users')
+    getUsersFromGroup() {
+      axios.get('http://localhost:8000/group/' + this.$route.params.id + '/users')
         .then((response) => {
           const participants = response.data.groups[0].participants;
           const admin = response.data.groups[0].admin;
-          for (var i = 0; i < participants.length; i++) {
-            if (participants[i].id == admin.id) {
+          for (let i = 0; i < participants.length; i++) {
+            if (participants[i].id !== admin.id) {
+              this.authorizedUser.push({
+                username: participants[i].username,
+                id: participants[i].id
+              });
+            } else {
               this.adminUsername = admin.username;
             }
-            else  {
-              this.authorizedUser.push({username: participants[i].username, id: participants[i].id});
-            }
           }
+          this.verifyIfUserInGroup()
         });
     },
-
+    verifyIfUserInGroup() {
+      let usernames = [];
+      this.authorizedUser.map((el) => {
+        usernames.push(el.username)
+      })
+      if (!usernames.includes(jwt_decode(localStorage.getItem('token')).username) && this.adminUsername !== jwt_decode(localStorage.getItem('token')).username) {
+        this.$router.push('/my_groups')
+      }
+    },
     inviteUser() {
       const email = this.email;
       axios.get('http://localhost:8000/users/' + email + '/groupes/' + this.idGroup + '/sendInvit')
