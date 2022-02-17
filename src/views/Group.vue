@@ -1019,43 +1019,25 @@ export default {
     },
     // Delete file to Cloud
     deleteFile(noteId, typeFile) {
-      if (typeFile !== 'pdf') {
-        // Counter equal array index value
-        let count = 0;
-        this.filesImage.map(el => {
-          if (el.id === noteId) {
-            axios.delete(`http://127.0.0.1:8000/note/${this.idGroup}/${noteId}`)
-              .then((response) => {
-                console.log(response);
-                this.snackbarMessageException('success', `Le fichier a bien été supprimé.`);
-              })
-              .catch((error) => {
-                console.log(error);
-              })
-            // Remove value in array
-            this.filesImage.splice(count, 1);
-          }
-          count ++;
-        })
-      } else {
-        // Counter equal array index value
-        let count = 0;
-        this.filesPdf.map(el => {
-          if (el.id === noteId) {
-            axios.delete(`http://127.0.0.1:8000/note/${this.idGroup}/${noteId}`)
-              .then((response) => {
-                console.log(response);
-                this.snackbarMessageException('success', `Le fichier a bien été supprimé.`);
-              })
-              .catch((error) => {
-                console.log(error);
-              })
-            // Remove value in array
-            this.filesPdf.splice(count, 1);
-          }
-          count ++;
-        })
-      }
+      let arrayToMap;
+      typeFile === 'pdf' ? arrayToMap = this.filesPdf : arrayToMap = this.filesImage;
+      // Counter equal array index value
+      let count = 0;
+      arrayToMap.map(el => {
+        if (el.id === noteId) {
+          axios.delete(`http://127.0.0.1:8000/note/${this.idGroup}/${noteId}`)
+            .then((response) => {
+              console.log(response);
+              this.snackbarMessageException('success', `Le fichier a bien été supprimé.`);
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+          // Remove value in array
+          arrayToMap.splice(count, 1);
+        }
+        count ++;
+      })
     },
     // Exception snackbar
     snackbarMessageException(type, message) {
