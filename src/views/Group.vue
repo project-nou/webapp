@@ -8,8 +8,8 @@
         </v-col>
 
         <v-col class="col-md-10 pb-0">
+          <!-- Auhtorized user -->
           <div class="authorized_user text-right pt-5 pr-5">
-            <!-- Auhtorized user -->
             <v-btn
                 class="authorized_user_content"
                 fab x-small outlined color="orange"
@@ -76,113 +76,6 @@
                     </v-btn>
 
                     <v-btn color="red darken-1" text @click="reset">
-                      Fermer
-                    </v-btn>
-                  </v-card-actions>
-                </v-form>
-              </v-container>
-
-            </v-card>
-          </v-dialog>
-
-          <!-- Form Add content task -->
-          <v-dialog v-model="dialog_task" max-width="390">
-            <v-card class="form_add_user_to_group">
-              <v-card-title class="text-h5 white--text">
-                Ajouter une tâche
-              </v-card-title>
-
-              <v-card-text class="white--text font-weight-thin">
-                Ajouter une tâche à faire pour les membres du groupe
-              </v-card-text>
-
-              <v-container class="container--fluid">
-                <v-form
-                    ref="form_task"
-                    v-model="valid_task"
-                    lazy-validation
-                >
-                  <v-list id="task_content">
-                    <v-list-item>
-                      <v-img
-                          lazy-src="@/assets/icons/plus.png"
-                          width="40"
-                          src="@/assets/icons/plus.png"
-                      ></v-img>
-                      <v-list-item-title class="ml-10">
-                        <v-textarea
-                            v-model="content_task"
-                            label="Contenu de la tâche"
-                            required
-                            color="orange"
-                            clearable
-                            clear-icon="mdi-close-circle"
-                        ></v-textarea>
-                      </v-list-item-title>
-                    </v-list-item>
-                  </v-list>
-
-                  <v-card-actions class="mt-10">
-                    <v-spacer></v-spacer>
-                    <v-btn
-                        color="green darken-1"
-                        text
-                        :disabled="!valid_task"
-                        @click="validate_task"
-                    >
-                      Ajouter
-                    </v-btn>
-
-                    <v-btn color="red darken-1" text @click="reset_task">
-                      Fermer
-                    </v-btn>
-                  </v-card-actions>
-                </v-form>
-              </v-container>
-
-            </v-card>
-          </v-dialog>
-
-          <!--          Form update content-->
-          <v-dialog v-model="dialog_update" max-width="390">
-            <v-card class="form_add_user_to_group">
-              <v-card-title class="text-h5 white--text">
-                Modifier le contenu de la tâche
-              </v-card-title>
-
-              <v-container class="container--fluid">
-                <v-form
-                    ref="form_update"
-                    v-model="valid_update"
-                    lazy-validation
-                >
-                  <v-list id="task_content">
-                    <v-list-item>
-                      <v-list-item-title class="ml-10">
-                        <v-textarea
-                            v-model="content_update"
-                            label="Contenu de la tâche"
-                            required
-                            color="orange"
-                            clearable
-                            clear-icon="mdi-close-circle"
-                        ></v-textarea>
-                      </v-list-item-title>
-                    </v-list-item>
-                  </v-list>
-
-                  <v-card-actions class="mt-10">
-                    <v-spacer></v-spacer>
-                    <v-btn
-                        color="green darken-1"
-                        text
-                        :disabled="!valid_update"
-                        @click="update_task(idToUpdate, content_update, is_done_note)"
-                    >
-                      Modifier
-                    </v-btn>
-
-                    <v-btn color="red darken-1" text @click="reset_update">
                       Fermer
                     </v-btn>
                   </v-card-actions>
@@ -401,6 +294,113 @@
                         </div>
                       </v-col>
                     </v-row>
+
+                    <!-- Form Add content task -->
+                    <v-dialog v-model="dialog_task" max-width="390">
+                      <v-card class="form_add_user_to_group">
+                        <v-card-title class="text-h5 white--text">
+                          Ajouter une tâche
+                        </v-card-title>
+
+                        <v-card-text class="white--text font-weight-thin">
+                          Ajouter une tâche à faire pour les membres du groupe
+                        </v-card-text>
+
+                        <v-container class="container--fluid">
+                          <v-form
+                            ref="form_task"
+                            v-model="valid_task"
+                            lazy-validation
+                          >
+                            <v-list id="task_content">
+                              <v-list-item>
+                                <v-img
+                                  lazy-src="@/assets/icons/plus.png"
+                                  width="40"
+                                  src="@/assets/icons/plus.png"
+                                ></v-img>
+                                <v-list-item-title class="ml-10">
+                                  <v-textarea
+                                    v-model="content_task"
+                                    label="Contenu de la tâche"
+                                    required
+                                    color="orange"
+                                    clearable
+                                    clear-icon="mdi-close-circle"
+                                  ></v-textarea>
+                                </v-list-item-title>
+                              </v-list-item>
+                            </v-list>
+
+                            <v-card-actions class="mt-10">
+                              <v-spacer></v-spacer>
+                              <v-btn
+                                color="green darken-1"
+                                text
+                                :disabled="!valid_task"
+                                @click="validate_task"
+                              >
+                                Ajouter
+                              </v-btn>
+
+                              <v-btn color="red darken-1" text @click="reset_task">
+                                Fermer
+                              </v-btn>
+                            </v-card-actions>
+                          </v-form>
+                        </v-container>
+
+                      </v-card>
+                    </v-dialog>
+
+                    <!-- Form update content -->
+                    <v-dialog v-model="dialog_update" max-width="390">
+                      <v-card class="form_add_user_to_group">
+                        <v-card-title class="text-h5 white--text">
+                          Modifier le contenu de la tâche
+                        </v-card-title>
+
+                        <v-container class="container--fluid">
+                          <v-form
+                            ref="form_update"
+                            v-model="valid_update"
+                            lazy-validation
+                          >
+                            <v-list id="task_content">
+                              <v-list-item>
+                                <v-list-item-title class="ml-10">
+                                  <v-textarea
+                                    v-model="content_update"
+                                    label="Contenu de la tâche"
+                                    required
+                                    color="orange"
+                                    clearable
+                                    clear-icon="mdi-close-circle"
+                                  ></v-textarea>
+                                </v-list-item-title>
+                              </v-list-item>
+                            </v-list>
+
+                            <v-card-actions class="mt-10">
+                              <v-spacer></v-spacer>
+                              <v-btn
+                                color="green darken-1"
+                                text
+                                :disabled="!valid_update"
+                                @click="update_task(idToUpdate, content_update, is_done_note)"
+                              >
+                                Modifier
+                              </v-btn>
+
+                              <v-btn color="red darken-1" text @click="reset_update">
+                                Fermer
+                              </v-btn>
+                            </v-card-actions>
+                          </v-form>
+                        </v-container>
+
+                      </v-card>
+                    </v-dialog>
                   </v-col>
 
                   <!-- Divider -->
@@ -413,6 +413,7 @@
                     <v-row>
                       <h2 class="orange_personalize--text font-weight-thin">Fichiers déposés</h2>
                     </v-row>
+                    <!-- List file group -->
                     <v-row>
                       <div v-for="file in files" :key="file.note_id">
                         <div v-if="file.url.split('.').pop() !== 'pdf'">
@@ -463,6 +464,35 @@
                             </v-card-text>
                           </v-card>
                         </div>
+                      </div>
+                    </v-row>
+                    <!-- Drag and drop file -->
+                    <v-row>
+                      <div v-if="!file" id="content_drag_and_drop">
+                        <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
+                          <div class="dropZone-info" @drag="onChange">
+                            <span class="fa fa-cloud-upload dropZone-title"></span>
+                            <div class="icon_upload"><v-icon x-large>mdi-cloud-upload-outline</v-icon></div>
+                            <span class="dropZone-title">Drop ton fichier ou clique dans la zone</span>
+                            <div class="dropZone-upload-limit-info">
+                              <div>extension supportées: PDF, JPG, JPEG, PNG</div>
+                              <div>taille fichier max: 5 MB</div>
+                            </div>
+                          </div>
+                          <input type="file" @change="onChange">
+                        </div>
+                      </div>
+                      <div v-else class="dropZone-uploaded">
+                        <div class="dropZone-uploaded-info">
+                          <button type="button" class="btn btn-primary uploadFile font-weight-thin" @click="uploadFile">Envoyer le fichier</button>
+                          <button type="button" class="dropZone-title btn btn-primary removeFile font-weight-thin" @click="removeFile">Supprimer le fichier</button>
+                        </div>
+                      </div>
+
+                      <div class="uploadedFile-info font-weight-thin">
+                        <div>Nom du fichier: {{ file.name }}</div>
+                        <div>Taille(bytes): {{ file.size }}</div>
+                        <div>Extension：{{ extension }}</div>
                       </div>
                     </v-row>
                   </v-col>
@@ -516,9 +546,10 @@ export default {
       idGroup: this.$route.params.id,
       authorizedUser: [],
       isAdminOfGroup: true,
-      user: {
-        name: '',
-      },
+      username: undefined,
+      // user: {
+      //   name: '',
+      // },
       valid: true,
       valid_task: true,
       valid_update: true,
@@ -535,18 +566,30 @@ export default {
       ],
       snackbarMessage: undefined,
       color: undefined,
+      file: '',
+      dragging: false
     };
   },
   beforeMount() {
     this.getOneGroup(this.idGroup);
   },
   mounted() {
+    this.getUser();
     this.getAllNotesText();
     this.getAllNotesFile();
     this.getAuthorizedUserToGroup();
     this.getAllFiles();
   },
+  computed: {
+    extension() {
+      return (this.file) ? this.file.name.split('.').pop() : '';
+    }
+  },
   methods: {
+    // Get user
+    getUser() {
+      this.username = localStorage.getItem('username');
+    },
     selection(item) {
       return item;
     },
@@ -684,7 +727,7 @@ export default {
     addContentTask(content) {
       let formdata = new FormData();
       formdata.append('group', this.group[0].name);
-      formdata.append('author', 'luc'); // TODO : get username in token
+      formdata.append('author', this.username); // TODO : get username in token
       formdata.append('format', 'text');
       formdata.append('content', content);
       formdata.append('group_id', this.group[0].id);
@@ -781,6 +824,39 @@ export default {
       this.filesGroup.push({ name: 'test.pdf' });
       // });
     },
+    onChange(e) {
+      let files = e.target.files || e.dataTransfer.files;
+
+      if (!files.length) {
+        this.dragging = false;
+        return;
+      }
+
+      this.createFile(files[0]);
+    },
+    createFile(file) {
+      if (!file.type.match('text.*')) {
+        alert('please select txt file');
+        this.dragging = false;
+        return;
+      }
+
+      if (file.size > 5000000) {
+        alert('please check file size no over 5 MB.')
+        this.dragging = false;
+        return;
+      }
+
+      this.file = file;
+      console.log(this.file);
+      this.dragging = false;
+    },
+    uploadFile() {
+
+    },
+    removeFile() {
+      this.file = '';
+    },
     // Exception snackbar
     snackbarMessageException(type, message) {
       this.snackbarMessage = message;
@@ -800,101 +876,201 @@ export default {
 </script>
 
 <style scoped>
-.group_view {
-  height: calc(100vh - 100px);
-}
-
-.logo_project {
-  width: 75px;
-  position: fixed;
-  bottom: 40px;
-  right: 40px;
-}
-
-.authorized_user {
-  position: absolute;
-  right: 25px;
-}
-
-.authorized_user_content {
-  background-color: #575c5d;
-  margin-left: -10px;
-}
-
-.form_add_user_to_group {
-  background-color: #575c5d !important;
-  border: 1px solid #ccc;
-}
-
-#email_field, #task_content {
-  background-color: transparent;
-}
-
-.orange_personalize--text {
-  color: #E57750;
-}
-
-.group_information {
-  display: block ruby;
-}
-
-.settings_btn {
-  border: none;
-}
-
-.settings_btn:hover {
-  background-color: rgba(229, 119, 80, 0.3);
-}
-
-.title_task {
-  color: white;
-}
-
-/*.drop-in {*/
-/*  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);*/
-/*}*/
-.add_task {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-.add_task_text_content {
-  width: 80%;
-  margin: auto;
-  background-color: transparent;
-}
-
-.content_list {
-  border-right: 1px solid #E57750;
-  width: 250px;
-  min-height: 10vh;
-  max-height: 55vh;
-  overflow-y: auto;
-}
-
-.text_add_task {
-  font-size: 12px;
-}
-
-.dropdown_action {
-  background-color: #2F3437 !important;
-  border: 1px solid #fff !important;
-  border-radius: 12px !important;
-}
-
-.dropdown_action_text {
-  color: white;
-  margin-left: 10px;
-}
-
-.link_action_group:hover {
-  background-color: rgba(229, 119, 80, 0.4);
-}
-
-.div-pdf {
-  margin-top: 30px;
+  .group_view {
+    height: calc(100vh - 100px);
   }
+
+  .logo_project {
+    width: 75px;
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+  }
+
+  .authorized_user {
+    position: absolute;
+    right: 25px;
+  }
+
+  .authorized_user_content {
+    background-color: #575c5d;
+    margin-left: -10px;
+  }
+
+  .form_add_user_to_group {
+    background-color: #575c5d !important;
+    border: 1px solid #ccc;
+  }
+
+  #email_field, #task_content {
+    background-color: transparent;
+  }
+
+  .orange_personalize--text {
+    color: #E57750;
+  }
+
+  .group_information {
+    display: block ruby;
+  }
+
+  .settings_btn {
+    border: none;
+  }
+
+  .settings_btn:hover {
+    background-color: rgba(229, 119, 80, 0.3);
+  }
+
+  .title_task {
+    color: white;
+  }
+
+  /*.drop-in {*/
+  /*  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);*/
+  /*}*/
+  .add_task {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+
+  .add_task_text_content {
+    width: 80%;
+    margin: auto;
+    background-color: transparent;
+  }
+
+  .content_list {
+    border-right: 1px solid #E57750;
+    width: 250px;
+    min-height: 10vh;
+    max-height: 55vh;
+    overflow-y: auto;
+  }
+
+  .text_add_task {
+    font-size: 12px;
+  }
+
+  .dropdown_action {
+    background-color: #2F3437 !important;
+    border: 1px solid #fff !important;
+    border-radius: 12px !important;
+  }
+
+  .dropdown_action_text {
+    color: white;
+    margin-left: 10px;
+  }
+
+  .link_action_group:hover {
+    background-color: rgba(229, 119, 80, 0.4);
+  }
+
+  .div-pdf {
+    margin-top: 30px;
+    }
+  /* Drag and drop file */
+  #content_drag_and_drop {
+    width: 100%;
+  }
+  .dropZone {
+    width: 80%;
+    height: 200px;
+    position: relative;
+    border: 2px dashed #eee;
+    margin: auto;
+  }
+
+  .dropZone:hover {
+    border: 1px solid rgba(229, 119, 80, 0.4);
+  }
+
+  .dropZone:hover .dropZone-title {
+    color: #E57750;
+  }
+
+  .dropZone:hover > .dropZone-info .icon_upload i{
+    color: #E57750 !important;
+  }
+
+  .icon_upload i{
+    color: #787878 !important;
+  }
+
+  .dropZone-info {
+    font-size: 12px;
+    color: #A8A8A8;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    transform: translate(0, -50%);
+    text-align: center;
+  }
+
+  .dropZone-title {
+    color: #787878;
+  }
+
+  .dropZone input {
+    position: absolute;
+    cursor: pointer;
+    top: 0px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+  }
+
+  .dropZone-upload-limit-info {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+  }
+
+  .dropZone-over {
+    background: #5C5C5C;
+    opacity: 0.8;
+  }
+
+  .dropZone-uploaded {
+    width: 80%;
+    height: 200px;
+    position: relative;
+    border: 2px dashed #eee;
+    margin: auto;
+  }
+
+  .dropZone-uploaded-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #A8A8A8;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    transform: translate(0, -50%);
+    text-align: center;
+  }
+
+  .uploadedFile-info {
+    width: 80%;
+    margin: auto;
+    color: #A8A8A8;
+    font-size: 13px;
+  }
+
+  .removeFile, .uploadFile{
+     width: 200px;
+   }
+
+  .removeFile:hover, .uploadFile:hover{
+    color: #E57750
+  }
+  /* Drag and drop file */
 </style>
 
 <style scoped lang="scss">
