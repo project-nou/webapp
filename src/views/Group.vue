@@ -108,7 +108,7 @@
                 <v-list class="dropdown_action" width="250">
                   <v-list-item
                       link class="link_action_group"
-                      @click="leaveGroup(username, 1)">
+                      @click="leaveGroup()">
                     <v-img width="18px"
                            src="@/assets/icons/leave.png">
                     </v-img>
@@ -542,6 +542,7 @@ import Menu from '@/components/Menu/Menu.vue';
 import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
 import axios from 'axios';
 import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
+import jwt_decode from 'jwt-decode';
 
 export default {
   name: 'Group',
@@ -568,9 +569,6 @@ export default {
       authorizedUser: [],
       isAdminOfGroup: true,
       username: undefined,
-      // user: {
-      //   name: '',
-      // },
       valid: true,
       valid_task: true,
       valid_update: true,
@@ -827,17 +825,17 @@ export default {
             fURL.click();
           });
     },
-    // Leave group
-    leaveGroup(user, idGroup) {
-      console.log(user, idGroup);
-      // this.axios.delete(`/user=${user}&idGroup=${idGroup}`)
-      //   .then((response) => {
-      //     console.log(response.data);
-      this.snackbarMessageException('success', 'Vous avez quitté le groupe avec succès');
-      this.$router.push({ path: '/my_groups' });
-      //   });
+    leaveGroup() {
+      axios
+        .delete('http://localhost:8000/user/' + jwt_decode(localStorage.getItem('token')).user_id + '/group/' + this.group[0].id + '/leave')
+        .then(() => {
+          this.snackbarMessageException('success', 'Vous avez quitté le groupe avec succes');
+          this.$router.push('/my_groups');
+        })
+        .catch(() => {
+          this.snackbarMessageException('error', 'Une erreur est survenue');
+        });
     },
-    // Get all files
     getAllFiles() {
       // this.axios.get(`/idGroup=${this.idGroup}`)
       //   .then((response) => {
