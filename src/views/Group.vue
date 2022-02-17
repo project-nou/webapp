@@ -929,14 +929,6 @@ export default {
         }
         count ++;
       })
-      //
-      // axios.delete(`http://127.0.0.1:8000/note/${this.idGroup}/${noteId}`)
-      // .then((response) => {
-      //   console.log(response);
-      // })
-      // .catch((error) => {
-      //   console.log(error);
-      // })
     },
     // Exception snackbar
     snackbarMessageException(type, message) {
