@@ -454,6 +454,7 @@ import Menu from '@/components/Menu/Menu.vue';
 import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
 import axios from 'axios';
 import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
+import jwt_decode from 'jwt-decode';
 
 export default {
   name: 'Group',
@@ -635,7 +636,7 @@ export default {
     addContentTask(content) {
       let formdata = new FormData();
       formdata.append('group', this.group[0].name)
-      formdata.append('author', 'luc') // TODO : get username in token
+      formdata.append('author', jwt_decode(localStorage.getItem('token')).username) // TODO : get username in token
       formdata.append('format', 'text')
       formdata.append('content', content)
       formdata.append('group_id', this.group[0].id)
