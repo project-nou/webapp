@@ -10,52 +10,44 @@
         <v-col class="col-md-10 pb-0">
           <div class="authorized_user text-right pt-5 pr-5">
             <!-- Auhtorized user -->
-
-
-
-            <v-menu open-on-hover top offset-y>
-              <template v-slot:activator="{ on, attrs }">
+            <v-tooltip>
+                <template v-slot:activator="{ on, attrs }">
                   <v-btn class="authorized_user_content"
-                         fab x-small outlined color="orange"
+                         fab small outlined color="orange"
                          v-bind="attrs" v-on="on">
-                  <div
-                    class="crown"
-                  >
-                    <v-img
-                      lazy-src="@/assets/icons/crown-outline.png"
-                      width="15"
-                      src="@/assets/icons/crown-outline.png"
-                    ></v-img>
-                  </div>
-                  {{ adminUsername.charAt(0) }}
-                </v-btn>
-              </template>
-              <div style="font-size: 10px; color: white; margin-top: 40px;">
-                    {{ adminUsername }}
-              </div>
-            </v-menu>
+                    <div
+                        class="crown"
+                    >
+                      <v-img
+                          lazy-src="@/assets/icons/crown-outline.png"
+                          width="15"
+                          src="@/assets/icons/crown-outline.png"
+                      ></v-img>
+                    </div>
+                    {{ adminUsername.charAt(0) }}
+                  </v-btn>
+                </template>
+              <span>{{ adminUsername }}</span>
+            </v-tooltip>
 
-            <v-menu open-on-hover top offset-y>
+            <v-tooltip v-for="user in authorizedUser" :key="user.username">
               <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                  class="authorized_user_content"
-                  fab x-small outlined color="blue"
-                  v-for="user in authorizedUser" :key="user.username"
-                  v-bind="attrs" v-on="on"
+                <v-btn
+                    class="authorized_user_content"
+                    fab small outlined color="blue"
+                    v-bind="attrs" v-on="on"
                 >
                   {{ user.username.charAt(0) }}
                 </v-btn>
               </template>
-              <div style="font-size: 10px; color: white; margin-top: 40px;">
-                {{ user.username }}
-              </div>
-            </v-menu>
+              <span>{{ user.username }}</span>
+            </v-tooltip>
 
             <!-- Add user -->
             <v-btn
-              @click.stop="dialog = true"
-              class="authorized_user_content"
-              fab x-small outlined color="white">
+                @click.stop="dialog = true"
+                class="authorized_user_content"
+                fab small outlined color="white">
               +
             </v-btn>
           </div>
@@ -503,7 +495,7 @@ export default {
       selectedList: 0,
       content_task: '',
       content_update: '',
-      adminUsername: "",
+      adminUsername: '',
       idGroup: this.$route.params.id,
       authorizedUser: [],
       isAdminOfGroup: false,
@@ -716,29 +708,29 @@ export default {
     },
     getUsersFromGroup() {
       axios.get('http://localhost:8000/group/' + this.$route.params.id + '/users')
-        .then((response) => {
-          const participants = response.data.groups[0].participants;
-          const admin = response.data.groups[0].admin;
-          for (let i = 0; i < participants.length; i++) {
-            if (participants[i].id !== admin.id) {
-              this.authorizedUser.push({
-                username: participants[i].username,
-                id: participants[i].id
-              });
-            } else {
-              this.adminUsername = admin.username;
+          .then((response) => {
+            const participants = response.data.groups[0].participants;
+            const admin = response.data.groups[0].admin;
+            for (let i = 0; i < participants.length; i++) {
+              if (participants[i].id !== admin.id) {
+                this.authorizedUser.push({
+                  username: participants[i].username,
+                  id: participants[i].id
+                });
+              } else {
+                this.adminUsername = admin.username;
+              }
             }
-          }
-          this.verifyIfUserInGroup()
-        });
+            this.verifyIfUserInGroup();
+          });
     },
     verifyIfUserInGroup() {
       let usernames = [];
       this.authorizedUser.map((el) => {
-        usernames.push(el.username)
-      })
+        usernames.push(el.username);
+      });
       if (!usernames.includes(jwt_decode(localStorage.getItem('token')).username) && this.adminUsername !== jwt_decode(localStorage.getItem('token')).username) {
-        this.$router.push('/my_groups')
+        this.$router.push('/my_groups');
       }
     },
     inviteUser() {
@@ -753,14 +745,14 @@ export default {
     },
     leaveGroup() {
       axios
-        .delete('http://localhost:8000/user/' + jwt_decode(localStorage.getItem('token')).user_id + '/group/' + this.group[0].id + '/leave')
-        .then(() => {
-          this.snackbarMessageException('success', 'Vous avez quitté le groupe avec succes');
-          this.$router.push('/my_groups');
-        })
-        .catch(() => {
-          this.snackbarMessageException('error', 'Une erreur est survenue');
-        });
+          .delete('http://localhost:8000/user/' + jwt_decode(localStorage.getItem('token')).user_id + '/group/' + this.group[0].id + '/leave')
+          .then(() => {
+            this.snackbarMessageException('success', 'Vous avez quitté le groupe avec succes');
+            this.$router.push('/my_groups');
+          })
+          .catch(() => {
+            this.snackbarMessageException('error', 'Une erreur est survenue');
+          });
     },
     getAllFiles() {
       // this.axios.get(`/idGroup=${this.idGroup}`)
@@ -809,7 +801,12 @@ export default {
   background-color: #575c5d;
   margin-left: -10px;
 }
-
+.hover-pseudo {
+  font-size: 10px;
+  color: white;
+  margin-top: 40px;
+  box-shadow: none!important;
+}
 .crown {
   margin-left: -18px;
 }
