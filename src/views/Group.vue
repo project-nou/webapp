@@ -124,7 +124,7 @@
             <v-divider class="white"></v-divider>
 
             <!-- CONTENT -->
-            <v-row class="mt-10">
+            <v-row class="mt-10" id="group_content">
               <v-container fluid class="wrapper">
                 <v-row>
                   <!-- Task -->
@@ -544,6 +544,7 @@ export default {
       content_task: '',
       content_update: '',
       idGroup: this.$route.params.id,
+      groupeName: undefined,
       authorizedUser: [],
       isAdminOfGroup: true,
       username: undefined,
@@ -758,6 +759,7 @@ export default {
     getOneGroup() {
       axios.get('http://localhost:8000/group/' + this.$route.params.id)
           .then((response) => {
+            this.groupeName = response.data.name;
             this.group.push({
               name: response.data.name,
               id: response.data.group_id,
@@ -824,6 +826,7 @@ export default {
       this.filesGroup.push({ name: 'test.pdf' });
       // });
     },
+    // Get event drag
     onChange(e) {
       let files = e.target.files || e.dataTransfer.files;
 
@@ -834,26 +837,55 @@ export default {
 
       this.createFile(files[0]);
     },
+    // Create file send by drag and drop
     createFile(file) {
-      if (!file.type.match('text.*')) {
-        alert('please select txt file');
+      // Authorized type file | plain -> txt type
+      const authorizedTypeFile = ['png', 'jpg', 'jpeg', 'pdf'];
+      // Get type
+      let typeFileSend = file.type.split('/')[1]
+      // Verify if type exist in our array
+      if (!authorizedTypeFile.includes(typeFileSend)) {
+        alert('STP envoie un fichier text, pdf, jpg ou png bro');
+        // TODO : display an dialogue error or snackbar error
         this.dragging = false;
         return;
       }
-
+      // Verify size file
       if (file.size > 5000000) {
-        alert('please check file size no over 5 MB.')
+        alert('STP verifie la taille de ton fichier bro, il depasse 5 MB.')
+        // TODO : display an dialogue error or snackbar error
         this.dragging = false;
         return;
       }
 
       this.file = file;
-      console.log(this.file);
       this.dragging = false;
     },
+    // Register file to cloud
     uploadFile() {
+      const formdata = new FormData();
+      formdata.append('group', this.groupeName);
+      formdata.append('author', this.username);
+      formdata.append('format', 'file');
+      formdata.append('content', 'file');
+      formdata.append('group_id', this.idGroup);
+      formdata.append('file', this.file);
 
+      axios.post('http://127.0.0.1:8000/note', formdata)
+      .then((response) => {
+        this.files.push({
+          filename: response.data.content,
+          id: response.data.note_id,
+          author: response.data.author,
+          url: 'https://res.cloudinary.com/doekqrsf4/image/upload/v1644856207/' + this.groupeName + '/' + this.idGroup + '/' + response.data.content
+        })
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      this.file = '';
     },
+    // Delete file send by user
     removeFile() {
       this.file = '';
     },
@@ -924,6 +956,12 @@ export default {
 
   .title_task {
     color: white;
+  }
+
+  #group_content {
+    max-height: 80vh !important;
+    overflow: auto;
+    overflow-x: hidden;
   }
 
   /*.drop-in {*/
