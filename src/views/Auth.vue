@@ -1,6 +1,5 @@
 <template>
   <div class="auth_view">
-    <HeaderBanner/>
     <div v-if="this.$route.name === 'Login'">
       <Login/>
     </div>

@@ -16,13 +16,13 @@
       </v-list>
     </div>
     <!-- Menu -->
-    <v-list class="action_menu mt-15" height="420">
+    <v-list class="action_menu mt-15" height="120">
 
       <v-list-item
         v-for="(item, index) in items"
         :key="index"
         link
-        class="link_action_menu active"
+        class="link_action_menu"
         :to="item.link"
       >
         <v-img
@@ -50,8 +50,8 @@
     <div class="logo_content">
       <v-img
         class="logo_ynov"
-        lazy-src="@/assets/informatique.png"
-        src="@/assets/informatique.png"
+        lazy-src="@/assets/nou.png"
+        src="@/assets/nou.png"
       ></v-img>
     </div>
 
