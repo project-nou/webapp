@@ -10,32 +10,47 @@
         <v-col class="col-md-10 pb-0">
           <div class="authorized_user text-right pt-5 pr-5">
             <!-- Auhtorized user -->
+
+
+
+            <v-menu open-on-hover top offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                  <v-btn class="authorized_user_content"
+                         fab x-small outlined color="orange"
+                         v-bind="attrs" v-on="on">
+                  <div
+                    class="crown"
+                  >
+                    <v-img
+                      lazy-src="@/assets/icons/crown-outline.png"
+                      width="15"
+                      src="@/assets/icons/crown-outline.png"
+                    ></v-img>
+                  </div>
+                  {{ adminUsername.charAt(0) }}
+                </v-btn>
+              </template>
+              <div style="font-size: 10px; color: white; margin-top: 40px;">
+                    {{ adminUsername }}
+              </div>
+            </v-menu>
+
+            <v-menu open-on-hover top offset-y>
+              <template v-slot:activator="{ on, attrs }">
               <v-btn
-              class="authorized_user_content"
-              fab x-small outlined color="orange"
-              >
-                <div
-                  class="crown"
+                  class="authorized_user_content"
+                  fab x-small outlined color="blue"
+                  v-for="user in authorizedUser" :key="user.username"
+                  v-bind="attrs" v-on="on"
                 >
-                  <v-img
-                    lazy-src="@/assets/icons/crown-outline.png"
-                    width="15"
-                    src="@/assets/icons/crown-outline.png"
-                  ></v-img>
-                </div>
-              {{ adminUsername.charAt(0) }}
-            </v-btn>
+                  {{ user.username.charAt(0) }}
+                </v-btn>
+              </template>
+              <div style="font-size: 10px; color: white; margin-top: 40px;">
+                {{ user.username }}
+              </div>
+            </v-menu>
 
-
-
-
-            <v-btn
-              class="authorized_user_content"
-              fab x-small outlined color="blue"
-              v-for="user in authorizedUser" :key="user.username"
-              >
-              {{ user.username.charAt(0) }}
-            </v-btn>
             <!-- Add user -->
             <v-btn
               @click.stop="dialog = true"
