@@ -421,6 +421,7 @@ export default {
     this.getOneGroup(this.idGroup);
   },
   mounted() {
+    this.getUsersFromGroup();
     this.getAllNotesText();
     this.getAllNotesFile();
     this.getAuthorizedUserToGroup();
@@ -531,15 +532,20 @@ export default {
       this.dialog_task = false;
     },
     getOneGroup() {
-      axios.get('http://localhost:8000/group/' + this.$route.params.id)
+      axios.get('https://localhost:8000/group/' + this.$route.params.id)
         .then((response) => {
           this.group.push({ name: response.data.name, id: response.data.group_id, admin: response.data.admin });;
         });
     },
-    getAuthorizedUserToGroup() {
-      this.authorizedUser.push({ username: 'Luca Sardellitti', id: 1 });
-      this.authorizedUser.push({ username: 'Florian Berrot', id: 2 });
-      this.authorizedUser.push({ username: 'Antoine Mousset', id: 3 });
+
+    getUsersFromGroup() {
+      axios.get('https://localhost:8000/group/' + this.idGroup + '/users')
+        .then((response) => {
+          const participants = response.data.groups[0].participants;
+          for (var i = 0; i < participants.length; i++) {
+            this.authorizedUser.push({ username: participants[i].username, id: participants[i].id });
+            }
+        });
     },
 
     inviteUser() {
