@@ -1336,6 +1336,7 @@ export default {
       justify-content: center;
       text-align: center;
       position: relative;
+      cursor: pointer;
 
       &.selected {
         border: 2px solid white;
