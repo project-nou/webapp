@@ -178,7 +178,7 @@
                                   :key="item.content"
                               >
                                 <div class="content_note_text">
-                                  <p class="ml-4">{{ item.content }}</p>
+                                  <p>{{ item.content }}</p>
                                   <div class="btn_action_note_text">
                                     <v-btn
                                       class="btn_set"
@@ -270,7 +270,7 @@
                                   :key="item.content"
                               >
                                 <div class="content_note_text">
-                                  <p class="ml-4">{{ item.content }}</p>
+                                  <p>{{ item.content }}</p>
                                   <div class="btn_action_note_text">
                                     <v-btn
                                       class="btn_set"
@@ -440,7 +440,7 @@
                     <!-- PDF FILE -->
                     <v-row class="mt-6">
                       <div class="file_content">
-                        <div v-for="file in filesPdf" :key="file.note_id" class="mr-4 one_file_content">
+                        <div v-for="file in filesPdf" :key="file.note_id" class="mr-4 pa-2 one_file_content">
                           <p class="title_file">{{ file.filename }}</p>
                           <v-img
                             src="@/assets/icons/pdf-file.png"
@@ -474,7 +474,7 @@
                     <!-- IMAGE FILE -->
                     <v-row class="mt-6">
                       <div class="file_content">
-                        <div v-for="file in filesImage" :key="file.note_id" class="mr-4 one_file_content">
+                        <div v-for="file in filesImage" :key="file.note_id" class="mr-4 pa-2 one_file_content">
                           <p class="title_file">{{ file.filename }}</p>
                           <v-img
                             lazy-src="@/assets/icons/picture.png"
@@ -525,15 +525,23 @@
                       </div>
                       <div v-else class="dropZone-uploaded">
                         <div class="dropZone-uploaded-info">
-                          <button type="button" class="btn btn-primary uploadFile font-weight-thin" @click="uploadFile">Envoyer le fichier</button>
-                          <button type="button" class="dropZone-title btn btn-primary removeFile font-weight-thin" @click="removeFile">Supprimer le fichier</button>
-                        </div>
-                      </div>
+                          <v-row>
+                            <v-col class="uploadedFile-info font-weight-thin ml-2 col-md-6">
+                              <div class="detail_create_file_content">
+                                <div class="mb-4">Nom du fichier: {{ file.name }}</div>
+                                <div class="mb-4">Taille(bytes): {{ file.size }}</div>
+                                <div class="mb-4">Extension：{{ extension }}</div>
+                              </div>
 
-                      <div class="uploadedFile-info font-weight-thin ml-2">
-                        <div class="mb-4">Nom du fichier: {{ file.name }}</div>
-                        <div class="mb-4">Taille(bytes): {{ file.size }}</div>
-                        <div class="mb-4">Extension：{{ extension }}</div>
+                            </v-col>
+                            <v-col class="col-md-5 column_action_file">
+                              <div class="action_create_file_content">
+                                <button type="button" class="btn btn-primary uploadFile font-weight-thin" @click="uploadFile">Envoyer le fichier</button>
+                                <button type="button" class="dropZone-title btn btn-primary removeFile font-weight-thin" @click="removeFile">Supprimer le fichier</button>
+                              </div>
+                            </v-col>
+                          </v-row>
+                        </div>
                       </div>
                     </v-row>
                   </v-col>
@@ -1068,6 +1076,7 @@ export default {
   .content_note_text p{
     width: 100%;
     font-size: 12px;
+    word-wrap: break-word;
   }
 
   .btn_action_note_text {
@@ -1145,6 +1154,10 @@ export default {
   }
   .one_file_content{
     width: 100px;
+    border-radius: 8px;
+  }
+  .one_file_content:hover{
+    background-color: rgba( 229, 119, 80, 0.1);
   }
   .one_file_content .title_file {
     text-align: center;
@@ -1184,8 +1197,7 @@ export default {
   /* List File */
   /* Drag and drop file */
   #content_drag_and_drop {
-    /*width: 100%;*/
-    width: 65%;
+    width: 100%;
   }
   .dropZone {
     /*width: 80%;*/
@@ -1251,7 +1263,7 @@ export default {
   }
 
   .dropZone-uploaded {
-    width: 65%;
+    width: 100%;
     height: 170px;
     /*width: 80%;*/
     /*height: 200px;*/
@@ -1273,11 +1285,18 @@ export default {
   }
 
   .uploadedFile-info {
-    /*width: 80%;*/
-    width: 30%;
-    margin: auto;
+    display: inherit;
     color: #A8A8A8;
     font-size: 13px;
+  }
+
+  .column_action_file{
+    display: inherit;
+  }
+
+  .detail_create_file_content,
+  .action_create_file_content {
+    margin: auto;
   }
 
   .removeFile, .uploadFile{
