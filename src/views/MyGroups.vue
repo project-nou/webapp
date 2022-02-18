@@ -30,15 +30,17 @@
                       :class="{ 'on-hover': hover }"
                       :to='/group/+group.id'
                     >
+                      <small class="ml-2 mt-3 orange_personalize--text" :class="hover ? 'admin-name--hover' : ''" v-if="username !== group.author"> Admin : <strong>{{ group.author }}</strong></small>
                       <!-- Dropdown Action -->
                       <v-menu open-on-hover top offset-y>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn class="group_action" small v-bind="attrs" v-on="on">
+                          <v-img v-if="username === group.author" width="15" class="mt-2 ml-3 admin-logo" :src="require(`@/assets/icons/crown-outline.png`)"></v-img>
+                          <v-btn v-if="username === group.author" class="group_action" small v-bind="attrs" v-on="on">
                             <span class="orange_personalize--text font-weight-bold">. . .</span>
                           </v-btn>
                         </template>
 
-                        <v-list class="dropdown_action" width="250">
+                        <v-list class="dropdown_action" style="box-shadow: none; left: 900Px" width="250">
                           <v-list-item v-for="(item, index) in items" :key="index"
                                        link class="link_action_group"
                                        @click="actionGroup(item.name, group.id, group.name)">
@@ -238,6 +240,8 @@ export default {
   beforeMount() {
     this.getUser()
     this.getAllGroups();
+    console.log(this.username);
+    console.log(this.groups);
   },
   methods: {
     validate() {
@@ -270,7 +274,7 @@ export default {
         .get("http://localhost:8000/groups/"+localStorage.getItem('username'))
         .then((response) => {
           response.data.groups.forEach(el => {
-            this.groups.push({ name: el.group_name, id: el.group_id });
+            this.groups.push({ name: el.group_name, id: el.group_id, author: el.author });
           })
         })
     },
@@ -283,7 +287,7 @@ export default {
       axios.post('http://127.0.0.1:8000/group', data)
         .then((response) => {
           this.snackbarMessageException('success', `Le groupe ${response.data.groupname} a bien été créé.`);
-          this.groups.push({ name: response.data.groupname, id: response.data.group_id })
+          this.groups.push({ name: response.data.groupname, id: response.data.group_id, author: response.data.author})
         })
         .catch((error) => {
           console.log(error)
@@ -452,5 +456,14 @@ export default {
   }
   .orange_personalize--text{
     color: #E57750;
+  }
+  .admin-logo {
+    position: absolute !important;
+  }
+  .admin-name--hover {
+    color: #E57750;
+  }
+  .admin-name {
+    color: white;
   }
 </style>
