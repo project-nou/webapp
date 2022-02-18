@@ -16,23 +16,21 @@
       </v-list>
     </div>
     <!-- Menu -->
-    <v-list class="action_menu mt-15" height="420">
+    <v-list class="action_menu mt-15" height="120">
+
       <v-list-item
         v-for="(item, index) in items"
         :key="index"
         link
-        class="link_action_menu active"
+        class="link_action_menu"
+        :to="item.link"
       >
         <v-img
           width="30px"
-          :src="require(`@/assets/icons/${item.icon}`)"></v-img>
-        <v-list-item-title
-          class="menu_action_text text-h7 ml-7">
-          <router-link :to="item.link">
-            <a class="white--text">
+          :src="require(`@/assets/icons/${item.icon}`)">
+        </v-img>
+        <v-list-item-title class="menu_action_text text-h7 ml-7">
               {{ item.title }}
-            </a>
-          </router-link>
         </v-list-item-title>
       </v-list-item>
 
@@ -52,8 +50,8 @@
     <div class="logo_content">
       <v-img
         class="logo_ynov"
-        lazy-src="@/assets/informatique.png"
-        src="@/assets/informatique.png"
+        lazy-src="@/assets/nou.png"
+        src="@/assets/nou.png"
       ></v-img>
     </div>
 
@@ -65,17 +63,25 @@ export default {
   name: 'Menu',
   data() {
     return {
-      username: 'Luca SARDELLITTI',
-      userEmail: 'luca.sardellit.1995@gmail.com',
+      username: undefined,
+      // userEmail: 'luca.sardellit.1995@gmail.com',
       items: [
         { title: 'Mes groupes', icon: 'folder.png', link: '/my_groups' },
       ],
     };
   },
+  beforeMount() {
+    this.getUser();
+  },
   methods: {
+    // Get user
+    getUser() {
+      this.username = localStorage.getItem('username');
+    },
     // Logout user
     logout() {
-      // TODO : clear le local storage ou le store et rediriger vers le login
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
       this.$router.push({ path: '/login' });
     },
   },

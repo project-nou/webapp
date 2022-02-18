@@ -1,5 +1,5 @@
 <template>
-  <div class="login_view">
+  <div class="login_view mt-16">
     <v-row>
       <v-col class="col-md-5">
         <!-- Logo project -->
@@ -18,7 +18,7 @@
       </v-col>
 
       <!-- Login Form -->
-      <v-col class="col-md-4 offset-md-2">
+      <v-col class="col-md-5 offset-2 pl-10 pr-10">
         <v-img
           lazy-src="@/assets/user.png"
           width="50"
@@ -26,7 +26,6 @@
           class="user_logo mt-15"
         ></v-img>
         <p class="text-h2 white--text font-weight-thin hello_text mt-10"> HELLO !</p>
-
         <v-form
           ref="form"
           v-model="valid"
@@ -36,15 +35,14 @@
           <v-list id="email_field">
             <v-list-item>
               <v-img
-                lazy-src="@/assets/icons/email.png"
+                lazy-src="@/assets/icons/id-card.png"
                 width="40"
-                src="@/assets/icons/email.png"
+                src="@/assets/icons/id-card.png"
               ></v-img>
               <v-list-item-title class="ml-10">
                 <v-text-field
-                  v-model="email"
-                  :rules="emailRules"
-                  label="E-mail"
+                  v-model="username"
+                  label="Username"
                   required
                   color="orange"
                   clearable
@@ -63,6 +61,7 @@
               ></v-img>
               <v-list-item-title  class="ml-10">
                 <v-text-field
+                  v-model="password"
                   type="password"
                   label="Mot de passe"
                   required
@@ -80,6 +79,7 @@
             class="valid_form_login pl-10 pr-10 mt-15"
             :disabled="!valid"
             @click="validate"
+            :loading="loading"
           >
             Se connecter
           </v-btn>
@@ -87,12 +87,14 @@
       </v-col>
     </v-row>
 
-    <SnackbarFailed color="red" message="Email ou mot de passe incorrecte"/>
+    <SnackbarFailed color="red" message="Username ou mot de passe incorrecte"/>
   </div>
 </template>
 
 <script>
 import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
+import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 
 export default {
   name: 'Login',
@@ -104,36 +106,34 @@ export default {
       snackbar: true,
       valid: true,
       password: undefined,
-      email: '',
-      emailRules: [
-        (v) => !!v || 'L\' e-mail est requis',
-        (v) => /.+@.+\..+/.test(v) || 'L\' e-mail doit être valide',
-      ],
+      username: undefined,
+      loading: false,
     };
   },
   methods: {
     // Valid the register form
     validate() {
+      this.loading = true;
       if (this.$refs.form.validate()) {
-        if (this.isExist(/* this.email */)) {
-          this.$router.push({ path: '/my_groups' });
-        } else {
-          this.$root.$emit('SnackbarFailed');
-        }
+        const data = {
+          username: this.username,
+          password: this.password,
+        };
+        axios.post('http://localhost:8000/sign-in', data)
+          .then((response) => {
+            // Decode token
+            const decodedToken = jwt_decode(response.data.token);
+            // Stock in local storage username and token
+            localStorage.token = response.data.token;
+            localStorage.username = decodedToken['username'];
+            // Change route
+            this.$router.push({ path: '/my_groups' });
+          })
+          .catch(() => {
+            this.$root.$emit('SnackbarFailed');
+            this.loading = false;
+          });
       }
-    },
-    // Test if user exist
-    isExist(/* email */) {
-      return true;
-      // this.axios.get(`/email=${email}`)
-      //   .then((response) => {
-      //     console.log(response.data);
-      //     return true;
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //     return false;
-      //   });
     },
   },
 };

@@ -15,7 +15,7 @@
                 <v-divider class="white"></v-divider>
               </div>
 
-              <v-row class="mt-10">
+              <v-row class="mt-10" id="my_groups_content">
                 <!-- All Groups -->
                 <v-col
                   class="col-md-3"
@@ -61,6 +61,56 @@
                     </v-card>
                   </v-hover>
                 </v-col>
+                <!-- Form Edit Group -->
+                <v-dialog v-model="dialogEditGroup" max-width="390">
+                  <v-card class="form_edit_group">
+                    <v-card-title class="text-h5 white--text">
+                      Voulez-vous modifier le groupe ?
+                    </v-card-title>
+
+                    <v-container class="container--fluid">
+                      <v-form
+                        ref="formEdit"
+                        v-model="validEdit"
+                        lazy-validation
+                      >
+                        <v-text-field
+                          v-model="groupSelected"
+                          :counter="20"
+                          :rules="groupNameRules"
+                          label="Nom du groupe"
+                          required
+                          color="white"
+                          clearable
+                          clear-icon="mdi-close-circle"
+                        ></v-text-field>
+
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+
+                          <v-btn
+                            color="green darken-1"
+                            text
+                            :disabled="!validEdit"
+                            @click="validateEdit(groupSelected, groupIdSelected)"
+                          >
+                            Enregistrer
+                          </v-btn>
+
+                          <v-btn
+                            color="red darken-1"
+                            text
+                            @click="resetEdit"
+                          >
+                            Fermer
+                          </v-btn>
+                        </v-card-actions>
+                      </v-form>
+                    </v-container>
+
+                  </v-card>
+                </v-dialog>
+                <!-- Form Edit Group -->
                 <!-- All Groups -->
 
                 <!-- Add Group -->
@@ -72,7 +122,7 @@
                       height="175"
                       :elevation="hover ? 16 : 2"
                       :class="{ 'on-hover': hover }"
-                      @click.stop="dialog = true"
+                      @click.stop="dialogAddGroup = true"
                     >
                       <v-card-text class="text-center pa-0 card_text">
                         <p class="text-h4"> + </p>
@@ -83,7 +133,7 @@
                 </v-col>
 
                 <!-- Form Add Group -->
-                <v-dialog v-model="dialog" max-width="390">
+                <v-dialog v-model="dialogAddGroup" max-width="390">
                   <v-card class="form_add_group">
                     <v-card-title class="text-h5 white--text">
                       Ajouter un nouveau groupe ?
@@ -95,7 +145,7 @@
 
                     <v-container class="container--fluid">
                       <v-form
-                        ref="form"
+                        ref="formAdd"
                         v-model="valid"
                         lazy-validation
                       >
@@ -143,13 +193,6 @@
         </v-row>
       </div>
 
-    <!-- Logo project -->
-    <v-img
-      class="logo_project"
-      lazy-src="@/assets/nou.png"
-      src="@/assets/nou.png"
-    ></v-img>
-
     <SnackbarSuccess :message="snackbarMessage" :color="color"/>
     <SnackbarFailed :message="snackbarMessage" :color="color"/>
   </div>
@@ -159,6 +202,7 @@
 import Menu from '@/components/Menu/Menu.vue';
 import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
 import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
+import axios from 'axios';
 
 export default {
   name: 'MyGroups',
@@ -169,10 +213,14 @@ export default {
   },
   data() {
     return {
-      userEmail: 'luca.sardellit.1995@gmail.com',
+      username: undefined,
       idGroup: undefined,
-      dialog: false,
+      dialogAddGroup: false,
+      dialogEditGroup: false,
       valid: true,
+      validEdit: true,
+      groupSelected: undefined,
+      groupIdSelected: undefined,
       snackbarMessage: undefined,
       color: undefined,
       groupName: undefined,
@@ -182,80 +230,124 @@ export default {
       ],
       groups: [],
       items: [
-        { title: 'Ajouter un fichier', icon: 'plus.png', name: 'addFile' },
         { title: 'Editer', icon: 'edit.png', name: 'edit' },
         { title: 'Supprimer', icon: 'trash-bin.png', name: 'delete' },
       ],
     };
   },
-  created() {
+  beforeMount() {
+    this.getUser()
     this.getAllGroups();
   },
   methods: {
     validate() {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.formAdd.validate()) {
         this.createGroup();
         this.reset();
       }
     },
+    validateEdit(groupName, groupId) {
+      if (this.$refs.formEdit.validate()) {
+        this.editGroup(groupId, groupName);
+        this.resetEdit();
+      }
+    },
     reset() {
-      this.$refs.form.reset();
-      this.dialog = false;
+      this.$refs.formAdd.reset()
+      this.dialogAddGroup = false;
+    },
+    resetEdit() {
+      this.$refs.formEdit.reset()
+      this.dialogEditGroup = false;
+    },
+    // Get user
+    getUser() {
+      this.username = localStorage.getItem('username');
     },
     // Get all group by user
     getAllGroups() {
-      // this.axios.get(`/email=${this.userEmail}`)
-      //   .then((response) => {
-      // console.log(response.data);
-      this.groups.push({ name: 'Ta reum', id: 1 });
-      this.groups.push({ name: 'Double Fuck', id: 2 });
-      this.groups.push({ name: 'Enlécu', id: 3 });
-      console.log(this.groups);
-      // });
+      axios
+        .get("http://localhost:8000/groups/"+localStorage.getItem('username'))
+        .then((response) => {
+          response.data.groups.forEach(el => {
+            this.groups.push({ name: el.group_name, id: el.group_id });
+          })
+        })
     },
     // Create group
     createGroup() {
-      // const data = {
-      //   user: this.userEmail,
-      //   name: this.groupName,
-      // };
-      // this.axios.post('', data)
-      //   .then((response) => {
-      //     console.log(response.data);
-      this.snackbarMessageException('success', `Le groupe ${this.groupName} a bien été créé.`);
-      // this.getAllGroups();
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      // eslint-disable-next-line max-len
-      // this.snackbarMessageException('error', `Le groupe ${this.groupName} n'a pas pu être créé.`);
-      //   });
+      const data = {
+        name: this.groupName,
+        username: this.username,
+      };
+      axios.post('http://127.0.0.1:8000/group', data)
+        .then((response) => {
+          this.snackbarMessageException('success', `Le groupe ${response.data.groupname} a bien été créé.`);
+          this.groups.push({ name: response.data.groupname, id: response.data.group_id })
+        })
+        .catch((error) => {
+          console.log(error)
+          this.snackbarMessageException('error', `Le groupe n'a pas pu être créé.`);
+        });
       this.reset();
     },
-    actionGroup(action, id, groupName) {
-      console.log(action, id, groupName);
+    // Edit group
+    editGroup(groupId, groupName) {
+      const data = {
+        group_id: groupId,
+        group_name: groupName,
+      };
+
+      this.groups.map(el => {
+        if (el.id === groupId) {
+          axios.patch('http://localhost:8000/group', data)
+            .then(() => {
+              this.snackbarMessageException('success', `Le groupe a été renommé en ${groupName}.`);
+            })
+            .catch(() => {
+              this.snackbarMessageException('error', `Le groupe n'a pas pu être renommé.`);
+            })
+          // Set name
+          el.name = groupName
+        }
+      })
+      this.resetEdit();
+    },
+    actionGroup(action, groupId, groupName) {
       switch (action) {
-        case 'addFile':
-          console.log('add file');
-          break;
+        // case 'addFile':
+        //   console.log('add file');
+        //   break;
         case 'edit':
-          console.log('edit');
+          this.dialogEditGroup = true;
+          this.groupSelected = groupName;
+          this.groupIdSelected = groupId;
           break;
         case 'delete':
-          this.deleteGroup(id, groupName);
-          console.log('delete');
+          this.deleteGroup(groupId, groupName);
           break;
         default:
           console.log('default');
       }
     },
     // Delete an group
-    deleteGroup(id, groupName) {
-      // this.axios.delete(`/id=${id}`)
-      //   .then(() => {
-      this.snackbarMessageException('success', `Le groupe ${groupName} a bien été supprimé.`);
-      // this.getAllGroups();
-      // });
+    deleteGroup(groupId, groupName) {
+      // Counter equal array index value
+      let count = 0;
+      this.groups.map(el => {
+        if (el.id === groupId) {
+          axios.delete(`http://127.0.0.1:8000/group/${groupId}/${this.username}`)
+            .then(() => {
+              this.snackbarMessageException('success', `Le groupe ${groupName} a bien été supprimé.`);
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+          // Remove value in array
+          this.groups.splice(count, 1);
+        }
+        count ++;
+      })
     },
     // Exception snackbar
     snackbarMessageException(type, message) {
@@ -284,6 +376,11 @@ export default {
     position: fixed;
     bottom: 40px;
     right: 40px;
+  }
+  #my_groups_content {
+    max-height: 80vh !important;
+    overflow: auto;
+    overflow-x: hidden;
   }
   .group{
     background-color:rgba(255, 255, 255, 0.1) !important;
@@ -349,7 +446,7 @@ export default {
   .link_action_group:hover{
     background-color: rgba( 229, 119, 80, 0.4);
   }
-  .form_add_group{
+  .form_add_group, .form_edit_group{
     background-color: #575c5d !important;
     border: 1px solid #ccc;
   }
