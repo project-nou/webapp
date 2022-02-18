@@ -510,79 +510,7 @@
                         </div>
                       </div>
                     </v-row>
-                    <!-- List file group -->
-<!--                    <v-row>-->
-<!--                      <div v-for="file in files" :key="file.note_id">-->
-<!--                        <div v-if="file.url.split('.').pop() !== 'pdf'">-->
-<!--                          <v-card class="mt-6 mr-4">-->
-<!--                            <v-img-->
-<!--                                :src="file.url"-->
-<!--                                class="white&#45;&#45;text align-end"-->
-<!--                                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"-->
-<!--                                height="150px"-->
-<!--                                width="150px"-->
-<!--                            >-->
-<!--                              <v-btn-->
-<!--                                  color="transparent"-->
-<!--                                  icon-->
-<!--                                  @click="downloadFile(file.url, file.filename)"-->
-<!--                              >-->
-<!--                                <v-icon-->
-<!--                                    color="success">-->
-<!--                                  mdi-download-->
-<!--                                </v-icon>-->
-<!--                              </v-btn>-->
-<!--                              <v-btn-->
-<!--                                color="transparent"-->
-<!--                                icon-->
-<!--                                @click="deleteFile(file.id)"-->
-<!--                              >-->
-<!--                                <v-icon-->
-<!--                                  color="success">-->
-<!--                                  mdi-close-->
-<!--                                </v-icon>-->
-<!--                              </v-btn>-->
-<!--                            </v-img>-->
-<!--                          </v-card>-->
-<!--                        </div>-->
-<!--                        <div v-else class="div-pdf">-->
-<!--                          <v-card class="mt-6 mr-4" color="transparent">-->
-<!--                            <v-img-->
-<!--                                src="@/assets/icons/pdf-file.png"-->
-<!--                                class="white&#45;&#45;text align-end"-->
-<!--                                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"-->
-<!--                                height="125px"-->
-<!--                                width="97px"-->
-<!--                            >-->
-<!--                              <v-btn-->
-<!--                                  class="mt-2"-->
-<!--                                  color="transparent"-->
-<!--                                  icon-->
-<!--                                  @click="downloadFile(file.url, file.filename)"-->
-<!--                              >-->
-<!--                                <v-icon-->
-<!--                                    color="success">-->
-<!--                                  mdi-download-->
-<!--                                </v-icon>-->
-<!--                              </v-btn>-->
-<!--                              <v-btn-->
-<!--                                color="transparent"-->
-<!--                                icon-->
-<!--                                @click="deleteFile(file.id)"-->
-<!--                              >-->
-<!--                                <v-icon-->
-<!--                                  color="success">-->
-<!--                                  mdi-close-->
-<!--                                </v-icon>-->
-<!--                              </v-btn>-->
-<!--                            </v-img>-->
-<!--                            <v-card-text>-->
-<!--                              <small class="white&#45;&#45;text">{{file.filename.split('.')[0]}}</small>-->
-<!--                            </v-card-text>-->
-<!--                          </v-card>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                    </v-row>-->
+
                     <!-- Drag and drop file -->
                     <v-row class="mt-8">
                       <div v-if="!file" id="content_drag_and_drop">
@@ -1171,10 +1099,6 @@ export default {
   .link_action_group:hover {
     background-color: rgba(229, 119, 80, 0.4);
   }
-
-  .div-pdf {
-    margin-top: 30px;
-    }
 
   /* List File */
   .file_content{

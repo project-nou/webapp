@@ -1,118 +1,116 @@
 <template>
-  <div class="register_view">
+  <div class="register_view pt-16">
     <v-row class="pa-0">
       <v-col class="col-md-5">
+        <!-- Logo project -->
         <v-img
-            lazy-src="@/assets/nou2.png"
-            width="250"
-            src="@/assets/nou2.png"
-            class="user_logo"
-        >
-        </v-img>
-        <h1 class="text-center white--text text-uppercase">Inscription !</h1>
+          class="logo_project mt-8"
+          lazy-src="@/assets/nou.png"
+          width="450"
+          src="@/assets/nou.png"
+        ></v-img>
       </v-col>
 
       <!-- Content -->
-      <v-col class="col-md-6 mt-16">
-        <v-card class="card_register">
-          <v-img
-            lazy-src="@/assets/user.png"
-            width="50"
-            src="@/assets/user.png"
-            class="user_logo mt-10"
-          ></v-img>
-          <v-form
-            ref="form"
-            v-model="valid"
-            lazy-validation
-            class="register_form"
-            @submit.prevent="register"
+      <v-col class="col-md-5 offset-2 pl-10 pr-10">
+        <v-img
+          lazy-src="@/assets/user.png"
+          width="50"
+          src="@/assets/user.png"
+          class="user_logo mt-15"
+        ></v-img>
+        <p class="white--text font-weight-thin inscription_text mt-5"> Inscription !</p>
+        <v-form
+          ref="form"
+          v-model="valid"
+          lazy-validation
+          class="register_form"
+          @submit.prevent="register"
+        >
+          <!-- EMAIL -->
+          <v-list id="email_field" height="80px">
+            <v-list-item>
+              <v-img
+                lazy-src="@/assets/icons/email.png"
+                width="40"
+                src="@/assets/icons/email.png"
+              ></v-img>
+              <v-list-item-title class="ml-10">
+                <v-text-field
+                  v-model="email"
+                  :rules="emailRules"
+                  label="E-mail"
+                  required
+                  clearable
+                  clear-icon="mdi-close-circle"
+                  class="mt-8"
+                  color="orange"
+                ></v-text-field>
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+          <!-- USERNAME -->
+          <v-list id="username_field" height="80px">
+            <v-list-item>
+              <v-img
+                lazy-src="@/assets/icons/id-card.png"
+                width="40"
+                src="@/assets/icons/id-card.png"
+              ></v-img>
+              <v-list-item-title class="ml-10">
+                <v-text-field
+                  class="mt-8"
+                  color="orange"
+                  v-model="username"
+                  :counter="20"
+                  :rules="usernameRules"
+                  label="Utilisateur"
+                  required
+                  clearable
+                  clear-icon="mdi-close-circle"
+                ></v-text-field>
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+          <!-- PASSWORD -->
+          <v-list id="password_field" height="80px">
+            <v-list-item>
+              <v-img
+                lazy-src="@/assets/icons/padlock.png"
+                width="40"
+                src="@/assets/icons/padlock.png"
+              ></v-img>
+              <v-list-item-title  class="ml-10">
+                <v-text-field
+                  type="password"
+                  label="Mot de passe"
+                  required
+                  clearable
+                  clear-icon="mdi-close-circle"
+                  class="mt-8"
+                  color="orange"
+                  v-model="password"
+                ></v-text-field>
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+
+          <!-- To login -->
+          <router-link to="/login" class="to_login_text font-weight-thin mt-15">
+            <a class="white--text">
+              Déjà inscrit ?
+            </a>
+          </router-link>
+
+          <v-btn
+            class="valid_form_register pl-10 pr-10 mt-7 mb-7"
+            :disabled="!valid"
+            @click="validate"
+            :loading="loading"
           >
-            <!-- EMAIL -->
-            <v-list id="email_field" class="pl-15 pr-15" height="80px">
-              <v-list-item>
-                <v-img
-                  lazy-src="@/assets/icons/email.png"
-                  width="40"
-                  src="@/assets/icons/email.png"
-                ></v-img>
-                <v-list-item-title class="ml-10">
-                  <v-text-field
-                    v-model="email"
-                    :rules="emailRules"
-                    label="E-mail"
-                    required
-                    clearable
-                    clear-icon="mdi-close-circle"
-                    class="mt-8"
-                    color="orange"
-                  ></v-text-field>
-                </v-list-item-title>
-              </v-list-item>
-            </v-list>
-            <!-- USERNAME -->
-            <v-list id="username_field" class="pl-15 pr-15" height="80px">
-              <v-list-item>
-                <v-img
-                  lazy-src="@/assets/icons/id-card.png"
-                  width="40"
-                  src="@/assets/icons/id-card.png"
-                ></v-img>
-                <v-list-item-title class="ml-10">
-                  <v-text-field
-                    class="mt-8"
-                    color="orange"
-                    v-model="username"
-                    :counter="20"
-                    :rules="usernameRules"
-                    label="Utilisateur"
-                    required
-                    clearable
-                    clear-icon="mdi-close-circle"
-                  ></v-text-field>
-                </v-list-item-title>
-              </v-list-item>
-            </v-list>
-            <!-- PASSWORD -->
-            <v-list id="password_field" class="pl-15 pr-15" height="80px">
-              <v-list-item>
-                <v-img
-                  lazy-src="@/assets/icons/padlock.png"
-                  width="40"
-                  src="@/assets/icons/padlock.png"
-                ></v-img>
-                <v-list-item-title  class="ml-10">
-                  <v-text-field
-                    type="password"
-                    label="Mot de passe"
-                    required
-                    clearable
-                    clear-icon="mdi-close-circle"
-                    class="mt-8"
-                    color="orange"
-                    v-model="password"
-                  ></v-text-field>
-                </v-list-item-title>
-              </v-list-item>
-            </v-list>
-
-            <!-- To login -->
-            <router-link to="/login" class="to_login_text font-weight-thin mt-15">
-              <a class="white--text">
-                Déjà inscrit ?
-              </a>
-            </router-link>
-
-            <v-btn
-              class="valid_form_register pl-10 pr-10 mt-7 mb-7"
-              :disabled="!valid"
-              @click="validate"
-              :loading="loading"
-            >
-              Je crée mon compte
-            </v-btn>
-          </v-form>
-        </v-card>
+            Je crée mon compte
+          </v-btn>
+        </v-form>
       </v-col>
     </v-row>
 
@@ -179,22 +177,22 @@ export default {
 </script>
 
 <style scoped>
-  .user_logo,
-  .ynov_logo,
-  .project_logo{
+  .user_logo {
     width: 50%;
     margin: 200px auto auto auto;
   }
-  .logo_to_bottom{
-    width: 25%;
-    position: absolute;
-    bottom: 25px;
+  .logo_project{
+    margin: auto;
   }
   .card_register{
     background-color: transparent !important;
     padding: 10px;
     border-radius: 20px !important;
     box-shadow: none;
+  }
+  .inscription_text {
+    text-align: center;
+    font-size: 40px;
   }
   #email_field,
   #password_field,
