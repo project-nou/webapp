@@ -18,7 +18,7 @@
       </v-col>
 
       <!-- Login Form -->
-      <v-col class="col-md-6">
+      <v-col class="col-md-5 offset-2 pl-10 pr-10">
         <v-img
           lazy-src="@/assets/user.png"
           width="50"
