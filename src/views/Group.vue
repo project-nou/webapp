@@ -154,13 +154,13 @@
               <v-container fluid class="wrapper">
                 <v-row>
                   <!-- Task -->
-                  <v-col class="col-md-7">
+                  <v-col class="col-md-6">
                     <v-row>
                       <h2 class="orange_personalize--text font-weight-thin">Tâches</h2>
                     </v-row>
                     <v-row>
                       <!-- To do task -->
-                      <v-col class="col-md-5 offset-1">
+                      <v-col class="col-md-5 ml-8">
                         <h3 class="title_task font-weight-thin">A faire</h3>
                         <div class="content_list">
                           <drop-list
@@ -172,44 +172,42 @@
                           >
                             <template v-slot:item="{item}">
                               <drag
-                                  class="item pt-10"
+                                  class="item pt-5"
                                   @cut="remove(toDo, item)"
                                   :data="selection(item)"
                                   :key="item.content"
                               >
-                                {{ item.content }}
-                                <v-btn
-                                    absolute
-                                    top
-                                    right
-                                    x-small
-                                    color="transparent"
-                                    elevation="0"
-                                    @click="remove_task(item.id, item.is_done)">
-                                  <v-icon
-                                      color="error">
-                                    mdi-close
-                                  </v-icon>
-                                </v-btn>
-                                <!-- Add Task -->
-                                <v-hover v-slot="{ hover }">
-                                  <v-btn
-                                      class="ml-14"
-                                      :class="{ 'on-hover': hover }"
-                                      top
-                                      absolute
+                                <div class="content_note_text">
+                                  <p>{{ item.content }}</p>
+                                  <div class="btn_action_note_text">
+                                    <v-btn
+                                      class="btn_set"
                                       x-small
+                                      fab
                                       color="transparent"
                                       elevation="0"
                                       @click="setFieldToUpdate(item.id, item.content, item.is_done)"
                                       @click.stop="dialog_update = true"
-                                  >
-                                    <v-icon
-                                        color="primary">
-                                      mdi-pencil
-                                    </v-icon>
-                                  </v-btn>
-                                </v-hover>
+                                    >
+                                      <v-icon
+                                        color="black" dense>
+                                        mdi-pencil
+                                      </v-icon>
+                                    </v-btn>
+                                    <v-btn
+                                      class="btn_delete"
+                                      x-small
+                                      fab
+                                      color="transparent"
+                                      elevation="0"
+                                      @click="remove_task(item.id, item.is_done)">
+                                      <v-icon
+                                        color="black" dense>
+                                        mdi-delete-outline
+                                      </v-icon>
+                                    </v-btn>
+                                  </div>
+                                </div>
                               </drag>
                             </template>
                             <template v-slot:feedback="{data}">
@@ -254,7 +252,7 @@
                       </v-col>
 
                       <!-- Done task -->
-                      <v-col class="col-md-5">
+                      <v-col class="col-md-5 ml-8">
                         <h3 class="title_task font-weight-thin">Finis</h3>
                         <div class="content_list">
                           <drop-list
@@ -266,42 +264,42 @@
                           >
                             <template v-slot:item="{item}">
                               <drag
-                                  class="item pt-10"
+                                  class="item pt-5"
                                   @cut="remove(done, item)"
                                   :data="selection(item)"
                                   :key="item.content"
-                              >{{ item.content }}
-                                <v-btn
-                                    absolute
-                                    top
-                                    right
-                                    x-small
-                                    color="transparent"
-                                    elevation="0"
-                                    @click="remove_task(item.id, item.is_done)">
-                                  <v-icon
-                                      color="error">
-                                    mdi-close
-                                  </v-icon>
-                                  <v-hover v-slot="{ hover }">
+                              >
+                                <div class="content_note_text">
+                                  <p>{{ item.content }}</p>
+                                  <div class="btn_action_note_text">
                                     <v-btn
-                                        :class="{ 'on-hover': hover }"
-                                        right
-                                        class="mr-1"
-                                        absolute
-                                        x-small
-                                        color="transparent"
-                                        elevation="0"
-                                        @click="setFieldToUpdate(item.id, item.content, item.is_done)"
-                                        @click.stop="dialog_update = true"
+                                      class="btn_set"
+                                      x-small
+                                      fab
+                                      color="transparent"
+                                      elevation="0"
+                                      @click="setFieldToUpdate(item.id, item.content, item.is_done)"
+                                      @click.stop="dialog_update = true"
                                     >
                                       <v-icon
-                                          color="primary">
+                                        color="black" dense>
                                         mdi-pencil
                                       </v-icon>
                                     </v-btn>
-                                  </v-hover>
-                                </v-btn>
+                                    <v-btn
+                                      class="btn_delete"
+                                      x-small
+                                      fab
+                                      color="transparent"
+                                      elevation="0"
+                                      @click="remove_task(item.id, item.is_done)">
+                                      <v-icon
+                                        color="black" dense>
+                                        mdi-delete-outline
+                                      </v-icon>
+                                    </v-btn>
+                                  </div>
+                                </div>
                               </drag>
                             </template>
                             <template v-slot:feedback="{data}">
@@ -338,7 +336,7 @@
                             v-model="valid_task"
                             lazy-validation
                           >
-                            <v-list id="task_content">
+                            <v-list class="task_content">
                               <v-list-item>
                                 <v-img
                                   lazy-src="@/assets/icons/plus.png"
@@ -392,7 +390,7 @@
                             v-model="valid_update"
                             lazy-validation
                           >
-                            <v-list id="task_content">
+                            <v-list class="task_content">
                               <v-list-item>
                                 <v-list-item-title class="ml-10">
                                   <v-textarea
@@ -435,14 +433,14 @@
 <!--                  </v-col>-->
 
                   <!-- All files -->
-                  <v-col class="col-md-4 ml-10">
+                  <v-col class="col-md-5 ml-10">
                     <v-row>
                       <h2 class="orange_personalize--text font-weight-thin">Fichiers déposés</h2>
                     </v-row>
                     <!-- PDF FILE -->
                     <v-row class="mt-6">
                       <div class="file_content">
-                        <div v-for="file in filesPdf" :key="file.note_id" class="mr-4 one_file_content">
+                        <div v-for="file in filesPdf" :key="file.note_id" class="mr-4 pa-2 one_file_content">
                           <p class="title_file">{{ file.filename }}</p>
                           <v-img
                             src="@/assets/icons/pdf-file.png"
@@ -456,7 +454,7 @@
                               color="transparent"
                               icon
                               @click="downloadFile(file.url, file.filename)">
-                                <v-icon color="white" small>
+                                <v-icon small>
                                   mdi-download
                                 </v-icon>
                             </v-btn>
@@ -465,8 +463,7 @@
                               color="transparent"
                               icon
                               @click="deleteFile(file.id, 'pdf')">
-                              <v-icon
-                                color="white" small>
+                              <v-icon small>
                                 mdi-delete-outline
                               </v-icon>
                             </v-btn>
@@ -477,7 +474,7 @@
                     <!-- IMAGE FILE -->
                     <v-row class="mt-6">
                       <div class="file_content">
-                        <div v-for="file in filesImage" :key="file.note_id" class="mr-4 one_file_content">
+                        <div v-for="file in filesImage" :key="file.note_id" class="mr-4 pa-2 one_file_content">
                           <p class="title_file">{{ file.filename }}</p>
                           <v-img
                             lazy-src="@/assets/icons/picture.png"
@@ -492,7 +489,7 @@
                               color="transparent"
                               icon
                               @click="downloadFile(file.url, file.filename)">
-                              <v-icon color="white" small>
+                              <v-icon small>
                                 mdi-download
                               </v-icon>
                             </v-btn>
@@ -501,8 +498,7 @@
                               color="transparent"
                               icon
                               @click="deleteFile(file.id, 'img')">
-                              <v-icon
-                                color="white" small>
+                              <v-icon small>
                                 mdi-delete-outline
                               </v-icon>
                             </v-btn>
@@ -529,15 +525,23 @@
                       </div>
                       <div v-else class="dropZone-uploaded">
                         <div class="dropZone-uploaded-info">
-                          <button type="button" class="btn btn-primary uploadFile font-weight-thin" @click="uploadFile">Envoyer le fichier</button>
-                          <button type="button" class="dropZone-title btn btn-primary removeFile font-weight-thin" @click="removeFile">Supprimer le fichier</button>
-                        </div>
-                      </div>
+                          <v-row>
+                            <v-col class="uploadedFile-info font-weight-thin ml-2 col-md-6">
+                              <div class="detail_create_file_content">
+                                <div class="mb-4">Nom du fichier: {{ file.name }}</div>
+                                <div class="mb-4">Taille(bytes): {{ file.size }}</div>
+                                <div class="mb-4">Extension：{{ extension }}</div>
+                              </div>
 
-                      <div class="uploadedFile-info font-weight-thin ml-2">
-                        <div class="mb-4">Nom du fichier: {{ file.name }}</div>
-                        <div class="mb-4">Taille(bytes): {{ file.size }}</div>
-                        <div class="mb-4">Extension：{{ extension }}</div>
+                            </v-col>
+                            <v-col class="col-md-5 column_action_file">
+                              <div class="action_create_file_content">
+                                <button type="button" class="btn btn-primary uploadFile font-weight-thin" @click="uploadFile">Envoyer le fichier</button>
+                                <button type="button" class="dropZone-title btn btn-primary removeFile font-weight-thin" @click="removeFile">Supprimer le fichier</button>
+                              </div>
+                            </v-col>
+                          </v-row>
+                        </div>
                       </div>
                     </v-row>
                   </v-col>
@@ -1028,7 +1032,7 @@ export default {
     border: 1px solid #ccc;
   }
 
-  #email_field, #task_content {
+  #email_field, .task_content {
     background-color: transparent;
   }
 
@@ -1058,7 +1062,49 @@ export default {
     overflow-x: hidden;
   }
 
-  /*.drop-in {*/
+  .btn_action_note {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
+
+  .content_note_text {
+    width: 100%;
+    display: flex;
+  }
+
+  .content_note_text p{
+    width: 100%;
+    font-size: 12px;
+    word-wrap: break-word;
+  }
+
+  .btn_action_note_text {
+    width: 40%;
+    display: none;
+  }
+
+  .content_note_text:hover > p{
+    width: 50%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .content_note_text:hover > .btn_action_note_text{
+    display: flex;
+  }
+
+  .btn_action_note_text .btn_set,
+  .btn_action_note_text .btn_delete{
+    margin-top: -5px;
+  }
+  .btn_action_note_text .btn_set:hover > span i,
+  .btn_action_note_text .btn_delete:hover > span i{
+    color: #E57750 !important;
+  }
+
+    /*.drop-in {*/
   /*  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);*/
   /*}*/
   .add_task {
@@ -1108,6 +1154,10 @@ export default {
   }
   .one_file_content{
     width: 100px;
+    border-radius: 8px;
+  }
+  .one_file_content:hover{
+    background-color: rgba( 229, 119, 80, 0.1);
   }
   .one_file_content .title_file {
     text-align: center;
@@ -1125,20 +1175,29 @@ export default {
     display: flex;
   }
   .btn_action_download {
+    color: white !important;
     margin: auto;
     margin-left: 0;
     display: block;
   }
   .btn_action_delete {
+    color: white !important;
     margin: auto;
     margin-right: 0;
     display: block;
   }
+  .btn_action_download::before,
+  .btn_action_delete::before{
+    display: none;
+  }
+  .btn_action_download:hover > span i,
+  .btn_action_delete:hover > span i{
+    color : #E57750;
+  }
   /* List File */
   /* Drag and drop file */
   #content_drag_and_drop {
-    /*width: 100%;*/
-    width: 65%;
+    width: 100%;
   }
   .dropZone {
     /*width: 80%;*/
@@ -1204,7 +1263,7 @@ export default {
   }
 
   .dropZone-uploaded {
-    width: 65%;
+    width: 100%;
     height: 170px;
     /*width: 80%;*/
     /*height: 200px;*/
@@ -1226,11 +1285,18 @@ export default {
   }
 
   .uploadedFile-info {
-    /*width: 80%;*/
-    width: 30%;
-    margin: auto;
+    display: inherit;
     color: #A8A8A8;
     font-size: 13px;
+  }
+
+  .column_action_file{
+    display: inherit;
+  }
+
+  .detail_create_file_content,
+  .action_create_file_content {
+    margin: auto;
   }
 
   .removeFile, .uploadFile{
@@ -1251,14 +1317,13 @@ export default {
     min-height: 100px;
 
     .item {
-      padding: 20px;
+      padding: 5px;
       margin: 10px;
       background-color: rgba(255, 255, 255, 0.6);
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
       position: relative;
       cursor: pointer;
 
