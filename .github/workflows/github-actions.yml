@@ -30,14 +30,3 @@ jobs:
 
       - run: "yarn install --frozen-lockfile"
       - run: "yarn build"
-
-      - uses: "./packages/automatic-releases/"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: true
-          title: "Development Build"
-          files: |
-            packages/automatic-releases/dist/index.js
-            packages/keybase-notifications/dist/index.js
-        id: "automatic_releases"
