@@ -1062,7 +1062,7 @@ export default {
   /*  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);*/
   /*}*/
   .add_task {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.2) !important;
     border-radius: 8px;
     margin-bottom: 20px;
   }
