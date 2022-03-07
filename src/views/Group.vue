@@ -93,7 +93,7 @@
                   <v-card-actions class="mt-10">
                     <v-spacer></v-spacer>
                     <v-btn
-                        color="green darken-1"
+                        color="orange darken-1"
                         text
                         :disabled="!valid"
                         @click="validate"
@@ -101,7 +101,7 @@
                       Ajouter l'utilisateur
                     </v-btn>
 
-                    <v-btn color="red darken-1" text @click="reset">
+                    <v-btn color="white darken-1" text @click="reset">
                       Fermer
                     </v-btn>
                   </v-card-actions>
@@ -241,7 +241,7 @@
                                         src='@/assets/icons/plus.png'>
                                     </v-img>
                                     <v-list-item-title class="white--text ml-2 text_add_task">
-                                      Ajouter une tache
+                                      Ajouter une tâche
                                     </v-list-item-title>
                                   </v-list-item>
                                 </v-list>
@@ -359,7 +359,7 @@
                             <v-card-actions class="mt-10">
                               <v-spacer></v-spacer>
                               <v-btn
-                                color="green darken-1"
+                                color="orange darken-1"
                                 text
                                 :disabled="!valid_task"
                                 @click="validate_task"
@@ -367,7 +367,7 @@
                                 Ajouter
                               </v-btn>
 
-                              <v-btn color="red darken-1" text @click="reset_task">
+                              <v-btn color="white darken-1" text @click="reset_task">
                                 Fermer
                               </v-btn>
                             </v-card-actions>
@@ -408,7 +408,7 @@
                             <v-card-actions class="mt-10">
                               <v-spacer></v-spacer>
                               <v-btn
-                                color="green darken-1"
+                                color="orange darken-1"
                                 text
                                 :disabled="!valid_update"
                                 @click="update_task(idToUpdate, content_update, is_done_note)"
@@ -416,7 +416,7 @@
                                 Modifier
                               </v-btn>
 
-                              <v-btn color="red darken-1" text @click="reset_update">
+                              <v-btn color="white darken-1" text @click="reset_update">
                                 Fermer
                               </v-btn>
                             </v-card-actions>

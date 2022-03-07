@@ -64,54 +64,54 @@
                   </v-hover>
                 </v-col>
                 <!-- Form Edit Group -->
-                <v-dialog v-model="dialogEditGroup" max-width="390">
-                  <v-card class="form_edit_group">
-                    <v-card-title class="text-h5 white--text">
-                      Voulez-vous modifier le groupe ?
-                    </v-card-title>
+<!--                <v-dialog v-model="dialogEditGroup" max-width="390">-->
+<!--                  <v-card class="form_edit_group">-->
+<!--                    <v-card-title class="text-h5 white&#45;&#45;text">-->
+<!--                      Voulez-vous modifier le groupe ?-->
+<!--                    </v-card-title>-->
 
-                    <v-container class="container--fluid">
-                      <v-form
-                        ref="formEdit"
-                        v-model="validEdit"
-                        lazy-validation
-                      >
-                        <v-text-field
-                          v-model="groupSelected"
-                          :counter="20"
-                          :rules="groupNameRules"
-                          label="Nom du groupe"
-                          required
-                          color="white"
-                          clearable
-                          clear-icon="mdi-close-circle"
-                        ></v-text-field>
+<!--                    <v-container class="container&#45;&#45;fluid">-->
+<!--                      <v-form-->
+<!--                        ref="formEdit"-->
+<!--                        v-model="validEdit"-->
+<!--                        lazy-validation-->
+<!--                      >-->
+<!--                        <v-text-field-->
+<!--                          v-model="groupSelected"-->
+<!--                          :counter="20"-->
+<!--                          :rules="groupNameRules"-->
+<!--                          label="Nom du groupe"-->
+<!--                          required-->
+<!--                          color="white"-->
+<!--                          clearable-->
+<!--                          clear-icon="mdi-close-circle"-->
+<!--                        ></v-text-field>-->
 
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
+<!--                        <v-card-actions>-->
+<!--                          <v-spacer></v-spacer>-->
 
-                          <v-btn
-                            color="green darken-1"
-                            text
-                            :disabled="!validEdit"
-                            @click="validateEdit(groupSelected, groupIdSelected)"
-                          >
-                            Enregistrer
-                          </v-btn>
+<!--                          <v-btn-->
+<!--                            color="green darken-1"-->
+<!--                            text-->
+<!--                            :disabled="!validEdit"-->
+<!--                            @click="validateEdit(groupSelected, groupIdSelected)"-->
+<!--                          >-->
+<!--                            Enregistrer-->
+<!--                          </v-btn>-->
 
-                          <v-btn
-                            color="red darken-1"
-                            text
-                            @click="resetEdit"
-                          >
-                            Fermer
-                          </v-btn>
-                        </v-card-actions>
-                      </v-form>
-                    </v-container>
+<!--                          <v-btn-->
+<!--                            color="red darken-1"-->
+<!--                            text-->
+<!--                            @click="resetEdit"-->
+<!--                          >-->
+<!--                            Fermer-->
+<!--                          </v-btn>-->
+<!--                        </v-card-actions>-->
+<!--                      </v-form>-->
+<!--                    </v-container>-->
 
-                  </v-card>
-                </v-dialog>
+<!--                  </v-card>-->
+<!--                </v-dialog>-->
                 <!-- Form Edit Group -->
                 <!-- All Groups -->
 
@@ -166,7 +166,7 @@
                           <v-spacer></v-spacer>
 
                           <v-btn
-                            color="green darken-1"
+                            color="orange darken-1"
                             text
                             :disabled="!valid"
                             @click="validate"
@@ -175,7 +175,7 @@
                           </v-btn>
 
                           <v-btn
-                            color="red darken-1"
+                            color="white darken-1"
                             text
                             @click="reset"
                           >
@@ -218,9 +218,9 @@ export default {
       username: undefined,
       idGroup: undefined,
       dialogAddGroup: false,
-      dialogEditGroup: false,
+      // dialogEditGroup: false,
       valid: true,
-      validEdit: true,
+      // validEdit: true,
       groupSelected: undefined,
       groupIdSelected: undefined,
       snackbarMessage: undefined,
@@ -232,7 +232,7 @@ export default {
       ],
       groups: [],
       items: [
-        { title: 'Editer', icon: 'edit.png', name: 'edit' },
+        // { title: 'Editer', icon: 'edit.png', name: 'edit' },
         { title: 'Supprimer', icon: 'trash-bin.png', name: 'delete' },
       ],
     };
@@ -250,20 +250,20 @@ export default {
         this.reset();
       }
     },
-    validateEdit(groupName, groupId) {
-      if (this.$refs.formEdit.validate()) {
-        this.editGroup(groupId, groupName);
-        this.resetEdit();
-      }
-    },
+    // validateEdit(groupName, groupId) {
+    //   if (this.$refs.formEdit.validate()) {
+    //     this.editGroup(groupId, groupName);
+    //     this.resetEdit();
+    //   }
+    // },
     reset() {
       this.$refs.formAdd.reset()
       this.dialogAddGroup = false;
     },
-    resetEdit() {
-      this.$refs.formEdit.reset()
-      this.dialogEditGroup = false;
-    },
+    // resetEdit() {
+    //   this.$refs.formEdit.reset()
+    //   this.dialogEditGroup = false;
+    // },
     // Get user
     getUser() {
       this.username = localStorage.getItem('username');
@@ -296,37 +296,37 @@ export default {
       this.reset();
     },
     // Edit group
-    editGroup(groupId, groupName) {
-      const data = {
-        group_id: groupId,
-        group_name: groupName,
-      };
-
-      this.groups.map(el => {
-        if (el.id === groupId) {
-          axios.patch('http://localhost:8000/group', data)
-            .then(() => {
-              this.snackbarMessageException('success', `Le groupe a été renommé en ${groupName}.`);
-            })
-            .catch(() => {
-              this.snackbarMessageException('error', `Le groupe n'a pas pu être renommé.`);
-            })
-          // Set name
-          el.name = groupName
-        }
-      })
-      this.resetEdit();
-    },
+    // editGroup(groupId, groupName) {
+    //   const data = {
+    //     group_id: groupId,
+    //     group_name: groupName,
+    //   };
+    //
+    //   this.groups.map(el => {
+    //     if (el.id === groupId) {
+    //       axios.patch('http://localhost:8000/group', data)
+    //         .then(() => {
+    //           this.snackbarMessageException('success', `Le groupe a été renommé en ${groupName}.`);
+    //         })
+    //         .catch(() => {
+    //           this.snackbarMessageException('error', `Le groupe n'a pas pu être renommé.`);
+    //         })
+    //       // Set name
+    //       el.name = groupName
+    //     }
+    //   })
+    //   this.resetEdit();
+    // },
     actionGroup(action, groupId, groupName) {
       switch (action) {
         // case 'addFile':
         //   console.log('add file');
         //   break;
-        case 'edit':
-          this.dialogEditGroup = true;
-          this.groupSelected = groupName;
-          this.groupIdSelected = groupId;
-          break;
+        // case 'edit':
+        //   this.dialogEditGroup = true;
+        //   this.groupSelected = groupName;
+        //   this.groupIdSelected = groupId;
+        //   break;
         case 'delete':
           this.deleteGroup(groupId, groupName);
           break;
