@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Auth from '@/views/Auth.vue';
 import Group from '@/views/Group.vue';
 import MyGroups from '../views/MyGroups.vue';
+import Page404 from '../views/404.vue';
 import jwt_decode from "jwt-decode";
 
 Vue.use(VueRouter);
@@ -46,6 +47,11 @@ const routes = [
     component: Group,
     beforeEnter: isAuthenticated,
   },
+  {
+    path: '*',
+    name: '404',
+    component: Page404,
+  }
 ];
 
 const router = new VueRouter({
