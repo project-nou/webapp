@@ -162,7 +162,7 @@ export default {
               const decodedToken = jwt_decode(response.data.token);
               // Stock in local storage username and token
               localStorage.token = response.data.token;
-              localStorage.username = decodedToken[0];
+              localStorage.username = decodedToken['username'];
               // Change route
               this.$router.push({ path: '/my_groups' });
             })
