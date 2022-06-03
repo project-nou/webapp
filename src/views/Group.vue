@@ -293,127 +293,11 @@ export default {
             });
           });
     },
-    /**
-     * Inserts one selected done into the target
-     * droplist
-     *
-     * @event {InsertEvent} - holds dragging data and drop index
-     * @llistNameist String - name of the list in the data section
-     */
-    onInsert(event, listName) {
-      this[listName].splice(event.index, 0, event.data);
-      this.selected = [];
-      switch (listName) {
-        case 'toDo':
-          axios.post('http://localhost:8000/note/status', {
-            'note_id': event.data.id
-          });
-          // Update is done value
-          this.toDo.map(el => {
-            if (el.id === event.data.id) el.is_done = false;
-          });
-          break;
-        case 'done':
-          axios.post('http://localhost:8000/note/status', {
-            'note_id': event.data.id
-          });
-          // Update is done value
-          this.done.map(el => {
-            if (el.id === event.data.id) el.is_done = true;
-          });
-          break;
-        default:
-      }
-    },
-    remove(array, value) {
-      const index = array.indexOf(value);
-      array.splice(index, 1);
-    },
-    remove_task(id, is_done) {
-      if (!is_done) {
-        let count = 0;
-        this.toDo.map(el => {
-          if (el.id === id) this.toDo.splice(count, 1);
-          count++;
-        });
-      } else {
-        let count = 0;
-        this.done.map(el => {
-          if (el.id === id) this.done.splice(count, 1);
-          count++;
-        });
-      }
-      axios
-          .delete('http://127.0.0.1:8000/note/' + this.group[0].id + '/' + id)
-          .then(() => {
-            this.snackbarMessageException('success', 'Tâche supprimée');
-          });
-    },
-    update_task(id, content, is_done) {
-      let data = {
-        'note_id': id,
-        'content_note': content
-      };
-      if (!is_done) {
-        let count = 0;
-        this.toDo.map(el => {
-          if (el.id === id) this.toDo[count].content = content;
-          count++;
-        });
-      } else {
-        let count = 0;
-        this.done.map(el => {
-          if (el.id === id) this.done[count].content = content;
-          count++;
-        });
-      }
-      axios
-          .patch('http://127.0.0.1:8000/note', data)
-          .then(() => {
-            this.reset_update();
-            this.idToUpdate = null;
-            this.content_update = null;
-            this.is_done_note = null;
-            this.snackbarMessageException('success', 'Tâche modifié');
-          });
-    },
-    setFieldToUpdate(id, content, is_done) {
-      this.idToUpdate = id;
-      this.content_update = content;
-      this.is_done_note = is_done;
-    },
     validate() {
       if (this.$refs.form.validate()) {
         this.inviteUser();
         this.reset();
       }
-    },
-    validate_task() {
-      if (!this.content_task) {
-        this.snackbarMessageException('error', 'Contenu vide');
-      } else {
-        this.addContentTask(this.content_task);
-        this.reset_task();
-      }
-    },
-    addContentTask(content) {
-      let formdata = new FormData();
-      formdata.append('group', this.group[0].name);
-      formdata.append('author', jwt_decode(localStorage.getItem('token')).username);
-      formdata.append('format', 'text');
-      formdata.append('content', content);
-      formdata.append('group_id', this.group[0].id);
-      axios
-          .post('http://127.0.0.1:8000/note', formdata)
-          .then((response) => {
-            this.snackbarMessageException('success', 'Tache créé');
-            this.toDo.push({
-              content: response.data.content,
-              id: response.data.note_id,
-              author: response.data.author,
-              is_done: response.data.is_done
-            });
-          });
     },
     reset() {
       this.$refs.form.reset();
@@ -486,41 +370,6 @@ export default {
           .catch(() => {
             this.snackbarMessageException('error', 'Une erreur est survenue');
           });
-    },
-    // Delete file to Cloud
-    deleteFile(noteId, typeFile) {
-      let arrayToMap;
-      typeFile === 'pdf' ? arrayToMap = this.filesPdf : arrayToMap = this.filesImage;
-      // Counter equal array index value
-      let count = 0;
-      arrayToMap.map(el => {
-        if (el.id === noteId) {
-          axios.delete(`http://127.0.0.1:8000/note/${this.idGroup}/${noteId}`)
-            .then((response) => {
-              this.snackbarMessageException('success', `Le fichier a bien été supprimé.`);
-            })
-            // .catch((error) => {
-            //   console.log(error);
-            // })
-          // Remove value in array
-          arrayToMap.splice(count, 1);
-        }
-        count ++;
-      })
-    },
-    // Exception snackbar
-    snackbarMessageException(type, message) {
-      this.snackbarMessage = message;
-      this.color = type;
-      switch (type) {
-        case 'success':
-          this.$root.$emit('SnackbarSuccess');
-          break;
-        case 'error':
-          this.$root.$emit('SnackbarFailed');
-          break;
-        default:
-      }
     },
   },
 };

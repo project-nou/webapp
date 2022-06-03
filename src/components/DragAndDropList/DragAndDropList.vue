@@ -269,6 +269,7 @@
 
 <script>
 import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 
 export default {
   name: "TodoList",
@@ -387,6 +388,25 @@ export default {
         this.addContentTask(this.content_task);
         this.reset_task();
       }
+    },
+    addContentTask(content) {
+      let formdata = new FormData();
+      formdata.append('group', this.group[0].name);
+      formdata.append('author', jwt_decode(localStorage.getItem('token')).username);
+      formdata.append('format', 'text');
+      formdata.append('content', content);
+      formdata.append('group_id', this.group[0].id);
+      axios
+        .post('http://127.0.0.1:8000/note', formdata)
+        .then((response) => {
+          this.snackbarMessageException('success', 'Tache créé');
+          this.toDo.push({
+            content: response.data.content,
+            id: response.data.note_id,
+            author: response.data.author,
+            is_done: response.data.is_done
+          });
+        });
     },
     reset_task() {
       this.$refs.form_task.reset();
