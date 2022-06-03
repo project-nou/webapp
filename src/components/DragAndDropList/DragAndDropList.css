@@ -4,7 +4,7 @@
     right: 15px;
 }
 .task_content {
-    background-color: transparent;
+    background-color: transparent !important;
 }
 
 .title_task {
@@ -73,4 +73,8 @@
 
 .text_add_task {
     font-size: 12px;
+}
+
+.form_add_task{
+    background-color: #7e8080 !important;
 }

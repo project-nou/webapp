@@ -160,7 +160,7 @@
 
     <!-- Form Add content task -->
     <v-dialog v-model="dialog_task" max-width="390">
-      <v-card class="form_add_user_to_group">
+      <v-card class="form_add_task">
         <v-card-title class="text-h5 white--text">
           Ajouter une tâche
         </v-card-title>
@@ -218,7 +218,7 @@
 
     <!-- Form update content -->
     <v-dialog v-model="dialog_update" max-width="390">
-      <v-card class="form_add_user_to_group">
+      <v-card class="form_edit_task">
         <v-card-title class="text-h5 white--text">
           Modifier le contenu de la tâche
         </v-card-title>
@@ -280,7 +280,7 @@ import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
 import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
 
 export default {
-  name: "TodoList",
+  name: "DragAndDropList",
   components : {
     Drag,
     DropList,
