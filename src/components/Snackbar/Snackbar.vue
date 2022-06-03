@@ -26,15 +26,18 @@
 
 <script>
 export default {
-  name: 'SnackbarFailed',
-  props: ['message', 'color'],
+  name: 'Snackbar',
   data: () => ({
     snackbar: false,
+    color: '',
+    message: '',
     timeout: 3000,
   }),
   mounted() {
-    this.$root.$on('SnackbarFailed', () => {
+    this.$root.$on('Snackbar', snackbarInfo => {
       this.snackbar = true;
+      this.color = snackbarInfo.type
+      this.message = snackbarInfo.message
     });
   },
 };

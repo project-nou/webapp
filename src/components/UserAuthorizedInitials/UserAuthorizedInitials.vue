@@ -102,24 +102,15 @@
         </v-card>
       </v-dialog>
     </div>
-
-    <SnackbarSuccess :message="snackbarMessage" :color="color"/>
-    <SnackbarFailed :message="snackbarMessage" :color="color"/>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
-import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
 
 export default {
   name: "UserAuthorizedInitials",
-  components :{
-    SnackbarSuccess,
-    SnackbarFailed,
-  },
   props: {
     groupData: {
       type: Array,
@@ -139,8 +130,6 @@ export default {
         (v) => !!v || 'L\' e-mail est requis',
         (v) => /.+@.+\..+/.test(v) || 'L\' e-mail doit être valide',
       ],
-      snackbarMessage: undefined,
-      color: undefined,
     }
   },
   beforeMount() {
@@ -196,17 +185,11 @@ export default {
     },
     // Exception snackbar
     snackbarMessageException(type, message) {
-      this.snackbarMessage = message;
-      this.color = type;
-      switch (type) {
-        case 'success':
-          this.$root.$emit('SnackbarSuccess');
-          break;
-        case 'error':
-          this.$root.$emit('SnackbarFailed');
-          break;
-        default:
-      }
+      let snackbarInfo = {
+        'type': type,
+        'message' : message
+      };
+      this.$root.$emit('Snackbar', snackbarInfo);
     },
   }
 }

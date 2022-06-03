@@ -68,24 +68,15 @@
         </div>
       </div>
     </v-row>
-
-    <SnackbarSuccess :message="snackbarMessage" :color="color"/>
-    <SnackbarFailed :message="snackbarMessage" :color="color"/>
   </div>
 </template>
 
 <script>
 import "./ListFile.css";
 import axios from 'axios';
-import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
-import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
 
 export default {
   name: "ListFile",
-  components : {
-    SnackbarFailed,
-    SnackbarSuccess,
-  },
   props: {
     groupData: {
       type: Array,
@@ -97,8 +88,6 @@ export default {
       group : this.groupData,
       filesImage: [],
       filesPdf: [],
-      snackbarMessage: undefined,
-      color: undefined,
     }
   },
   created() {
@@ -169,17 +158,11 @@ export default {
     },
     // Exception snackbar
     snackbarMessageException(type, message) {
-      this.snackbarMessage = message;
-      this.color = type;
-      switch (type) {
-        case 'success':
-          this.$root.$emit('SnackbarSuccess');
-          break;
-        case 'error':
-          this.$root.$emit('SnackbarFailed');
-          break;
-        default:
-      }
+      let snackbarInfo = {
+        'type': type,
+        'message' : message
+      };
+      this.$root.$emit('Snackbar', snackbarInfo);
     },
   }
 }

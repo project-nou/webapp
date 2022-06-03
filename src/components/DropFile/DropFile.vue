@@ -34,25 +34,15 @@
         </v-row>
       </div>
     </div>
-
-    <SnackbarSuccess :message="snackbarMessage" :color="color"/>
-    <SnackbarFailed :message="snackbarMessage" :color="color"/>
   </div>
 </template>
 
 <script>
 import "./DropFile.css";
 import axios from 'axios';
-import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
-import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
-
 
 export default {
   name: 'DropFile',
-  components : {
-    SnackbarFailed,
-    SnackbarSuccess,
-  },
   props: {
     groupData: {
       type: Array,
@@ -67,8 +57,6 @@ export default {
       dragging: false,
       username : localStorage.getItem('username'),
       group : this.groupData,
-      snackbarMessage: undefined,
-      color: undefined,
     }
   },
   computed: {
@@ -126,7 +114,7 @@ export default {
             filename: response.data.content,
             id: response.data.note_id,
             author: response.data.author,
-            url: 'https://res.cloudinary.com/doekqrsf4/image/upload/v1644856207/' + this.groupeName + '/' + this.idGroup + '/' + response.data.content
+            url: 'https://res.cloudinary.com/doekqrsf4/image/upload/v1644856207/' + this.group[0].name + '/' + this.group[0].id + '/' + response.data.content
           };
           // Push to different array (unshift -> add value to the first position in array)
           if (extensionFiles !== 'pdf') {
@@ -145,17 +133,11 @@ export default {
     },
     // Exception snackbar
     snackbarMessageException(type, message) {
-      this.snackbarMessage = message;
-      this.color = type;
-      switch (type) {
-        case 'success':
-          this.$root.$emit('SnackbarSuccess');
-          break;
-        case 'error':
-          this.$root.$emit('SnackbarFailed');
-          break;
-        default:
-      }
+      let snackbarInfo = {
+        'type': type,
+        'message' : message
+      };
+      this.$root.$emit('Snackbar', snackbarInfo);
     },
   }
 };

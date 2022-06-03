@@ -114,19 +114,19 @@
       </v-col>
     </v-row>
 
-    <SnackbarFailed color="red" message="Ce nom d'utilisateur est déjà utilisé."/>
+    <Snackbar></Snackbar>
   </div>
 </template>
 
 <script>
-import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
+import Snackbar from '@/components/Snackbar/Snackbar.vue';
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
 
 export default {
   name: 'Register',
   components: {
-    SnackbarFailed,
+    Snackbar,
   },
   data() {
     return {
@@ -167,7 +167,11 @@ export default {
               this.$router.push({ path: '/my_groups' });
             })
             .catch(() => {
-              this.$root.$emit('SnackbarFailed');
+              let snackbarInfo = {
+                'type': 'error',
+                'message' : 'Ce nom d\'utilisateur est déjà utilisé.'
+              };
+              this.$root.$emit('Snackbar', snackbarInfo);
               this.loading = false;
             });
       }

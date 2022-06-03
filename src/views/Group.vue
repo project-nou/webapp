@@ -82,28 +82,25 @@
       </v-row>
     </div>
 
-<!--    <SnackbarSuccess :message="snackbarMessage" :color="color"/>-->
-<!--    <SnackbarFailed :message="snackbarMessage" :color="color"/>-->
+    <Snackbar></Snackbar>
   </div>
 </template>
 
 <script>
-// import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
 import axios from 'axios';
-// import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
 import jwt_decode from 'jwt-decode';
 import Menu from '@/components/Menu/Menu.vue';
 import UserAuthorizedInitials from '@/components/UserAuthorizedInitials/UserAuthorizedInitials.vue';
 import DragAndDropList from '@/components/DragAndDropList/DragAndDropList.vue';
 import ListFile from '@/components/ListFile/ListFile.vue';
 import DropFile from '@/components/DropFile/DropFile.vue';
+import Snackbar from '@/components/Snackbar/Snackbar.vue';
 
 export default {
   name: 'Group',
   components: {
     Menu,
-    // SnackbarSuccess,
-    // SnackbarFailed,
+    Snackbar,
     UserAuthorizedInitials,
     DragAndDropList,
     ListFile,
@@ -142,6 +139,14 @@ export default {
           .catch(() => {
             this.snackbarMessageException('error', 'Une erreur est survenue');
           });
+    },
+    // Exception snackbar
+    snackbarMessageException(type, message) {
+      let snackbarInfo = {
+        'type': type,
+        'message' : message
+      };
+      this.$root.$emit('Snackbar', snackbarInfo);
     },
   },
 };

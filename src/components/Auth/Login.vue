@@ -87,19 +87,19 @@
       </v-col>
     </v-row>
 
-    <SnackbarFailed color="red" message="Username ou mot de passe incorrecte"/>
+    <Snackbar></Snackbar>
   </div>
 </template>
 
 <script>
-import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
+import Snackbar from '@/components/Snackbar/Snackbar.vue';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
 export default {
   name: 'Login',
   components: {
-    SnackbarFailed,
+    Snackbar,
   },
   data() {
     return {
@@ -130,7 +130,11 @@ export default {
             this.$router.push({ path: '/my_groups' });
           })
           .catch(() => {
-            this.$root.$emit('SnackbarFailed');
+            let snackbarInfo = {
+              'type': 'error',
+              'message' : 'Username ou mot de passe incorrecte.'
+            };
+            this.$root.$emit('Snackbar', snackbarInfo);
             this.loading = false;
           });
       }

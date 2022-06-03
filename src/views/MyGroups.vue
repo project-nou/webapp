@@ -195,23 +195,20 @@
         </v-row>
       </div>
 
-    <SnackbarSuccess :message="snackbarMessage" :color="color"/>
-    <SnackbarFailed :message="snackbarMessage" :color="color"/>
+    <Snackbar :message="snackbarMessage" :color="color"/>
   </div>
 </template>
 
 <script>
 import Menu from '@/components/Menu/Menu.vue';
-import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
-import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
+import Snackbar from '@/components/Snackbar/Snackbar.vue';
 import axios from 'axios';
 
 export default {
   name: 'MyGroups',
   components: {
     Menu,
-    SnackbarSuccess,
-    SnackbarFailed,
+    Snackbar,
   },
   data() {
     return {
