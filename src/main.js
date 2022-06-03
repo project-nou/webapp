@@ -1,13 +1,12 @@
 import Vue from 'vue';
-// import VueAxios from 'vue-axios';
 import App from './App.vue';
 import router from './router';
 import vuetify from './plugins/vuetify';
-// import store from './store/store';
-
-//Vue.use(Vuex)
+// import quichtify from 'quichtify';
+// import 'quichtify/dist/style.css';
 
 Vue.config.productionTip = false;
+// Vue.use(quichtify);
 
 new Vue({
   router,
