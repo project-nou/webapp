@@ -271,6 +271,8 @@
 </template>
 
 <script>
+import "./DragAndDropList.css";
+import "./DragAndDrop.scss";
 import axios from 'axios';
 import { Drag, DropList } from 'vue-easy-dnd';
 import jwt_decode from 'jwt-decode';
@@ -479,118 +481,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.btn_action_note {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-}
-.task_content {
-  background-color: transparent;
-}
-
-.title_task {
-  color: white;
-}
-
-.content_note_text,
-.drag_and_drop_list_content{
-  width: 100%;
-  display: flex;
-}
-
-.content_note_text p{
-  width: 100%;
-  font-size: 12px;
-  word-wrap: break-word;
-}
-
-.btn_action_note_text {
-  width: 40%;
-  display: none;
-}
-
-.content_note_text:hover > p{
-  width: 50%;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-.content_note_text:hover > .btn_action_note_text{
-  display: flex;
-}
-
-.btn_action_note_text .btn_set,
-.btn_action_note_text .btn_delete{
-  margin-top: -5px;
-}
-.btn_action_note_text .btn_set:hover > span i,
-.btn_action_note_text .btn_delete:hover > span i{
-  color: #E57750 !important;
-}
-
-/*.drop-in {*/
-/*  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);*/
-/*}*/
-.add_task {
-  background-color: rgba(255, 255, 255, 0.2) !important;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-.add_task_text_content {
-  width: 80%;
-  margin: auto;
-  background-color: transparent;
-}
-
-.content_list {
-  border-right: 1px solid #E57750;
-  width: 250px;
-  min-height: 10vh;
-  max-height: 55vh;
-  overflow-y: auto;
-}
-
-.text_add_task {
-  font-size: 12px;
-}
-</style>
-
-<style scoped lang="scss">
-.wrapper {
-  .list {
-    margin: auto;
-    width: 200px;
-    min-height: 100px;
-
-    .item {
-      padding: 5px;
-      margin: 10px;
-      background-color: rgba(255, 255, 255, 0.6);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      cursor: pointer;
-
-      &.selected {
-        border: 2px solid white;
-      }
-
-      &.feedback {
-        background-color: rgba(255, 255, 255, 0.3);
-        border: 2px dashed #E57750;
-      }
-
-      &.drag-image {
-        background-color: white;
-        transform: translate(-50%, -50%);
-      }
-    }
-  }
-}
-</style>

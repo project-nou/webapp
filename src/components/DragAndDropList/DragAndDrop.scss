@@ -1,0 +1,33 @@
+.wrapper {
+  .list {
+    margin: auto;
+    width: 200px;
+    min-height: 100px;
+
+    .item {
+      padding: 5px;
+      margin: 10px;
+      background-color: rgba(255, 255, 255, 0.6);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      cursor: pointer;
+
+      &.selected {
+        border: 2px solid white;
+      }
+
+      &.feedback {
+        background-color: rgba(255, 255, 255, 0.3);
+        border: 2px dashed #E57750;
+      }
+
+      &.drag-image {
+        background-color: white;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+}
