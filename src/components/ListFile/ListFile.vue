@@ -101,14 +101,22 @@ export default {
       color: undefined,
     }
   },
-  mounted() {
+  created() {
     this.getAllNotesFile();
+  },
+  mounted() {
+    // Create event allow to use any function in another component
+    this.$root.$on('refreshGetAllNotesFile', () => {
+      this.getAllNotesFile()
+    });
   },
   methods : {
     // Get file type : IMAGE / PDF
     getAllNotesFile() {
       axios.get('http://localhost:8000/notes/' + this.$route.params.id + '/file')
         .then((response) => {
+          this.filesImage = [];
+          this.filesPdf = [];
           response.data.notes.forEach(el => {
             let extensionFiles = el.content.split('.').pop();
             let fileInformation = {

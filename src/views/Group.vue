@@ -114,28 +114,12 @@ export default {
       group: [],
       idGroup: this.$route.params.id,
       groupName: undefined,
-      isAdminOfGroup: true,
-      username: undefined,
-
-      file: '',
     };
   },
   beforeMount() {
     this.getOneGroup(this.idGroup);
   },
-  mounted() {
-    this.getUser();
-  },
-  computed: {
-    extension() {
-      return (this.file) ? this.file.name.split('.').pop() : '';
-    }
-  },
   methods: {
-    // Get user
-    getUser() {
-      this.username = localStorage.getItem('username');
-    },
     async getOneGroup() {
       await axios.get('http://localhost:8000/group/' + this.$route.params.id)
           .then((response) => {

@@ -63,6 +63,7 @@ export default {
     return{
       file: '',
       filesImage: [],
+      filesPdf: [],
       dragging: false,
       username : localStorage.getItem('username'),
       group : this.groupData,
@@ -134,6 +135,7 @@ export default {
             this.filesPdf.unshift(fileInformation);
           }
           this.snackbarMessageException('success', `Le fichier a bien été ajouté.`);
+          this.$root.$emit('refreshGetAllNotesFile');
         })
       this.file = '';
     },
