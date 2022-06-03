@@ -65,15 +65,24 @@
         </div>
       </div>
     </v-row>
+
+    <SnackbarSuccess :message="snackbarMessage" :color="color"/>
+<!--    <SnackbarFailed :message="snackbarMessage" :color="color"/>-->
   </div>
 </template>
 
 <script>
 import "./ListFile.css";
 import axios from 'axios';
+import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
+import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
 
 export default {
   name: "ListFile",
+  components : {
+    SnackbarFailed,
+    SnackbarSuccess,
+  },
   props: {
     groupData: {
       type: Array,
@@ -85,10 +94,11 @@ export default {
       group : this.groupData,
       filesImage: [],
       filesPdf: [],
+      snackbarMessage: undefined,
+      color: undefined,
     }
   },
   mounted() {
-    // this.getAllNotesText();
     this.getAllNotesFile();
   },
   methods : {
@@ -138,7 +148,7 @@ export default {
         if (el.id === noteId) {
           axios.delete(`http://127.0.0.1:8000/note/${this.group[0].id}/${noteId}`)
             .then((response) => {
-              this.snackbarMessageException('success', `Le fichier a bien été supprimé.`);
+              this.snackbarMessageException('success', 'Le fichier a bien été supprimé.');
             })
           // Remove value in array
           arrayToMap.splice(count, 1);
@@ -146,10 +156,20 @@ export default {
         count ++;
       })
     },
+    // Exception snackbar
+    snackbarMessageException(type, message) {
+      this.snackbarMessage = message;
+      this.color = type;
+      switch (type) {
+        case 'success':
+          this.$root.$emit('SnackbarSuccess');
+          break;
+        case 'error':
+          this.$root.$emit('SnackbarFailed');
+          break;
+        default:
+      }
+    },
   }
 }
 </script>
-
-<style scoped>
-
-</style>
