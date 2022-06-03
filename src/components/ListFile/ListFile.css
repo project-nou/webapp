@@ -1,0 +1,47 @@
+.file_content{
+    width: 100vw;
+    display: flex;
+    overflow: auto;
+}
+.one_file_content{
+    width: 100px;
+    border-radius: 8px;
+}
+.one_file_content:hover{
+    background-color: rgba( 229, 119, 80, 0.1);
+}
+.one_file_content .title_file {
+    text-align: center;
+    width: 60px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #A8A8A8;
+    font-size: 11px;
+}
+.one_file_content .img_file {
+    margin: auto;
+}
+.file_action {
+    display: flex;
+}
+.btn_action_download {
+    color: white !important;
+    margin: auto;
+    margin-left: 0;
+    display: block;
+}
+.btn_action_delete {
+    color: white !important;
+    margin: auto;
+    margin-right: 0;
+    display: block;
+}
+.btn_action_download::before,
+.btn_action_delete::before{
+    display: none;
+}
+.btn_action_download:hover > span i,
+.btn_action_delete:hover > span i{
+    color : #E57750;
+}

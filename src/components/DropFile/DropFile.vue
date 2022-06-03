@@ -54,10 +54,6 @@ export default {
     SnackbarSuccess,
   },
   props: {
-    user: {
-      type: String,
-      required: true,
-    },
     groupData: {
       type: Array,
       required: true,
@@ -68,7 +64,7 @@ export default {
       file: '',
       filesImage: [],
       dragging: false,
-      username : this.user,
+      username : localStorage.getItem('username'),
       group : this.groupData,
       snackbarMessage: undefined,
       color: undefined,

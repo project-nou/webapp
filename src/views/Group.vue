@@ -437,79 +437,11 @@
                     <v-row>
                       <h2 class="orange_personalize--text font-weight-thin">Fichiers déposés</h2>
                     </v-row>
-                    <!-- PDF FILE -->
-                    <v-row class="mt-6">
-                      <div class="file_content">
-                        <div v-for="file in filesPdf" :key="file.note_id" class="mr-4 pa-2 one_file_content">
-                          <p class="title_file">{{ file.filename }}</p>
-                          <v-img
-                            src="@/assets/icons/pdf-file.png"
-                            class="img_file"
-                            height="60"
-                            width="40"/>
-                          <!-- Action -->
-                          <div class="file_action">
-                            <v-btn
-                              class="btn_action_download"
-                              color="transparent"
-                              icon
-                              @click="downloadFile(file.url, file.filename)">
-                                <v-icon small>
-                                  mdi-download
-                                </v-icon>
-                            </v-btn>
-                            <v-btn
-                              class="btn_action_delete"
-                              color="transparent"
-                              icon
-                              @click="deleteFile(file.id, 'pdf')">
-                              <v-icon small>
-                                mdi-delete-outline
-                              </v-icon>
-                            </v-btn>
-                          </div>
-                        </div>
-                      </div>
-                    </v-row>
-                    <!-- IMAGE FILE -->
-                    <v-row class="mt-6">
-                      <div class="file_content">
-                        <div v-for="file in filesImage" :key="file.note_id" class="mr-4 pa-2 one_file_content">
-                          <p class="title_file">{{ file.filename }}</p>
-                          <v-img
-                            lazy-src="@/assets/icons/picture.png"
-                            :src="file.url"
-                            class="img_file"
-                            height="60"
-                            width="60"/>
-                          <!-- Action -->
-                          <div class="file_action">
-                            <v-btn
-                              class="btn_action_download"
-                              color="transparent"
-                              icon
-                              @click="downloadFile(file.url, file.filename)">
-                              <v-icon small>
-                                mdi-download
-                              </v-icon>
-                            </v-btn>
-                            <v-btn
-                              class="btn_action_delete"
-                              color="transparent"
-                              icon
-                              @click="deleteFile(file.id, 'img')">
-                              <v-icon small>
-                                mdi-delete-outline
-                              </v-icon>
-                            </v-btn>
-                          </div>
-                        </div>
-                      </div>
-                    </v-row>
+                    <ListFile :group-data="group"></ListFile>
 
                     <!-- Drag and drop file -->
                     <v-row class="mt-8">
-                      <DropFile :user="username" :group-data="group"></DropFile>
+                      <DropFile :group-data="group"></DropFile>
                     </v-row>
                   </v-col>
                 </v-row>
@@ -533,6 +465,7 @@ import axios from 'axios';
 import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
 import jwt_decode from 'jwt-decode';
 import DropFile from '@/components/DropFile/DropFile.vue';
+import ListFile from '@/components/ListFile/ListFile.vue';
 
 export default {
   name: 'Group',
@@ -543,6 +476,7 @@ export default {
     SnackbarSuccess,
     SnackbarFailed,
     DropFile,
+    ListFile,
   },
   data() {
     return {
@@ -623,27 +557,6 @@ export default {
                   author: el.author,
                   is_done: el.is_done
                 });
-              }
-            });
-          });
-    },
-
-    getAllNotesFile() {
-      axios.get('http://localhost:8000/notes/' + this.$route.params.id + '/file')
-          .then((response) => {
-            response.data.notes.forEach(el => {
-              let extensionFiles = el.content.split('.').pop();
-              let fileInformation = {
-                filename: el.content,
-                id: el.note_id,
-                author: el.author,
-                url: 'https://res.cloudinary.com/doekqrsf4/image/upload/v1644856207/' + this.group[0].name + '/' + this.group[0].id + '/' + el.content
-              }
-              // Push to different array (unshift -> add value to the first position in array)
-              if (extensionFiles !== 'pdf') {
-                this.filesImage.unshift(fileInformation);
-              } else {
-                this.filesPdf.unshift(fileInformation);
               }
             });
           });
@@ -831,21 +744,21 @@ export default {
             this.snackbarMessageException('error', 'L\'invation à ' + email + ' n\'a pas été envoyée');
           });
     },
-    downloadFile(url, filename) {
-      axios({
-        url: url,
-        method: 'GET',
-        responseType: 'blob',
-      })
-          .then((response) => {
-            let fileURL = window.URL.createObjectURL(new Blob([response.data]));
-            let fURL = document.createElement('a');
-            fURL.href = fileURL;
-            fURL.setAttribute('download', filename);
-            document.body.appendChild(fURL);
-            fURL.click();
-          });
-    },
+    // downloadFile(url, filename) {
+    //   axios({
+    //     url: url,
+    //     method: 'GET',
+    //     responseType: 'blob',
+    //   })
+    //       .then((response) => {
+    //         let fileURL = window.URL.createObjectURL(new Blob([response.data]));
+    //         let fURL = document.createElement('a');
+    //         fURL.href = fileURL;
+    //         fURL.setAttribute('download', filename);
+    //         document.body.appendChild(fURL);
+    //         fURL.click();
+    //       });
+    // },
     leaveGroup() {
       axios
           .delete('http://localhost:8000/user/' + jwt_decode(localStorage.getItem('token')).user_id + '/group/' + this.group[0].id + '/leave')
@@ -1045,56 +958,6 @@ export default {
   .link_action_group:hover {
     background-color: rgba(229, 119, 80, 0.4);
   }
-
-  /* List File */
-  .file_content{
-    width: 100vw;
-    display: flex;
-    overflow: auto;
-  }
-  .one_file_content{
-    width: 100px;
-    border-radius: 8px;
-  }
-  .one_file_content:hover{
-    background-color: rgba( 229, 119, 80, 0.1);
-  }
-  .one_file_content .title_file {
-    text-align: center;
-    width: 60px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    color: #A8A8A8;
-    font-size: 11px;
-  }
-  .one_file_content .img_file {
-    margin: auto;
-  }
-  .file_action {
-    display: flex;
-  }
-  .btn_action_download {
-    color: white !important;
-    margin: auto;
-    margin-left: 0;
-    display: block;
-  }
-  .btn_action_delete {
-    color: white !important;
-    margin: auto;
-    margin-right: 0;
-    display: block;
-  }
-  .btn_action_download::before,
-  .btn_action_delete::before{
-    display: none;
-  }
-  .btn_action_download:hover > span i,
-  .btn_action_delete:hover > span i{
-    color : #E57750;
-  }
-  /* List File */
 </style>
 
 <style scoped lang="scss">
