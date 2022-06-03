@@ -520,8 +520,8 @@
       </v-row>
     </div>
 
-    <SnackbarSuccess :message="snackbarMessage" :color="color"/>
-    <SnackbarFailed :message="snackbarMessage" :color="color"/>
+<!--    <SnackbarSuccess :message="snackbarMessage" :color="color"/>-->
+<!--    <SnackbarFailed :message="snackbarMessage" :color="color"/>-->
   </div>
 </template>
 
@@ -577,8 +577,8 @@ export default {
         (v) => !!v || 'L\' e-mail est requis',
         (v) => /.+@.+\..+/.test(v) || 'L\' e-mail doit être valide',
       ],
-      snackbarMessage: undefined,
-      color: undefined,
+      // snackbarMessage: undefined,
+      // color: undefined,
       file: '',
       dragging: false
     };
@@ -857,75 +857,6 @@ export default {
             this.snackbarMessageException('error', 'Une erreur est survenue');
           });
     },
-    // Get event drag
-    // onChange(e) {
-    //   let files = e.target.files || e.dataTransfer.files;
-    //
-    //   if (!files.length) {
-    //     this.dragging = false;
-    //     return;
-    //   }
-    //
-    //   this.createFile(files[0]);
-    // },
-    // Create file send by drag and drop
-    // createFile(file) {
-    //   // Authorized type file | plain -> txt type
-    //   const authorizedTypeFile = ['png', 'jpg', 'jpeg', 'pdf'];
-    //   // Get type
-    //   let typeFileSend = file.type.split('/')[1]
-    //   // Verify if type exist in our array
-    //   if (!authorizedTypeFile.includes(typeFileSend)) {
-    //     this.snackbarMessageException('error', 'Fichier non pris en charge (pdf, jpg ou png)');
-    //     this.dragging = false;
-    //     return;
-    //   }
-    //   // Verify size file
-    //   if (file.size > 5000000) {
-    //     this.snackbarMessageException('error', 'Fichié trop volumineux (max 5 MB).');
-    //     this.dragging = false;
-    //     return;
-    //   }
-    //
-    //   this.file = file;
-    //   this.dragging = false;
-    // },
-    // Register file to cloud
-    // uploadFile() {
-    //   const formdata = new FormData();
-    //   formdata.append('group', this.groupeName);
-    //   formdata.append('author', this.username);
-    //   formdata.append('format', 'file');
-    //   formdata.append('content', 'file');
-    //   formdata.append('group_id', this.idGroup);
-    //   formdata.append('file', this.file);
-    //
-    //   axios.post('http://127.0.0.1:8000/note', formdata)
-    //   .then((response) => {
-    //     let extensionFiles = response.data.content.split('.').pop();
-    //     let fileInformation = {
-    //       filename: response.data.content,
-    //       id: response.data.note_id,
-    //       author: response.data.author,
-    //       url: 'https://res.cloudinary.com/doekqrsf4/image/upload/v1644856207/' + this.groupeName + '/' + this.idGroup + '/' + response.data.content
-    //     };
-    //     // Push to different array (unshift -> add value to the first position in array)
-    //     if (extensionFiles !== 'pdf') {
-    //       this.filesImage.unshift(fileInformation);
-    //     } else {
-    //       this.filesPdf.unshift(fileInformation);
-    //     }
-    //     this.snackbarMessageException('success', `Le fichier a bien été ajouté.`);
-    //   })
-    //   // .catch((error) => {
-    //   //   console.log(error);
-    //   // })
-    //   this.file = '';
-    // },
-    // Delete file send by user
-    // removeFile() {
-    //   this.file = '';
-    // },
     // Delete file to Cloud
     deleteFile(noteId, typeFile) {
       let arrayToMap;
@@ -1164,118 +1095,6 @@ export default {
     color : #E57750;
   }
   /* List File */
-  /* Drag and drop file */
-  /*#content_drag_and_drop {*/
-  /*  width: 100%;*/
-  /*}*/
-  /*.dropZone {*/
-  /*  !*width: 80%;*!*/
-  /*  !*height: 200px;*!*/
-  /*  width: 100%;*/
-  /*  height: 170px;*/
-  /*  position: relative;*/
-  /*  border: 2px dashed #eee;*/
-  /*  !*margin: auto;*!*/
-  /*}*/
-
-  /*.dropZone:hover {*/
-  /*  border: 1px solid rgba(229, 119, 80, 0.4);*/
-  /*}*/
-
-  /*.dropZone:hover .dropZone-title {*/
-  /*  color: #E57750;*/
-  /*}*/
-
-  /*.dropZone:hover > .dropZone-info .icon_upload i{*/
-  /*  color: #E57750 !important;*/
-  /*}*/
-
-  /*.icon_upload i{*/
-  /*  color: #787878 !important;*/
-  /*}*/
-
-  /*.dropZone-info {*/
-  /*  font-size: 12px;*/
-  /*  color: #A8A8A8;*/
-  /*  position: absolute;*/
-  /*  top: 50%;*/
-  /*  width: 100%;*/
-  /*  transform: translate(0, -50%);*/
-  /*  text-align: center;*/
-  /*}*/
-
-  /*.dropZone-title {*/
-  /*  color: #787878;*/
-  /*}*/
-
-  /*.dropZone input {*/
-  /*  position: absolute;*/
-  /*  cursor: pointer;*/
-  /*  top: 0px;*/
-  /*  right: 0;*/
-  /*  bottom: 0;*/
-  /*  left: 0;*/
-  /*  width: 100%;*/
-  /*  height: 100%;*/
-  /*  opacity: 0;*/
-  /*}*/
-
-  /*.dropZone-upload-limit-info {*/
-  /*  display: flex;*/
-  /*  justify-content: flex-start;*/
-  /*  flex-direction: column;*/
-  /*}*/
-
-  /*.dropZone-over {*/
-  /*  background: #5C5C5C;*/
-  /*  opacity: 0.8;*/
-  /*}*/
-
-  /*.dropZone-uploaded {*/
-  /*  width: 100%;*/
-  /*  height: 170px;*/
-  /*  !*width: 80%;*!*/
-  /*  !*height: 200px;*!*/
-  /*  position: relative;*/
-  /*  border: 2px dashed #eee;*/
-  /*  !*margin: auto;*!*/
-  /*}*/
-
-  /*.dropZone-uploaded-info {*/
-  /*  display: flex;*/
-  /*  flex-direction: column;*/
-  /*  align-items: center;*/
-  /*  color: #A8A8A8;*/
-  /*  position: absolute;*/
-  /*  top: 50%;*/
-  /*  width: 100%;*/
-  /*  transform: translate(0, -50%);*/
-  /*  text-align: center;*/
-  /*}*/
-
-  /*.uploadedFile-info {*/
-  /*  display: inherit;*/
-  /*  color: #A8A8A8;*/
-  /*  font-size: 13px;*/
-  /*}*/
-
-  /*.column_action_file{*/
-  /*  display: inherit;*/
-  /*}*/
-
-  /*.detail_create_file_content,*/
-  /*.action_create_file_content {*/
-  /*  margin: auto;*/
-  /*}*/
-
-  /*.removeFile, .uploadFile{*/
-  /*   width: 200px;*/
-  /* }*/
-
-  /*.removeFile:hover, .uploadFile:hover{*/
-  /*  color: #E57750*/
-  /*}*/
-  /* Drag and drop file */
 </style>
 
 <style scoped lang="scss">

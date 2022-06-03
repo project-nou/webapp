@@ -1,4 +1,5 @@
 <template>
+  <div class="drop_file_content">
     <div v-if="!file" id="content_drag_and_drop">
       <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
         <div class="dropZone-info" @drag="onChange">
@@ -34,22 +35,23 @@
       </div>
     </div>
 
-<!--  <SnackbarSuccess :message="snackbarMessage" :color="color"/>-->
-<!--  <SnackbarFailed :message="snackbarMessage" :color="color"/>-->
+    <SnackbarSuccess :message="snackbarMessage" :color="color"/>
+    <SnackbarFailed :message="snackbarMessage" :color="color"/>
+  </div>
 </template>
 
 <script>
 import axios from 'axios';
-// import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
-// import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
+import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
+import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
 
 
 export default {
   name: 'DropFile',
-  // components : {
-  //   SnackbarFailed,
-  //   SnackbarSuccess,
-  // },
+  components : {
+    SnackbarFailed,
+    SnackbarSuccess,
+  },
   props: {
     user: {
       type: String,
@@ -67,6 +69,8 @@ export default {
       dragging: false,
       username : this.user,
       group : this.groupData,
+      snackbarMessage: undefined,
+      color: undefined,
     }
   },
   computed: {
@@ -159,7 +163,8 @@ export default {
 </script>
 
 <style scoped>
-#content_drag_and_drop {
+#content_drag_and_drop,
+.drop_file_content{
   width: 100%;
 }
 .dropZone {
