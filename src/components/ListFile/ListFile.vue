@@ -14,7 +14,6 @@
           <div class="file_action">
             <v-btn
               class="btn_action_download"
-              color="transparent"
               icon
               @click="downloadFile(file.url, file.filename)">
               <v-icon small>
@@ -23,7 +22,6 @@
             </v-btn>
             <v-btn
               class="btn_action_delete"
-              color="transparent"
               icon
               @click="deleteFile(file.id, 'pdf')">
               <v-icon small>
@@ -49,7 +47,6 @@
           <div class="file_action">
             <v-btn
               class="btn_action_download"
-              color="transparent"
               icon
               @click="downloadFile(file.url, file.filename)">
               <v-icon small>
@@ -58,7 +55,6 @@
             </v-btn>
             <v-btn
               class="btn_action_delete"
-              color="transparent"
               icon
               @click="deleteFile(file.id, 'img')">
               <v-icon small>

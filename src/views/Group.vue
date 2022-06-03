@@ -744,21 +744,6 @@ export default {
             this.snackbarMessageException('error', 'L\'invation à ' + email + ' n\'a pas été envoyée');
           });
     },
-    // downloadFile(url, filename) {
-    //   axios({
-    //     url: url,
-    //     method: 'GET',
-    //     responseType: 'blob',
-    //   })
-    //       .then((response) => {
-    //         let fileURL = window.URL.createObjectURL(new Blob([response.data]));
-    //         let fURL = document.createElement('a');
-    //         fURL.href = fileURL;
-    //         fURL.setAttribute('download', filename);
-    //         document.body.appendChild(fURL);
-    //         fURL.click();
-    //       });
-    // },
     leaveGroup() {
       axios
           .delete('http://localhost:8000/user/' + jwt_decode(localStorage.getItem('token')).user_id + '/group/' + this.group[0].id + '/leave')
