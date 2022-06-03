@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import "./DropFile.css";
 import axios from 'axios';
 import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
 import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
@@ -161,111 +162,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-#content_drag_and_drop,
-.drop_file_content{
-  width: 100%;
-}
-.dropZone {
-  width: 100%;
-  height: 170px;
-  position: relative;
-  border: 2px dashed #eee;
-}
-
-.dropZone:hover {
-  border: 1px solid rgba(229, 119, 80, 0.4);
-}
-
-.dropZone:hover .dropZone-title {
-  color: #E57750;
-}
-
-.dropZone:hover > .dropZone-info .icon_upload i{
-  color: #E57750 !important;
-}
-
-.icon_upload i{
-  color: #787878 !important;
-}
-
-.dropZone-info {
-  font-size: 12px;
-  color: #A8A8A8;
-  position: absolute;
-  top: 50%;
-  width: 100%;
-  transform: translate(0, -50%);
-  text-align: center;
-}
-
-.dropZone-title {
-  color: #787878;
-}
-
-.dropZone input {
-  position: absolute;
-  cursor: pointer;
-  top: 0px;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-}
-
-.dropZone-upload-limit-info {
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: column;
-}
-
-.dropZone-over {
-  background: #5C5C5C;
-  opacity: 0.8;
-}
-
-.dropZone-uploaded {
-  width: 100%;
-  height: 170px;
-  position: relative;
-  border: 2px dashed #eee;
-}
-
-.dropZone-uploaded-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #A8A8A8;
-  position: absolute;
-  top: 50%;
-  width: 100%;
-  transform: translate(0, -50%);
-  text-align: center;
-}
-
-.uploadedFile-info {
-  display: inherit;
-  color: #A8A8A8;
-  font-size: 13px;
-}
-
-.column_action_file{
-  display: inherit;
-}
-
-.detail_create_file_content,
-.action_create_file_content {
-  margin: auto;
-}
-
-.removeFile, .uploadFile{
-  width: 200px;
-}
-
-.removeFile:hover, .uploadFile:hover{
-  color: #E57750
-}
-</style>
