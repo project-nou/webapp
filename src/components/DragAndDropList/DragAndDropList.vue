@@ -264,17 +264,36 @@
 
       </v-card>
     </v-dialog>
+
+    <SnackbarSuccess :message="snackbarMessage" :color="color"/>
+    <SnackbarFailed :message="snackbarMessage" :color="color"/>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import { Drag, DropList } from 'vue-easy-dnd';
 import jwt_decode from 'jwt-decode';
+import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
+import SnackbarFailed from '@/components/Snackbar/SnackbarFailed.vue';
 
 export default {
   name: "TodoList",
+  components : {
+    Drag,
+    DropList,
+    SnackbarFailed,
+    SnackbarSuccess,
+  },
+  props: {
+    groupData: {
+      type: Array,
+      required: true,
+    }
+  },
   data() {
     return {
+      group : this.groupData,
       toDo: [],
       done: [],
       dialog_update: false,
@@ -286,9 +305,36 @@ export default {
       content_update: '',
       idToUpdate: null,
       is_done_note: null,
+      snackbarMessage: undefined,
+      color: undefined,
     }
   },
+  mounted() {
+    this.getAllNotesText();
+  },
   methods : {
+    getAllNotesText() {
+      axios.get('http://localhost:8000/notes/' + this.$route.params.id + '/text')
+        .then((response) => {
+          response.data.notes.forEach(el => {
+            if (!el.is_done) {
+              this.toDo.push({
+                content: el.content,
+                id: el.note_id,
+                author: el.author,
+                is_done: el.is_done
+              });
+            } else {
+              this.done.push({
+                content: el.content,
+                id: el.note_id,
+                author: el.author,
+                is_done: el.is_done
+              });
+            }
+          });
+        });
+    },
     selection(item) {
       return item;
     },
@@ -416,6 +462,20 @@ export default {
       this.$refs.form_update.reset();
       this.dialog_update = false;
     },
+    // Exception snackbar
+    snackbarMessageException(type, message) {
+      this.snackbarMessage = message;
+      this.color = type;
+      switch (type) {
+        case 'success':
+          this.$root.$emit('SnackbarSuccess');
+          break;
+        case 'error':
+          this.$root.$emit('SnackbarFailed');
+          break;
+        default:
+      }
+    },
   }
 }
 </script>
@@ -425,6 +485,13 @@ export default {
   position: absolute;
   top: 15px;
   right: 15px;
+}
+.task_content {
+  background-color: transparent;
+}
+
+.title_task {
+  color: white;
 }
 
 .content_note_text,

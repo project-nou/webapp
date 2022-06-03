@@ -67,7 +67,7 @@
     </v-row>
 
     <SnackbarSuccess :message="snackbarMessage" :color="color"/>
-<!--    <SnackbarFailed :message="snackbarMessage" :color="color"/>-->
+    <SnackbarFailed :message="snackbarMessage" :color="color"/>
   </div>
 </template>
 

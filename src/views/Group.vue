@@ -155,7 +155,7 @@
                 <v-row>
                   <!-- Task -->
                   <v-col class="col-md-6 ml-10">
-                    <DragAndDropList></DragAndDropList>
+                    <DragAndDropList :group-data="group"></DragAndDropList>
                   </v-col>
                   <!-- Divider -->
 <!--                  <v-col class="col-md-1">-->
@@ -188,7 +188,6 @@
 </template>
 
 <script>
-import { Drag, DropList } from 'vue-easy-dnd';
 import Menu from '@/components/Menu/Menu.vue';
 // import SnackbarSuccess from '@/components/Snackbar/SnackbarSuccess.vue';
 import axios from 'axios';
@@ -201,8 +200,6 @@ import DropFile from '@/components/DropFile/DropFile.vue';
 export default {
   name: 'Group',
   components: {
-    Drag,
-    DropList,
     Menu,
     // SnackbarSuccess,
     // SnackbarFailed,
@@ -213,16 +210,6 @@ export default {
   data() {
     return {
       group: [],
-      toDo: [],
-      done: [],
-      // files: [],
-      filesImage: [],
-      filesPdf: [],
-      filesGroup: [],
-      selected: [],
-      selectedList: 0,
-      content_task: '',
-      content_update: '',
       adminUsername: '',
       idGroup: this.$route.params.id,
       groupeName: undefined,
@@ -230,14 +217,7 @@ export default {
       isAdminOfGroup: true,
       username: undefined,
       valid: true,
-      valid_task: true,
-      valid_update: true,
       dialog: false,
-      dialog_task: false,
-      dialog_update: false,
-      idToUpdate: null,
-      contentToUpdate: null,
-      is_done_note: null,
       email: undefined,
       emailRules: [
         (v) => !!v || 'L\' e-mail est requis',
@@ -255,8 +235,6 @@ export default {
   },
   mounted() {
     this.getUser();
-    this.getAllNotesText();
-    this.getAllNotesFile();
   },
   computed: {
     extension() {
@@ -271,28 +249,6 @@ export default {
     selection(item) {
       return item;
     },
-    getAllNotesText() {
-      axios.get('http://localhost:8000/notes/' + this.$route.params.id + '/text')
-          .then((response) => {
-            response.data.notes.forEach(el => {
-              if (!el.is_done) {
-                this.toDo.push({
-                  content: el.content,
-                  id: el.note_id,
-                  author: el.author,
-                  is_done: el.is_done
-                });
-              } else {
-                this.done.push({
-                  content: el.content,
-                  id: el.note_id,
-                  author: el.author,
-                  is_done: el.is_done
-                });
-              }
-            });
-          });
-    },
     validate() {
       if (this.$refs.form.validate()) {
         this.inviteUser();
@@ -302,14 +258,6 @@ export default {
     reset() {
       this.$refs.form.reset();
       this.dialog = false;
-    },
-    reset_task() {
-      this.$refs.form_task.reset();
-      this.dialog_task = false;
-    },
-    reset_update() {
-      this.$refs.form_update.reset();
-      this.dialog_update = false;
     },
     async getOneGroup() {
       await axios.get('http://localhost:8000/group/' + this.$route.params.id)
@@ -429,10 +377,6 @@ export default {
 
   .settings_btn:hover {
     background-color: rgba(229, 119, 80, 0.3);
-  }
-
-  .title_task {
-    color: white;
   }
 
   #group_content {
