@@ -1,6 +1,9 @@
 <template>
   <div class="drag_and_drop_list_content">
-    <v-col class="col-md-5 ml-8">
+    <v-row>
+      <h2 class="orange_personalize--text font-weight-thin">Tâches</h2>
+    </v-row>
+    <v-col class="col-md-5">
       <h3 class="title_task font-weight-thin">A faire</h3>
       <div class="content_list">
         <drop-list

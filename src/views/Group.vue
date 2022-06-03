@@ -112,8 +112,8 @@
           </v-dialog>
 
           <v-container class="container--fluid">
-            <!-- Groupe Title -->
             <div class="mt-10 group_information">
+              <!-- Groupe Title -->
               <p class="text-h5 orange_personalize--text mr-10">
                 {{ this.group[0].name }}
               </p>
@@ -148,27 +148,18 @@
               </v-menu>
             </div>
             <v-divider class="white"></v-divider>
-
             <!-- CONTENT -->
             <v-row class="mt-10" id="group_content">
               <v-container fluid class="wrapper">
                 <v-row>
                   <!-- Task -->
-                  <v-col class="col-md-6 ml-10">
+                  <v-col class="col-md-6">
                     <DragAndDropList :group-data="group"></DragAndDropList>
                   </v-col>
-                  <!-- Divider -->
-<!--                  <v-col class="col-md-1">-->
-                  <v-divider vertical class="white"></v-divider>
-<!--                  </v-col>-->
-
+                  <v-divider vertical class="white ml-10"></v-divider>
                   <!-- All files -->
                   <v-col class="col-md-5 ml-10">
-                    <v-row>
-                      <h2 class="orange_personalize--text font-weight-thin">Fichiers déposés</h2>
-                    </v-row>
                     <ListFile :group-data="group"></ListFile>
-
                     <!-- Drag and drop file -->
                     <v-row class="mt-8">
                       <DropFile :group-data="group"></DropFile>
@@ -361,10 +352,6 @@ export default {
 
   #email_field, .task_content {
     background-color: transparent;
-  }
-
-  .orange_personalize--text {
-    color: #E57750;
   }
 
   .group_information {

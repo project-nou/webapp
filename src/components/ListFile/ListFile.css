@@ -45,3 +45,7 @@
 .btn_action_delete:hover > span i{
     color : #E57750;
 }
+
+.orange_personalize--text {
+    color: #E57750;
+}

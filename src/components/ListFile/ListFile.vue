@@ -1,7 +1,10 @@
 <template>
   <div class="list_file_content">
     <!-- PDF FILE -->
-    <v-row class="mt-6">
+    <v-row class="mt-1">
+      <v-row>
+        <h2 class="orange_personalize--text font-weight-thin">Fichiers déposés</h2>
+      </v-row>
       <div class="file_content">
         <div v-for="file in filesPdf" :key="file.note_id" class="mr-4 pa-2 one_file_content">
           <p class="title_file">{{ file.filename }}</p>
